@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addParticipanteForm">
+		<p:panel header="#{bundle['label.datos']} #{bundle['label.del']} #{bundle['label.participante']}"
+			style="height:260px;">
+			<p:menubar>
+				<p:menuitem id="addButton" icon="ui-icon-plus"
+					value="#{bundle['btn.add']}"
+                                        actionListener="#{inscripcionController.nuevoDetalle()}"
+					oncomplete="PF('addParticipanteCreateDlg').show();"
+					update=":addParticipanteCreateForm:display"
+					process="@this" />
+
+			</p:menubar>
+			<p:dataTable var="item" id="datalistParticipante"
+				value="#{inscripcionController.participanteList}"
+				rowKey="#{item.id}" selectionMode="single"
+				selection="#{inscripcionController.participante}">
+				<p:column headerText="#{bundle['label.nombre']}">
+					<h:outputText value="#{item.nombre}" />
+				</p:column>
+				<p:column width="30px;" headerText="">
+					<p:commandButton id="deleteButton" icon="ui-icon-trash"
+						style="width:30px ; height:15px"
+						actionListener="#{inscripcionController.eliminarParticipante(item)}"
+						update=":datalistParticipante" title="#{bundle['btn.delete']}" 
+						process="@this" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</h:form>
+
+</ui:composition>

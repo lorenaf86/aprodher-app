@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addInscripcionForm">
+        <p:panel header="#{bundle['label.datos']} #{bundle['label.del']} #{bundle['label.encabezado']}">
+            <div style="height: 240px;">
+            <h:panelGrid columns="2" cellpadding="2" cellspacing="5">
+                <h:outputLabel value="#{bundle['label.coreografia']}" for="coreografiaField" />
+                <p:inputText id="coreografiaField" size="50"
+                             value="#{inscripcionController.coreografia.nombre}" 
+                requiredMessage="#{bundle['search.label.fieldRequired']} - #{bundle['label.coreografia']}" />
+
+                <h:outputLabel value="#{bundle['label.categoria']}" for="categoriaField" />
+                <p:selectOneMenu id="categoriaField"  style="width:260px" 
+                                 value="#{inscripcionController.coreografia.categoria}"
+                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+                <f:selectItems var="categoria" value="#{inscripcionController.categoriaList}"
+                         itemLabel= "#{categoria.descripcion}"
+                         itemValue="#{categoria}" />                 
+                        <p:column><h:outputText value="#{m.descripcion}" /></p:column>  
+                </p:selectOneMenu>
+
+                <h:outputLabel value="#{bundle['label.modalidad']}"   for="modalidadField"/>
+                <p:selectOneMenu id="modalidadField"  style="width:260px" 
+                                 value="#{inscripcionController.coreografia.modalidad}"
+                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+                <f:selectItems var="modalidad" value="#{inscripcionController.modalidadList}"
+                         itemLabel= "#{modalidad.descripcion}"
+                         itemValue="#{modalidad}" />                 
+                        <p:column><h:outputText value="#{m.descripcion}" /></p:column>  
+                </p:selectOneMenu>
+
+                <h:outputLabel value="#{bundle['label.profesor']}"   for="profesorField"/>
+                <p:selectOneMenu id="profesorField"  style="width:260px" 
+                                 value="#{inscripcionController.coreografia.persona}"
+                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+                <f:selectItems var="persona" value="#{inscripcionController.personaList}"
+                         itemLabel= "#{persona.nombre}"
+                         itemValue="#{persona}" />                 
+                        <p:column><h:outputText value="#{m.nombre}" /></p:column>  
+                </p:selectOneMenu>
+
+                <h:outputLabel value="#{bundle['label.tipoParticipacion']}"  for="tipoParticipacionField"  />
+                <p:selectOneMenu id="tipoParticipacionField"  style="width:260px" 
+                                 value="#{inscripcionController.coreografia.tipoParticipacion}"
+                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+                <f:selectItems var="tipoParticipacion" value="#{inscripcionController.tipoParticipacionList}"
+                         itemLabel= "#{tipoParticipacion.descripcion}"
+                         itemValue="#{tipoParticipacion}" />                 
+                        <p:column><h:outputText value="#{m.descripcion}" /></p:column>  
+                </p:selectOneMenu>
+
+                <h:outputLabel value="#{bundle['label.cantidadParticipantes']}" for="cantidadField" />
+                <p:inputText id="cantidadField" size="10"
+                             value="#{inscripcionController.coreografia.cantidad}" 
+                requiredMessage="#{bundle['search.label.fieldRequired']} - #{bundle['label.cantidadParticipantes']}" />
+
+                <h:outputLabel value="#{bundle['label.duracionMusical']}" for="duracionField" />
+                <p:inputText id="duracionField" size="10"
+                             value="#{inscripcionController.coreografia.tiempo}" 
+                requiredMessage="#{bundle['search.label.fieldRequired']} - #{bundle['label.duracionMusical']}" />
+
+            </h:panelGrid>
+            </div>
+        </p:panel>
+	</h:form>
+
+</ui:composition>

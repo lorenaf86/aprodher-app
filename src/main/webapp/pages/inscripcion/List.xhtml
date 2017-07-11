@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      >
+
+   <h:form id="inscripcionListForm">
+
+        <p:panel header="#{bundle['label.inscripcion']}">
+		<p:menubar id="menuBar">
+        		<p:menuitem id="createButton" icon="ui-icon-plus"  value="#{bundle['btn.add']}"  
+                                    actionListener="#{inscripcionController.prepareNew}" 
+                                    update=":inscripcionCreateForm" 
+                                    oncomplete="PF('inscripcionCreateDialog').show();"/>
+        		<p:menuitem id="viewButton"   icon="ui-icon-search" value="#{bundle['btn.view']}" 
+                                    update=":inscripcionViewForm" 
+                                    oncomplete="PF('inscripcionViewDialog').show();" 
+                                    disabled="#{empty inscripcionController.selected}"/>
+                <p:menuitem id="editButton"   icon="ui-icon-pencil" value="#{bundle['btn.edit']}" 
+                            update=":inscripcionEditForm" oncomplete="PF('inscripcionEditDialog').show();" 
+                            disabled="#{empty inscripcionController.selected}"/>
+                <p:menuitem id="deleteButton" icon="ui-icon-trash"  value="#{bundle['btn.delete']}" 
+                            actionListener="#{inscripcionController.delete(event)}" 
+                            update=":inscripcionListForm" disabled="#{empty inscripcionController.selected}"
+                	onclick="if (!confirm('#{bundle.DeleteConfirmMessage}','#{bundle.TitleWindowDeleteConfirmation}')) return false" />
+        	</p:menubar>
+        	<p:separator/>
+        	<p:contextMenu for="datalist" >  
+		    <p:menuitem icon="ui-icon-search" value="Ver" update=":inscripcionViewForm" oncomplete="PF('inscripcionViewDialog').show()" />
+                    <p:menuitem icon="ui-icon-pencil" value="Editar" update=":inscripcionEditForm" oncomplete="PF('inscripcionEditDialog').show()" />
+		</p:contextMenu>
+                
+        </p:panel>
+                
+        <ui:include src="resumenCab.xhtml" />
+
+        <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionController.items}" var="item" filteredValue="#{inscripcionController.list}"
+            			 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+            			 currentPageReportTemplate="{currentPage} #{bundle['label.of']} {totalPages}"
+            			 emptyMessage="#{bundle['msg.noRecordsFound']}"
+                         selectionMode="single" selection="#{inscripcionController.selected}" style="margin-botton:20px"
+                         rowKey="#{item.id}" paginatorPosition="top"
+                         paginator="true"
+                         rows="10"
+                    >
+                <p:ajax event="rowSelect" update=":inscripcionListForm:menuBar"/>
+                <p:ajax event="rowUnselect" update=":inscripcionListForm:menuBar"/>
+
+		<f:facet name="header" >
+                    #{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.inscripcion']} 
+                	
+                    <br/>
+                    <br/>
+                    <p:spacer/>
+                    <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator"/>
+                    <p:columnToggler datasource="datalist" trigger="toggler"/>
+                    
+                    <p:outputPanel style="float:left">
+                    	<p:focus for="globalFilter"/>
+                    	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()" style="width:250px;" placeholder="Buscar" />
+                    </p:outputPanel>
+                    <br/><br/>                    
+                </f:facet>
+
+                <p:column sortBy="#{item.id}" footerText=" "  headerText="#{bundle['label.id']}" width="110">
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+                <p:column sortBy="#{item.concurso.nombre}" footerText=" " headerText="#{bundle['label.nombre']}">
+                    <h:outputText value="#{item.concurso.nombre}"/>
+                </p:column>
+                <p:column filterBy="#{item.estado}" footerText=" " filterMatchMode="contains" headerText="Estado" width="240">
+                    <f:facet name="filter">
+                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
+                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
+                    </f:facet>
+                </p:column>
+
+                <f:facet name="footer">
+                    <h:commandLink actionListener="#{exporterHelper.updateTitle('reportname.listaDeAcademia')}">
+                        <h:graphicImage width="24" name="/img/excel.png.xhtml.png" />
+                        <p:dataExporter type="xls" target="datalist" encoding="ISO-8859-2"
+                                    fileName="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.inscripcion']}" 
+                               postProcessor="#{exporterHelper.postProcessXLS}"/>
+                    </h:commandLink>
+                    
+                    <h:commandLink actionListener="#{exporterHelper.updateTitle('reportname.listaDeAcademia')}">
+                        <p:graphicImage name="/img/pdf.png.xhtml.png" width="24"/>
+                        <p:dataExporter type="pdf" target="datalist" encoding="ISO-8859-2"
+                                    fileName="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.inscripcion']}"
+                                preProcessor="#{exporterHelper.preProcessPDF}" />
+                    </h:commandLink>    
+                </f:facet>
+            </p:dataTable>
+        
+    </h:form>
+    </ui:composition>

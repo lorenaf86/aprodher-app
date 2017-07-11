@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<p:dialog id="concursoCreateDlg" widgetVar="concursoCreateDialog" 
+            modal="true" resizable="false" appendTo="@(body)" 
+            header="#{bundle['btn.create']} #{bundle['label.concurso']}">
+
+            <h:form id="concursoCreateForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" rendered="#{concursoController.selected != null}">
+                       
+                        <h:outputLabel value="#{bundle['label.nombre']}" for="nombre" />
+                        <p:inputText id="nombre" value="#{concursoController.selected.nombre}" title="#{bundle['label.nombre']}" required="true" requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
+                    	
+                    	<f:facet name="footer">
+                    		<p:commandButton actionListener="#{concursoController.confirm('new')}" value="#{bundle['btn.save']}" update="display,:concursoListForm:datalist" 
+                                                 oncomplete="handleSubmit(args,'concursoCreateDlg', 'concursoCreateDialog')"/>
+                    		<p:commandButton value="#{bundle['btn.cancel']}" immediate="true" onclick="handleClose('concursoCreateDialog')" />
+                    	</f:facet>
+                    </p:panelGrid>
+                    
+                </h:panelGroup>
+            </h:form>
+    </p:dialog>
+</ui:composition>
+

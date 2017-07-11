@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dialog id="inscripcionEditDlg" widgetVar="inscripcionEditDialog" 
+              modal="true" resizable="false" appendTo="@(body)" 
+              header="#{bundle['btn.create']} #{bundle['label.inscripcion']}">
+        <h:form id="inscripcionEditForm">
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" rendered="#{inscripcionController.selected != null}">
+
+                        <h:outputLabel value="#{bundle['label.id']}" for="id" />
+                        <h:outputText id="id" value="#{inscripcionController.selected.id}" />
+
+                        <h:outputLabel value="#{bundle['label.nombre']}" for="nombre" />
+                        <p:inputText id="nombre" value="#{inscripcionController.selected.concurso.nombre}" title="#{bundle['label.nombre']}" required="true" requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
+
+                        <h:outputLabel value="#{bundle['label.estado']}" for="activo" />
+                        <h:outputText value="#{bundle['label.activo']}" rendered="#{inscripcionController.selected.estado=='AC'}"/>
+                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{inscripcionController.selected.estado=='IN'}"/>
+                    	                    
+	                    <f:facet name="footer">
+	                        <p:commandButton actionListener="#{inscripcionController.confirm('edit')}" value="#{bundle['btn.save']}" update="display,:inscripcionListForm:datalist" oncomplete="handleSubmit(args,'inscripcionEditDlg', 'inscripcionEditDialog')"/>
+	                    	<p:commandButton value="#{bundle['btn.cancel']}" immediate="true" onclick="handleClose('inscripcionEditDialog')" />
+	                    </f:facet>
+                    </p:panelGrid>
+                </h:panelGroup>
+        </h:form>
+                    </p:dialog>
+    </ui:composition>
+
