@@ -14,7 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package py.com.app.data;
+package py.com.app.list;
+
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -23,32 +25,32 @@ import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.List;
 
-import py.com.app.model.Member;
+import py.com.app.data.TipoParticipacionFacade;
+import py.com.app.model.TipoParticipacion;
 
 @RequestScoped
-public class MemberListProducer {
+public class TipoParticipacionListProducer {
 
     @Inject
-    private MemberRepository memberRepository;
+    private TipoParticipacionFacade service;
 
-    private List<Member> members;
+    private List<TipoParticipacion> tipoParticipacionList;
 
     // @Named provides access the return value via the EL variable name "members" in the UI (e.g.
     // Facelets or JSP view)
     @Produces
     @Named
-    public List<Member> getMembers() {
-        return members;
+    public List<TipoParticipacion> getTipoParticipacionList() {
+        return tipoParticipacionList;
     }
 
-    public void onMemberListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Member member) {
-        retrieveAllMembersOrderedByName();
+    public void onListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final TipoParticipacion modalidad) {
+        retrieveAllOrderedByName();
     }
 
     @PostConstruct
-    public void retrieveAllMembersOrderedByName() {
-        members = memberRepository.findAllOrderedByName();
+    public void retrieveAllOrderedByName() {
+        tipoParticipacionList = service.findAll();
     }
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package py.com.app.data;
+package py.com.app.list;
 
 import java.util.List;
 
@@ -26,6 +26,7 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import py.com.app.data.AcademiaFacade;
 import py.com.app.model.Academia;
 
 @RequestScoped

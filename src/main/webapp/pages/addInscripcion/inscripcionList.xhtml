@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="head-end">
+        <style type="text/css">
+            .ui-grid-row .ui-grid-col-2,
+            .ui-grid-row .ui-grid-col-10 {
+                padding: 0.5em 0;
+                margin-left: 10px;
+            }
+
+            .ui-orderlist .ui-orderlist-list {
+                height: auto;
+            }
+
+            .ui-orderlist .ui-grid-row .ui-grid-col-2,
+            .ui-orderlist .ui-grid-row .ui-grid-col-10 {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        #{inscripcionControler.concurso.nombre} - #{inscripcionControler.academia.nombre}
+    </ui:define>
+
+    <ui:define name="description">
+         #{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.coreografia']}s
+    </ui:define>
+
+    <ui:define name="body">
+        <adm:breadcrumb link="/pages/addInscripcion/inscripcionList" title="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.inscripcion']}"/>
+
+			<h:form>
+            	<div class="box box-primary">
+                	<div class="box-header with-border">
+                    	<p:commandButton action="inscripcionAdd?faces-redirect=true" ajax="false" icon="fa fa-plus"
+                         	            value="#{bundle['btn.add']}" styleClass="btn-primary"/>
+                    	<p:spacer width="5"/>
+	                    <p:commandButton value="#{bundle['btn.delete']} Selecionado" icon="fa fa-trash" styleClass="btn-danger"
+	                                     process="@form" update="@form"/>
+	                    <p:spacer width="5"/>
+	                    <p:commandButton value="#{bundle['btn.view']} Selecionado" 
+	                    				 oncomplete="PF('datalist').show()"
+	                    				 update="@(.ui-dialog)" 
+	                    				 styleClass="btn-info"
+	                                     icon="fa fa-search"/>
+	                    <p:separator/>
+	                    
+	                    
+	                    <p:dataTable id="datalist" widgetVar="datalist" rows="10"	  
+	                    			value="#{inscripcionControler.list}"  var="item" filteredValue="#{inscripcionControler.list}"                			 
+	                                 paginator="true" 	                                 
+	                                 paginatorPosition="bottom"	                                 
+	                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+	                                 currentPageReportTemplate="" 
+	                                 rowsPerPageTemplate="5,10,15,20,30">
+	
+	                        <p:ajax event="rowSelectCheckbox" update="@(.ui-button)"/>
+	                        <p:ajax event="rowUnselectCheckbox" update="@(.ui-button)"/>
+	                        <p:ajax event="rowSelect" update="@(.ui-button)"/>
+	                        <p:ajax event="rowUnselect" update="@(.ui-button)"/>
+	                        
+			                <p:column sortBy="#{item.id}" filterBy="#{item.id}" footerText=" " filterMatchMode="contains" headerText="#{bundle['label.id']}" width="110">
+			                    <h:outputText value="#{item.id}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.nombre}" filterBy="#{item.nombre}" footerText=" " 
+			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.nombre']}">
+			                    <h:outputText value="#{item.nombre}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.categoria.descripcion}" filterBy="#{item.categoria.descripcion}" footerText=" " 
+			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.categoria']}">
+			                    <h:outputText value="#{item.categoria.descripcion}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.modalidad.descripcion}" filterBy="#{item.modalidad.descripcion}" footerText=" " 
+			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.modalidad']}">
+			                    <h:outputText value="#{item.modalidad.descripcion}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.tipoParticipacion.descripcion}" filterBy="#{item.tipoParticipacion.descripcion}" footerText=" " 
+			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.tipoParticipacion']}">
+			                    <h:outputText value="#{item.tipoParticipacion.descripcion}"/>
+			                </p:column>
+			                <p:column filterBy="#{item.estado}" footerText=" " filterMatchMode="contains" headerText="Estado" width="240">
+			                    <f:facet name="filter">
+			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
+			                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
+			                    </f:facet>
+			                </p:column>
+	                        	
+	                    </p:dataTable>
+					</div>
+	            </div>
+        	</h:form>
+        	
+    </ui:define>
+
+</ui:composition>

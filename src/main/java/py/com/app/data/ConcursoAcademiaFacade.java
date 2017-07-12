@@ -14,6 +14,8 @@ import javax.persistence.EntityManager;
 import py.com.app.model.Academia;
 import py.com.app.model.Concurso;
 import py.com.app.model.ConcursoAcademia;
+import py.com.app.model.ConcursoAcademiaCoreo;
+import py.com.app.model.ConcursoAcademiaCoreoParticipantes;
 import py.com.app.model.Usuario;
 
 /**
@@ -42,9 +44,9 @@ public class ConcursoAcademiaFacade extends AbstractFacade<ConcursoAcademia> {
        return em.find(Academia.class, id);
     }
     
-    public List<ConcursoAcademia> findAllInscripciones(Integer idAcademia) {
+    public List<ConcursoAcademiaCoreo> findAllInscripciones(Integer idAcademia) {
         return getEntityManager().createQuery("Select c from ConcursoAcademiaCoreo c "
-                + " Where c.id = " + idAcademia).getResultList();
+                + " Where c.concursoAcademia.id = " + idAcademia).getResultList();
     }
     
     public Concurso findConcursoVigente(){
@@ -57,4 +59,31 @@ public class ConcursoAcademiaFacade extends AbstractFacade<ConcursoAcademia> {
             return null;
         
     }
+
+	public ConcursoAcademia getConcursoAcademia(Integer idAcademia, Integer idConcurso) {
+        List list = getEntityManager().createQuery("Select c from ConcursoAcademia c "
+                + " Where c.idAcademia.id = " + idAcademia
+                + " and c.concurso.id = " + idConcurso).getResultList();
+        
+        if (list.isEmpty()) return null;
+        else return (ConcursoAcademia) list.get(0);
+	}
+
+	public ConcursoAcademiaCoreoParticipantes findParticipante(Integer id) {
+		List list = getEntityManager().createQuery("Select c from ConcursoAcademiaCoreoParticipantes c "
+                + " Where c.idPersona.id = " + id).getResultList();
+        if (list.isEmpty()) return null;
+        else return (ConcursoAcademiaCoreoParticipantes) list.get(0);
+	}
+
+	public void removeParticipante(ConcursoAcademiaCoreoParticipantes part) {
+		em.remove(part);
+	}
+
+	public void updateCoreografia(ConcursoAcademiaCoreo selected) {
+		if (selected.getId() == null)
+			em.persist(selected);
+		else
+			em.merge(selected);
+	}
 }
