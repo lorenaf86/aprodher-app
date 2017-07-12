@@ -118,7 +118,7 @@ public class InscripcionControler implements Serializable {
 
     public void register() throws Exception {
     	
-    	if (participantesList.isEmpty()) {
+    	if (participantesList.size() < 1) {
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Información!", "No se ha registrado ningun participante");
             facesContext.addMessage(null, m);
             return;
@@ -177,11 +177,7 @@ public class InscripcionControler implements Serializable {
     }
 
     public void addDetalle(){
-    	try {
-    		participantesList.add(this.participante);
-    	}catch (Exception e) {
-    		e.printStackTrace();
-		}
+        participante = new Persona();
     }
     
 
