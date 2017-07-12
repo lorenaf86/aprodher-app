@@ -115,21 +115,15 @@
                 </div>
                         
         </h:form>
-         <h:form id="formDetalle" prependId="false">
-            <p:focus/>
-                    <p:separator />
-                        
-                        <div class="ui-g-12">
-                    	<p:spacer width="5"/>
-
-                	
-	                <div class="box-header with-border">
-	                    <div id="main-buttons" class="hidden-sm hidden-xs">
-	                    <table>
-	                    <tr><td>
-       	                <h:outputLabel value="#{bundle['label.participante']}"   for="bailarinField"/>
-                        <p:spacer width="15"/>
-       	                </td><td>
+        
+        
+    <h:form id="form1">
+    <p:growl id="msgs" />
+ 
+    <p:panel header="#{bundle['btn.agregar']} #{bundle['label.participante']}" style="margin-bottom:20px">
+        <h:panelGrid columns="3" cellpadding="5">
+        
+       	                <h:outputLabel value="#{bundle['label.participante']} "   for="bailarinField"/>
 		                <p:selectOneMenu id="bailarinField"  style="width:260px" 
 		                                 value="#{inscripcionControler.participante}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
@@ -139,36 +133,38 @@
 		                         itemValue="#{persona1}" />                 
 		                        <p:column><h:outputText value="#{m.nombre}" /></p:column>  
 		                </p:selectOneMenu>
-		                </td><td>
-                        <p:spacer width="15"/>
+        
+	            <p:commandButton id="btn_add" value="#{bundle['btn.agregar']}" update="books msgs @parent" action="#{inscripcionControler.addDetalle}" >
+	                <p:collector value="#{inscripcionControler.participante}" addTo="#{inscripcionControler.participantesList}" unique="true"/>
+	            </p:commandButton>
+        </h:panelGrid>
+    </p:panel>
+ 
+    <p:outputPanel id="books">
+        <p:dataTable value="#{inscripcionControler.participantesList}" var="item" id="booksTable">
+ 
+            <p:column headerText="#{bundle['label.id']}">
+                <h:outputText value="#{item.id}" />
+            </p:column>
+ 
+            <p:column headerText="#{bundle['label.id']}">
+                <f:facet name="header">
+                    <h:outputText value="#{bundle['label.id']}" />
+                </f:facet>
+                <h:outputText value="#{item.nombre}" />
+            </p:column>
+ 
+            <p:column headerText="Action">
+                <p:commandLink value="#{bundle['btn.delete']}" update=":form1:books" process=":form1:books">
+                    <p:collector value="#{item}" removeFrom="#{inscripcionControler.participantesList}" unique="true"/>
+                </p:commandLink>
+            </p:column>
+ 
+        </p:dataTable>
+    </p:outputPanel>
+	</h:form>
 
-                        <p:commandButton value="#{bundle['btn.agregar']}" update=":datalistParticipante" immediate="true" ajax="true"
-                                         styleClass="btn-primary"
-                                         action="#{inscripcionControler.addDetalle}"/>
-                        </td></tr></table>
-                        <p:spacer width="5"/>
-                    	</div>
-                    </div>
-                    
-                    <p:splitButton value="#{bundle['btn.save']}" update=":datalistParticipante"
-                                   styleClass="hidden-md hidden-lg btn-primary"
-                                   actionListener="#{inscripcionControler.addDetalle}">
-                    </p:splitButton>
 
-						<p:dataTable id="datalistParticipante" var="item" value="#{inscripcionControler.participantesList}">
-						    <p:column headerText="#{bundle['label.id']}" width="110">
-						        <h:outputText value="#{item.id}" />
-						    </p:column>
-						
-						    <p:column headerText="#{bundle['label.nombre']}" width="320">
-						        <h:outputText value="#{item.nombre}" />
-						    </p:column>
-						
-						</p:dataTable>
-						
-					</div>
-                        
-		</h:form>
     </ui:define>
 
 </ui:composition>

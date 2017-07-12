@@ -36,19 +36,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p")
     , @NamedQuery(name = "Persona.findById", query = "SELECT p FROM Persona p WHERE p.id = :id")
-    , @NamedQuery(name = "Persona.findByNombre", query = "SELECT p FROM Persona p WHERE p.nombre = :nombre")
-    , @NamedQuery(name = "Persona.findByApellido", query = "SELECT p FROM Persona p WHERE p.apellido = :apellido")
-    , @NamedQuery(name = "Persona.findByFechaNacimiento", query = "SELECT p FROM Persona p WHERE p.fechaNacimiento = :fechaNacimiento")
-    , @NamedQuery(name = "Persona.findByUsuMod", query = "SELECT p FROM Persona p WHERE p.usuMod = :usuMod")
-    , @NamedQuery(name = "Persona.findByUsuAlta", query = "SELECT p FROM Persona p WHERE p.usuAlta = :usuAlta")
-    , @NamedQuery(name = "Persona.findByFechaAlta", query = "SELECT p FROM Persona p WHERE p.fechaAlta = :fechaAlta")
-    , @NamedQuery(name = "Persona.findByFechaMod", query = "SELECT p FROM Persona p WHERE p.fechaMod = :fechaMod")
     , @NamedQuery(name = "Persona.findByEstado", query = "SELECT p FROM Persona p WHERE p.estado = :estado")})
 public class Persona implements Serializable {
 
 
-    private static final long serialVersionUID = 1L;
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -465346656194893665L;
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
@@ -77,8 +73,6 @@ public class Persona implements Serializable {
     @Size(max = 2)
     @Column(name = "estado")
     private String estado;
-    @OneToMany(mappedBy = "idPersona", fetch = FetchType.LAZY)
-    private List<PersonaAcademia> personaAcademiaList;
 
     public Persona() {
     }
@@ -157,15 +151,6 @@ public class Persona implements Serializable {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    @XmlTransient
-    public List<PersonaAcademia> getPersonaAcademiaList() {
-        return personaAcademiaList;
-    }
-
-    public void setPersonaAcademiaList(List<PersonaAcademia> personaAcademiaList) {
-        this.personaAcademiaList = personaAcademiaList;
     }
 
     @Override

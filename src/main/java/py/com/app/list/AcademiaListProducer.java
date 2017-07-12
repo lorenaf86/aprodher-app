@@ -46,11 +46,11 @@ public class AcademiaListProducer {
     }
 
     public void oAcademiaListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Academia academia) {
-        retrieveAllMembersOrderedByName();
+        retrieveAllsOrderedByName();
     }
 
     @PostConstruct
-    public void retrieveAllMembersOrderedByName() {
+    public void retrieveAllsOrderedByName() {
         list = academiaService.findAll();
     }
 }
