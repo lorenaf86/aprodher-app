@@ -12,8 +12,10 @@ import javax.inject.Inject;
 import py.com.app.data.AcademiaFacade;
 import py.com.app.model.Academia;
 import py.com.app.util.AbstractController;
+import py.com.app.util.AppHelper;
 import py.com.app.util.CalendarHelper;
 import py.com.app.util.Credentials;
+import py.com.app.util.NavigationRulezHelper;
 
 
 @ViewScoped
@@ -61,6 +63,7 @@ public class AcademiaController extends AbstractController<Academia> implements 
                         this.delete(null);
                 }
         }
+        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/academia/index.xhtml");
     }
 
     public Credentials getCredentials() {

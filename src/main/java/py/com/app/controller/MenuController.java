@@ -21,6 +21,7 @@ import py.com.app.model.Funcionalidad;
 import py.com.app.util.AppHelper;
 import py.com.app.util.Credentials;
 import py.com.app.util.GlobalConfigParameters;
+import py.com.app.util.NavigationRulezHelper;
 
 @Model
 public class MenuController implements Serializable
@@ -69,13 +70,18 @@ public class MenuController implements Serializable
         	armarMenu();
     }
     
+    public void iniciar() {
+    	if (!login.isLoggedIn())
+    		NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/login.xhtml");
+    }
+    
     public void redirect(String url)
     {
         exapand = false;
         
         if ("home".equalsIgnoreCase(url))
         {
-           // NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/");
+    		NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/index.xhtml");
         }
         
         
@@ -93,8 +99,8 @@ public class MenuController implements Serializable
         
         AppHelper.getServletContext().setAttribute(sessionkey,credentials.getSessionHash());
         
-        RequestContext.getCurrentInstance().update("mainpanel");
-    }
+      //  RequestContext.getCurrentInstance().update("mainpanel");
+    }    
 
 	public MenuModel getModel() {
 		return model;

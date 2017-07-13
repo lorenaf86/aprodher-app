@@ -11,9 +11,9 @@ import java.io.Serializable;
 import java.util.ResourceBundle;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
@@ -25,6 +25,7 @@ import py.com.app.model.Usuario;
 import py.com.app.util.AppHelper;
 import py.com.app.util.Credentials;
 import py.com.app.util.FailedException;
+import py.com.app.util.GlobalConfigParameters;
 import py.com.app.util.GlobalParameters;
 import py.com.app.util.LoginCheckerHelper;
 import py.com.app.util.MessageUtil;
@@ -37,7 +38,12 @@ import py.com.app.util.MessageUtil;
 @SessionScoped
 public class LoginController extends LoginCheckerHelper implements Serializable {
     
-    Usuario usuario;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3908238174969322713L;
+
+	Usuario usuario;
 
     @Inject
     private Credentials credentials;
@@ -52,21 +58,16 @@ public class LoginController extends LoginCheckerHelper implements Serializable 
     @EJB
     private UsuarioFacade ejbFacade;
 
-    /**
+    @Inject
+    GlobalConfigParameters parameters;
+    
+
+	/**
      * Creates a new instance of loginController
      */
     public LoginController() {
     }
-    
-    public void validate(FacesContext context, UIComponent component,
-			Object value) throws ValidatorException {
-		String email = (String) value;
-		if(ejbFacade.verificaEmail(email)){
-			FacesContext.getCurrentInstance().addMessage("validaEmail", new FacesMessage("Email já cadastrado"));
-			throw new ValidatorException(new FacesMessage("Email já cadastrado"));
-		}
-    }
-    
+        
     public String login()
     {
         errorMessage = null;
@@ -95,7 +96,7 @@ public class LoginController extends LoginCheckerHelper implements Serializable 
                 credentials.setPassword(null);
                 //credentials.setParameters(service.getCredentials().getParameters());
                 //credentials.setRols(service.getCredentials().getRols());
-                credentials.setIdEmpleado(usuario.getId());
+                credentials.setIdEmpleado( (long) usuario.getId());
                                 
                 ejbFacade.increment(usuario.getId());
                 
@@ -179,7 +180,7 @@ public class LoginController extends LoginCheckerHelper implements Serializable 
         errorMessage = null;
         
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(ResourceBundle.getBundle("/Bundle").getString("login.salir") + " " + credentials.getUsername()));
+        context.addMessage(null, new FacesMessage(AppHelper.getBundleMessage("logging.logout") + " " + credentials.getUsername()));
         context.getExternalContext().getFlash().setKeepMessages(true);
         context.getExternalContext().invalidateSession();
         
@@ -223,13 +224,6 @@ public class LoginController extends LoginCheckerHelper implements Serializable 
         }
 */
         return null;
-    }
-    public Usuario getUsuario(){
-        return usuario;
-    }
-    
-    public void setUsuario(Usuario usuario){
-        this.usuario = usuario;
     }
 
 }

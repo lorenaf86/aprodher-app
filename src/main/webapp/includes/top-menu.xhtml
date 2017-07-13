@@ -4,18 +4,17 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions">
-
-    <ul class="nav navbar-nav">
-      
-      
-        <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
-                <pe:gravatar id="userImage"
-                             value="nonexisting"/>
-                <span class="hidden-xs">User</span>
-            </a>
-        </li>
-    </ul>
-
-
+		
+                <h:form id="logoutform" > 
+			    <table>
+		        <tr valign="middle">
+		            <td align="right" style="padding-right: 5px;padding-top: 5px;">
+        			<p:commandButton value="#{bundle['login.logout']}" immediate="true"
+                                  icon="fa fa-check" styleClass="btn-primary" 
+                                  action="#{loginController.logout}"/>
+	            </td> 
+		        </tr>
+		    	</table>
+      			</h:form>
+                    
 </ui:composition>

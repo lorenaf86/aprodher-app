@@ -7,12 +7,16 @@ package py.com.app.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -39,7 +43,7 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Long id;
+    private Integer id;
 
     @Column(name = "nombre")
     private String nombre;
@@ -48,7 +52,7 @@ public class Usuario implements Serializable {
     private String apellido;
 
     @Column(name = "academia")
-    private String academia;
+    private String academiaNombre;
 
     @Column(name = "telefono")
     private String telefono;
@@ -86,8 +90,9 @@ public class Usuario implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date fechaMod;
     
-    @Column(name = "id_academia")
-    private Integer idAcademia;
+    @JoinColumn(name = "id_academia", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Academia academia;
    
     @Column(name = "contador_accesos")
     private Integer contador;
@@ -95,7 +100,7 @@ public class Usuario implements Serializable {
     public Usuario() {
     }
 
-    public Usuario(Long id) {
+    public Usuario(Integer id) {
         this.id = id;
     }
 
@@ -139,11 +144,11 @@ public class Usuario implements Serializable {
         this.fechaMod = fechaMod;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -195,12 +200,12 @@ public class Usuario implements Serializable {
         this.apellido = apellido;
     }
 
-    public String getAcademia() {
-        return academia;
+    public String getAcademiaNombre() {
+        return academiaNombre;
     }
 
-    public void setAcademia(String academia) {
-        this.academia = academia;
+    public void setAcademiaNombre(String academiaNombre) {
+        this.academiaNombre = academiaNombre;
     }
 
     public String getTelefono() {
@@ -212,12 +217,12 @@ public class Usuario implements Serializable {
     }
 
 
-    public Integer getIdAcademia() {
-        return idAcademia;
+    public Academia getAcademia() {
+        return academia;
     }
 
-    public void setIdAcademia(Integer idAcademia) {
-        this.idAcademia = idAcademia;
+    public void setAcademia(Academia academia) {
+        this.academia = academia;
     }
 
     public void setActivo(Boolean activo) {

@@ -35,19 +35,32 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         
         String sql = "Select count(u) from Usuario u where trim(u.mail) = trim('" + mail + "')";
         
-        int cant = (int) em.createQuery(sql).getSingleResult();
+        long cant = (long) em.createQuery(sql).getSingleResult();
         
         if (cant == 0) 
-            return true; 
+            return false; 
         else 
-            return false;
+            return true;
     }
     
+    public Boolean verificaUsername(String mail){
+        
+        String sql = "Select count(u) from Usuario u where trim(u.username) = trim('" + mail + "')";
+        
+        long cant = (long) em.createQuery(sql).getSingleResult();
+        
+        if (cant == 0) 
+            return false; 
+        else 
+            return true;
+    }
+
     public Usuario login(String user, String pass){
         try{
-            String sql = "Select u from Usuario u where trim(u.username) = trim('" + user + "')"
-                + " and trim(u.contrasena) = trim('"+pass+"')";
-              //  + " and (u.id = 1 or u.activo)";
+            String sql = " Select u from Usuario u"
+            		+ " where trim(u.username) = trim('" + user + "')"
+            		+ " and trim(u.contrasena) = trim('"+pass+"')"
+            		+ " and (u.id = 1 or u.activo = true)";
         
             return (Usuario) em.createQuery(sql).getSingleResult();
         }catch(Exception e){
@@ -57,7 +70,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
     
     }
     
-    public void increment(Long id){
+    public void increment(Integer id){
         Usuario u = em.find(Usuario.class, id);
         u.setContador((u.getContador()== null?1:u.getContador()+1));
         

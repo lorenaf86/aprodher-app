@@ -68,6 +68,10 @@ public class ConcursoAcademia implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Concurso concurso;
 
+    @JoinColumn(name = "id_persona", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Persona persona;
+
     public ConcursoAcademia() {
     }
 
@@ -172,5 +176,13 @@ public class ConcursoAcademia implements Serializable {
     public String toString() {
         return "com.aprodher.entity.ConcursoAcademia[ id=" + id + " ]";
     }
+
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
     
 }

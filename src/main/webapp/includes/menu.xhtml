@@ -11,49 +11,44 @@
 			</p:link></li>
 		<li class="header">Menu</li>
 
-		<li><p:link href="/pages/addInscripcion/inscripcionList.xhtml">
+		<li><p:link href="/pages/addInscripcion/inscripcionList.xhtml"  rendered="#{credentials.idUsuario != null}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.inscripcion']}</span>
 			</p:link></li>
 
-		<li><p:link href="/pages/academia/index.xhtml">
+		<li><p:link href="/pages/academia/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.academia']}</span>
 			</p:link></li>
 
-		<li><p:link href="/pages/categoria/index.xhtml">
+		<li><p:link href="/pages/categoria/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.categoria']}</span>
 			</p:link></li>
 
-		<li><p:link href="/pages/concurso/index.xhtml">
+		<li><p:link href="/pages/concurso/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.concurso']}</span>
 			</p:link></li>
 
-		<li><p:link href="/pages/modalidad/index.xhtml">
+		<li><p:link href="/pages/modalidad/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.modalidad']}</span>
 			</p:link></li>
 
-		<li><p:link href="/pages/persona/index.xhtml">
+		<li><p:link href="/pages/persona/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.persona']}</span>
 			</p:link></li>
 
-		<li><p:link href="/pages/tipoParticipacion/index.xhtml">
+		<li><p:link href="/pages/tipoParticipacion/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.tipoParticipacion']}</span>
 			</p:link></li>
 
-		<li><p:link href="/pages/usuario/index.xhtml">
+		<li><p:link href="/pages/usuario/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.usuario']}</span>
-			</p:link></li>
-
-		<li><p:link href="/pages/inscripcion/index.xhtml">
-				<i class="fa fa-edit"></i>
-				<span>#{bundle['label.inscripcion']}</span>
 			</p:link></li>
 
 		<li><p:link href="/pages/layout/skin/skin.xhtml">

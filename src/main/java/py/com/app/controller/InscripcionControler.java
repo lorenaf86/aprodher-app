@@ -84,7 +84,7 @@ public class InscripcionControler implements Serializable {
 	@PostConstruct
     public void init() {
 
-        academia = service.findAcademia((long) 1);//this.credentials.getIdEmpleado()
+        academia = service.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
         concurso = service.findConcursoVigente();
         
     	concursoAcademia = service.getConcursoAcademia(academia.getId(),concurso.getId());
@@ -111,7 +111,6 @@ public class InscripcionControler implements Serializable {
         this.selected.setTipoParticipacion(new TipoParticipacion());
         
         this.participantesList = new ArrayList<Persona>();
-        
         this.participante = new Persona();
         
     }
@@ -176,10 +175,17 @@ public class InscripcionControler implements Serializable {
         participante = null;
     }
 
-    public void addDetalle(){
-        participante = new Persona();
+    public void createNew() {
+        if(participantesList.contains(participante)) {
+            FacesMessage msg = new FacesMessage("Dublicado", "Este participante ya fue incluido");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } 
+        else {
+        	participantesList.add(participante);
+            participante = new Persona();
+        }
     }
-    
+     
 
     private String getRootErrorMessage(Exception e) {
         // Default to general error message that registration failed.

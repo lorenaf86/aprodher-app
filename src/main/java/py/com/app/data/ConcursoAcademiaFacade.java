@@ -37,9 +37,9 @@ public class ConcursoAcademiaFacade extends AbstractFacade<ConcursoAcademia> {
         super(ConcursoAcademia.class);
     }
     
-    public Academia findAcademia(Long idUsuario){
+    public Academia findAcademia(Integer idUsuario){
        
-       Integer id = ((Usuario)em.find(Usuario.class, idUsuario)).getIdAcademia();
+       Integer id = ((Usuario)em.find(Usuario.class, idUsuario)).getAcademia().getId();
         
        return em.find(Academia.class, id);
     }

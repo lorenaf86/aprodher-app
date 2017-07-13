@@ -116,55 +116,59 @@
                         
         </h:form>
         
-        
-    <h:form id="form1">
+    <h:form id="formDetalle">
     <p:growl id="msgs" />
  
     <p:panel header="#{bundle['btn.agregar']} #{bundle['label.participante']}" style="margin-bottom:20px">
-        <h:panelGrid columns="3" cellpadding="5">
-        
-       	                <h:outputLabel value="#{bundle['label.participante']} "   for="bailarinField"/>
-		                <p:selectOneMenu id="bailarinField"  style="width:260px" 
-		                                 value="#{inscripcionControler.participante}"
-		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
-		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
-		                <f:selectItems var="persona1" value="#{personaList}"
-		                         itemLabel= "#{persona1.nombre}"
-		                         itemValue="#{persona1}" />                 
-		                        <p:column><h:outputText value="#{m.nombre}" /></p:column>  
-		                </p:selectOneMenu>
-        
-	            <p:commandButton id="btn_add" value="#{bundle['btn.agregar']}" update="books msgs @parent" action="#{inscripcionControler.addDetalle}" >
-	                <p:collector value="#{inscripcionControler.participante}" addTo="#{inscripcionControler.participantesList}" unique="true"/>
-	            </p:commandButton>
+        <h:panelGrid columns="5" cellpadding="5">
+
+             <h:outputLabel value="#{bundle['label.participante']} "   for="bailarinField"/>
+             <p:spacer width="15"/>
+             <p:selectOneMenu id="bailarinField"  style="width:260px" 
+                              value="#{inscripcionControler.participante}"
+                      effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+             <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+             <f:selectItems var="persona1" value="#{personaList}"
+                      itemLabel= "#{persona1.nombre}"
+                      itemValue="#{persona1}" />                 
+                     <p:column><h:outputText value="#{m.nombre}" /></p:column>  
+             </p:selectOneMenu>
+
+            <p:spacer width="5"/>
+            
+            <p:commandButton id="btn_add" value="#{bundle['btn.agregar']}" 
+            	update="participantePanel msgs @parent" 
+            	action="#{inscripcionControler.createNew}" >
+            </p:commandButton>
         </h:panelGrid>
     </p:panel>
  
-    <p:outputPanel id="books">
-        <p:dataTable value="#{inscripcionControler.participantesList}" var="item" id="booksTable">
+    <p:outputPanel id="participantePanel">
+        <p:dataTable value="#{inscripcionControler.participantesList}" var="participante" id="participanteTable">
  
             <p:column headerText="#{bundle['label.id']}">
-                <h:outputText value="#{item.id}" />
+                <h:outputText value="#{participante.id}" />
             </p:column>
  
-            <p:column headerText="#{bundle['label.id']}">
+            <p:column headerText="#{bundle['label.nombre']}" width="80px">
                 <f:facet name="header">
-                    <h:outputText value="#{bundle['label.id']}" />
+                    <h:outputText value="#{bundle['label.nombre']}" />
                 </f:facet>
-                <h:outputText value="#{item.nombre}" />
+                <h:outputText value="#{participante.nombre}" />
             </p:column>
  
             <p:column headerText="Action">
-                <p:commandLink value="#{bundle['btn.delete']}" update=":form1:books" process=":form1:books">
-                    <p:collector value="#{item}" removeFrom="#{inscripcionControler.participantesList}" unique="true"/>
+                <p:commandLink value="#{bundle['btn.delete']}" 
+                update=":formDetalle:participantePanel" 
+                process=":formDetalle:participantePanel"
+                action="#{inscripcionControler.eliminarParticipante(participante)}">
                 </p:commandLink>
             </p:column>
  
         </p:dataTable>
     </p:outputPanel>
 	</h:form>
-
-
+    
     </ui:define>
 
 </ui:composition>
