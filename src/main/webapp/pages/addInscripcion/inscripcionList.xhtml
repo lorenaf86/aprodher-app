@@ -39,7 +39,9 @@
 			<h:form>
             	<div class="box box-primary">
                 	<div class="box-header with-border">
-                    	<p:commandButton action="inscripcionAdd?faces-redirect=true" ajax="false" icon="fa fa-plus"
+                    	<p:commandButton actionListener="#{inscripcionControler.nuevaInscripcion}" 
+                    					oncomplete="inscripcionAdd?faces-redirect=true" icon="fa fa-plus"
+                    					update="@form"
                          	            value="#{bundle['btn.add']}" styleClass="btn-primary"/>
                     	<p:spacer width="5"/>
 	                    <p:commandButton value="#{bundle['btn.delete']} Selecionado" icon="fa fa-trash" styleClass="btn-danger"
@@ -54,7 +56,7 @@
 	                    
 	                    
 	                    <p:dataTable id="datalist" widgetVar="datalist" rows="10"	  
-	                    			value="#{inscripcionControler.list}"  var="item" filteredValue="#{inscripcionControler.list}"                			 
+	                    			value="#{inscripcionControler.listCoreo}"  var="item" filteredValue="#{inscripcionControler.listCoreo}"                			 
 	                                 paginator="true" 	                                 
 	                                 paginatorPosition="bottom"	                                 
 	                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "

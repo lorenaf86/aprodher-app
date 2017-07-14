@@ -21,13 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Model;
-import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
-import javax.inject.Named;
 
+import py.com.app.data.ConcursoAcademiaCoreoFacade;
 import py.com.app.data.ConcursoAcademiaFacade;
 import py.com.app.model.Academia;
 import py.com.app.model.Categoria;
@@ -37,9 +38,10 @@ import py.com.app.model.ConcursoAcademiaCoreo;
 import py.com.app.model.ConcursoAcademiaCoreoParticipantes;
 import py.com.app.model.Modalidad;
 import py.com.app.model.Persona;
-import py.com.app.model.PersonaAcademia;
 import py.com.app.model.TipoParticipacion;
+import py.com.app.util.AbstractController;
 import py.com.app.util.AppHelper;
+import py.com.app.util.CalendarHelper;
 import py.com.app.util.Credentials;
 import py.com.app.util.NavigationRulezHelper;
 
@@ -48,74 +50,88 @@ import py.com.app.util.NavigationRulezHelper;
 // Read more about the @Model stereotype in this FAQ:
 // http://www.cdi-spec.org/faq/#accordion6
 
-@Model
-public class InscripcionControler implements Serializable {
-
+@SessionScoped
+@ManagedBean
+public class InscripcionControler extends AbstractController<ConcursoAcademiaCoreo> implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8409480562667328805L;
+	private static final long serialVersionUID = -3460780110361394289L;
 
 	@Inject
     private FacesContext facesContext;
 
     @Inject
-    private ConcursoAcademiaFacade service;
+    private ConcursoAcademiaCoreoFacade service;
+
+    @Inject
+    private ConcursoAcademiaFacade serviceAcademia;
 
     @Inject
     Credentials credentials;
 
-    @Produces
-    @Named
-    private ConcursoAcademiaCoreo selected;
-    
     private Concurso concurso;
     private Academia academia;
     private ConcursoAcademia concursoAcademia;
     private Persona participante;
     
-    private List<ConcursoAcademiaCoreo>  list;
+    private List<ConcursoAcademiaCoreo>  listCoreo;
 
     private ArrayList<Persona> participantesList;
     private ArrayList<Persona> removeParticipanteList;
 
     
-	@PostConstruct
+    public InscripcionControler() {
+        super(ConcursoAcademiaCoreo.class);
+    }
+
+    @PostConstruct
     public void init() {
 
+        super.setService(service);
+        
         academia = service.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
         concurso = service.findConcursoVigente();
         
     	concursoAcademia = service.getConcursoAcademia(academia.getId(),concurso.getId());
     	
-        inicializar();
-
         if (concursoAcademia == null) {
     		concursoAcademia = new ConcursoAcademia();
     		concursoAcademia.setConcurso(concurso);
     		concursoAcademia.setIdAcademia(academia);
     	}
     	
-    	this.selected.setConcursoAcademia(concursoAcademia);
     	
-        this.list = service.findAllInscripciones(concursoAcademia.getId());
+        this.listCoreo = service.findAllInscripciones(concursoAcademia.getId());
 
 	}
 
-    private void inicializar(){
-        this.selected = new ConcursoAcademiaCoreo();
-        this.selected.setCategoria(new Categoria());
-        this.selected.setModalidad(new Modalidad());
-        this.selected.setPersona(new Persona());
-        this.selected.setTipoParticipacion(new TipoParticipacion());
+	public void nuevaInscripcion(ActionEvent event) {
+		
+    	this.prepareCreate(event);
+		
+        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/addInscripcion/inscripcionAdd.xhtml");
+	}
+	
+    @Override
+    public ConcursoAcademiaCoreo prepareCreate(ActionEvent event) {
+    	super.prepareCreate(event);
+    	
+    	this.getSelected().setConcursoAcademia(concursoAcademia);
+        this.getSelected().setCategoria(new Categoria());
+        this.getSelected().setModalidad(new Modalidad());
+        this.getSelected().setPersona(new Persona());
+        this.getSelected().setTipoParticipacion(new TipoParticipacion());
         
         this.participantesList = new ArrayList<Persona>();
         this.participante = new Persona();
         
+        return this.getSelected();
+        
     }
 
-    public void register() throws Exception {
+    public void confirm(String accion){
     	
     	if (participantesList.size() < 1) {
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Información!", "No se ha registrado ningun participante");
@@ -124,34 +140,53 @@ public class InscripcionControler implements Serializable {
     	}
     	
         try {
-        	
-        	
-        	if (concursoAcademia.getId() != null) { 
-        		concursoAcademia = service.updateReturnObject(concursoAcademia);        		 
-        	}
 
-        	this.selected.setConcursoAcademia(concursoAcademia);
-        	
-        	ArrayList<ConcursoAcademiaCoreoParticipantes> listParticipantes = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
-        	
-        	for (Persona p : removeParticipanteList) {
-        		ConcursoAcademiaCoreoParticipantes part = service.findParticipante(p.getId());
-        		if (part!=null) service.removeParticipante(part);
-			}
-        	
-        	for (Persona p : participantesList) {
-        		ConcursoAcademiaCoreoParticipantes newP = new ConcursoAcademiaCoreoParticipantes();
-        		newP.setIdPersona(p);
-        		newP.setIdAcademiaConcursoCoreo(this.selected);
-        		
-        		listParticipantes.add(newP);
-			}
+            if(accion.equals("new")){
+            	
+            	if (concursoAcademia.getId() != null) { 
+            		concursoAcademia = serviceAcademia.updateReturnObject(concursoAcademia);        		 
+            	}
 
-        	this.selected.setConcursoAcademiaCoreoParticipantesList(listParticipantes);
-        	
-       		service.updateCoreografia(this.selected);
+            	this.getSelected().setConcursoAcademia(concursoAcademia);
+            	
+            	ArrayList<ConcursoAcademiaCoreoParticipantes> listParticipantes = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
+            	
+            	for (Persona p : removeParticipanteList) {
+            		ConcursoAcademiaCoreoParticipantes part = service.findParticipante(p.getId());
+            		if (part!=null) service.removeParticipante(part);
+    			}
+            	
+            	for (Persona p : participantesList) {
+            		ConcursoAcademiaCoreoParticipantes newP = new ConcursoAcademiaCoreoParticipantes();
+            		newP.setIdPersona(p);
+            		newP.setIdAcademiaConcursoCoreo(this.getSelected());
+            		
+            		listParticipantes.add(newP);
+    			}
 
-        	//academiaService.create(academia);
+            	this.getSelected().setConcursoAcademiaCoreoParticipantesList(listParticipantes);
+            	
+           		service.updateCoreografia(this.getSelected());
+
+           			this.getSelected().setEstado("AC");
+                    this.getSelected().setUsuAlta(credentials.getUsername());
+                    this.getSelected().setFechaAlta(CalendarHelper.getCurrentTimestamp());
+                    this.getSelected().setUsuMod(credentials.getUsername());
+                    this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
+                    this.saveNew(null);
+                    
+            }else{
+                    if(accion.equals("edit")){
+
+                            this.getSelected().setUsuMod(credentials.getUsername());
+                            this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
+                            this.save(null);
+                    }else{
+                            this.getSelected().setEstado("IN");
+                            this.delete(null);
+                    }
+            }
+
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
             facesContext.addMessage(null, m);
             init();
@@ -206,14 +241,6 @@ public class InscripcionControler implements Serializable {
         return errorMessage;
     }
 
-	public ConcursoAcademiaCoreo getSelected() {
-		return selected;
-	}
-
-	public void setSelected(ConcursoAcademiaCoreo selected) {
-		this.selected = selected;
-	}
-
 	public Concurso getConcurso() {
 		return concurso;
 	}
@@ -238,12 +265,12 @@ public class InscripcionControler implements Serializable {
 		this.participante = participante;
 	}
 
-	public List<ConcursoAcademiaCoreo> getList() {
-		return list;
+	public List<ConcursoAcademiaCoreo> getListCoreo() {
+		return listCoreo;
 	}
 
-	public void setList(List<ConcursoAcademiaCoreo> list) {
-		this.list = list;
+	public void setListCoreo(List<ConcursoAcademiaCoreo> listCoreo) {
+		this.listCoreo = listCoreo;
 	}
 
 	public ConcursoAcademia getConcursoAcademia() {

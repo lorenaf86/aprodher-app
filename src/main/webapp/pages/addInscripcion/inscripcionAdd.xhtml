@@ -23,7 +23,7 @@
                     <div id="main-buttons" class="hidden-sm hidden-xs">
                         <p:commandButton value="#{bundle['btn.save']}" immediate="true"
                                          icon="fa fa-check" styleClass="btn-primary"
-                                         action="#{inscripcionControler.register}"/>
+                                         action="#{inscripcionControler.confirm('new')}"/>
                         <p:spacer width="5"/>
 
                         <p:commandButton value="#{bundle['btn.cancel']}" immediate="true"
@@ -36,7 +36,7 @@
                     <p:splitButton value="#{bundle['btn.save']}" update="@form"
                                    icon="fa fa-check"
                                    styleClass="hidden-md hidden-lg btn-primary"
-                                   actionListener="#{inscripcionControler.register}">
+                                   actionListener="#{inscripcionControler.confirm('new')}">
                         <p:separator/>
                         <p:menuitem value="#{bundle['btn.cancel']}" action="inscripcionList?faces-redirect=true" process="@this"
                                     icon="fa fa-close"/>
