@@ -15,8 +15,48 @@
                     <p:panelGrid columns="2" rendered="#{usuarioController.selected != null}">
                        
                         <h:outputLabel value="#{bundle['label.nombre']}" for="nombre" />
-                        <p:inputText id="nombre" value="#{usuarioController.selected.nombre}" title="#{bundle['label.nombre']}" required="true" requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
-                    	
+                        <p:inputText id="nombre" value="#{usuarioController.selected.nombre}"  style="width:360px"
+                        title="#{bundle['label.nombre']}" required="true" styleClass="form-control"
+                        requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
+                            
+                        <h:outputLabel value="#{bundle['label.apellido']}" for="apellido" />
+                        <p:inputText id="apellido" value="#{usuarioController.selected.apellido}" style="width:360px" 
+                        title="#{bundle['label.apellido']}" required="true" styleClass="form-control"
+                        requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.apellido']}"/>
+
+                        <h:outputLabel value="#{bundle['label.mail']}" for="email" />
+                        <p:inputText id="email" value="#{usuarioController.selected.mail}" type="email"  style="width:260px"
+                        title="#{bundle['label.mail']}" required="true" styleClass="form-control"
+                        requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.email']}">
+                        <f:validator validatorId="custom.emailValidator" />
+                        </p:inputText>
+
+                        <h:outputLabel value="#{bundle['label.usuario']}" for="username" />
+                        <p:inputText id="username" value="#{usuarioController.selected.username}" style="width:260px" 
+                        title="#{bundle['label.usuario']}" required="true" styleClass="form-control"
+                        requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.username']}"/>
+
+                        <h:outputLabel value="#{bundle['login.password']}" for="contrasena" />
+                        <p:inputText id="contrasena" value="#{usuarioController.selected.contrasena}"  type="password" style="width:260px" 
+                        title="#{bundle['login.password']}" required="true" styleClass="form-control"
+                        requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.contrasena']}"/>
+                            
+                        <h:outputLabel value="#{bundle['label.academia']}" for="academiaField" />
+		                <p:selectOneMenu id="academiaField"  style="width:260px" 
+		                                 value="#{usuarioController.selected.academia}"
+		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+		                <f:selectItems var="_academia" value="#{academiaList}"
+		                         itemLabel= "#{_academia.nombre}"
+		                         itemValue="#{_academia}" />                 
+		                        <p:column><h:outputText value="#{m.nombre}" /></p:column>  
+		                </p:selectOneMenu>
+
+                        <h:outputLabel value="#{bundle['label.nombre']} de la #{bundle['label.academia']}" for="academiaName" />
+                        <p:inputText id="academiaName" value="#{usuarioController.selected.academiaNombre}"  style="width:360px"
+                        title="#{bundle['label.nombre']} de la #{bundle['label.academia']}" required="true" styleClass="form-control"
+                        requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']} de la #{bundle['label.academia']}"/>
+
                     	<f:facet name="footer">
                     		<p:commandButton actionListener="#{usuarioController.confirm('new')}" value="#{bundle['btn.save']}" update="display,:usuarioListForm:datalist" 
                                                  oncomplete="handleSubmit(args,'usuarioCreateDlg', 'usuarioCreateDialog')"/>

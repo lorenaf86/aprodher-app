@@ -97,6 +97,7 @@ public class LoginController extends LoginCheckerHelper implements Serializable 
                 //credentials.setParameters(service.getCredentials().getParameters());
                 //credentials.setRols(service.getCredentials().getRols());
                 credentials.setIdEmpleado( (long) usuario.getId());
+                credentials.setIdUsuario( (long) usuario.getId());
                                 
                 ejbFacade.increment(usuario.getId());
                 

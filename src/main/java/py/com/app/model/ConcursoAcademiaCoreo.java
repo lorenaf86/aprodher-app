@@ -8,7 +8,9 @@ package py.com.app.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -73,7 +75,7 @@ public class ConcursoAcademiaCoreo implements Serializable {
     @Column(name = "estado")
     private String estado;
     
-    @OneToMany(mappedBy = "idAcademiaConcursoCoreo", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAcademiaConcursoCoreo", fetch = FetchType.LAZY)
     private List<ConcursoAcademiaCoreoParticipantes> concursoAcademiaCoreoParticipantesList;
     
     @JoinColumn(name = "id_categoria", referencedColumnName = "id")

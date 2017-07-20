@@ -96,18 +96,23 @@ public class RegistrarController implements Serializable {
             usuario.setFechaAlta(CalendarHelper.getCurrentTimestamp());
             usuario.setUsuMod(usuario.getUsername());
             usuario.setFechaMod(CalendarHelper.getCurrentTimestamp());
-            usuario.setActivo(Boolean.FALSE);
+            if (usuario.getAcademia().getId() != null)
+            	usuario.setActivo(Boolean.TRUE);
+            else
+            	usuario.setActivo(Boolean.FALSE);
             usuario.setBloqueado(Boolean.FALSE);
 
     		usuarioService.create(usuario);
     		
     		try {
-    			EmailUtils.enviaEmail(new Mensaje("Nuevo Usuario Registrado " + usuario.getUsername()));
+    			Mensaje mensaje = new Mensaje("Nuevo Usuario Registrado " + usuario.getUsername());
+    			mensaje.setDestino(usuario.getMail());
+    			EmailUtils.enviaEmail(mensaje);
     		}catch (Exception e) {
     			e.printStackTrace();
 			}
     		
-            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful, Revisa tu email!");
             facesContext.addMessage(null, m);
             init();
         } catch (Exception e) {

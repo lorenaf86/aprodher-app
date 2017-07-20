@@ -48,13 +48,13 @@
 	                                     process="@form" update="@form"/>
 	                    <p:spacer width="5"/>
 	                    <p:commandButton value="#{bundle['btn.view']} Selecionado" 
-	                    				 oncomplete="PF('datalist').show()"
+	                    				 oncomplete="PF('defaultSelecionadas').show()"
 	                    				 update="@(.ui-dialog)" 
 	                    				 styleClass="btn-info"
 	                                     icon="fa fa-search"/>
 	                    <p:separator/>
 	                    
-	                    
+	                   	
 	                    <p:dataTable id="datalist" widgetVar="datalist" rows="10"	  
 	                    			value="#{inscripcionControler.listCoreo}"  var="item" filteredValue="#{inscripcionControler.listCoreo}"                			 
 	                                 paginator="true" 	                                 
@@ -63,41 +63,44 @@
 	                                 currentPageReportTemplate="" 
 	                                 rowsPerPageTemplate="5,10,15,20,30">
 	
+				<f:facet name="header" >
+                    <p:outputPanel style="float:left">
+                    	<p:focus for="globalFilter"/>
+                    	<p:inputText id="globalFilter" onkeyup="PF('datalist').filter()" style="width:250px;" placeholder="Buscar" />
+                    </p:outputPanel>
+                    <br/><br/>                    
+                </f:facet>
 	                        <p:ajax event="rowSelectCheckbox" update="@(.ui-button)"/>
 	                        <p:ajax event="rowUnselectCheckbox" update="@(.ui-button)"/>
 	                        <p:ajax event="rowSelect" update="@(.ui-button)"/>
 	                        <p:ajax event="rowUnselect" update="@(.ui-button)"/>
 	                        
-			                <p:column sortBy="#{item.id}" filterBy="#{item.id}" footerText=" " filterMatchMode="contains" headerText="#{bundle['label.id']}" width="110">
+			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110">
 			                    <h:outputText value="#{item.id}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.nombre}" filterBy="#{item.nombre}" footerText=" " 
+			                <p:column sortBy="#{item.nombre}"  footerText=" " 
 			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.nombre']}">
 			                    <h:outputText value="#{item.nombre}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.categoria.descripcion}" filterBy="#{item.categoria.descripcion}" footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.categoria']}">
-			                    <h:outputText value="#{item.categoria.descripcion}"/>
-			                </p:column>
-			                <p:column sortBy="#{item.modalidad.descripcion}" filterBy="#{item.modalidad.descripcion}" footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.modalidad']}">
-			                    <h:outputText value="#{item.modalidad.descripcion}"/>
-			                </p:column>
-			                <p:column sortBy="#{item.tipoParticipacion.descripcion}" filterBy="#{item.tipoParticipacion.descripcion}" footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.tipoParticipacion']}">
-			                    <h:outputText value="#{item.tipoParticipacion.descripcion}"/>
-			                </p:column>
-			                <p:column filterBy="#{item.estado}" footerText=" " filterMatchMode="contains" headerText="Estado" width="240">
-			                    <f:facet name="filter">
+
+			                <p:column  headerText="Estado" width="240">
 			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
 			                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
-			                    </f:facet>
 			                </p:column>
 	                        	
 	                    </p:dataTable>
+
+    
 					</div>
 	            </div>
         	</h:form>
+        	<p:dialog header="Default Selecionadas" widgetVar="defaultSelecionadas" height="250"
+                  	  width="400" responsive="true" styleClass="box-success">
+	            <p:dataList id="listaDefaultSelecionadas" value="#{inscripcionControler.listCoreo}" var="default"
+	                        type="definition">
+
+	            </p:dataList>
+			</p:dialog>
         	
     </ui:define>
 

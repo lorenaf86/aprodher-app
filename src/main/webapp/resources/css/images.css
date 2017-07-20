@@ -1,0 +1,8 @@
+.ui-menuitem-icon.ui-icon.ptiIcon {
+    background:
+        url("#{request.contextPath}/resources/gfx/icons/icon-pti.gif");
+    ) no-repeat;
+    width: 16px;
+    height: 16px;
+    border-radius: 0px;
+}

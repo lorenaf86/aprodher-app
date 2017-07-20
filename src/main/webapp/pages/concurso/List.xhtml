@@ -46,14 +46,6 @@
                 <p:ajax event="rowUnselect" update=":concursoListForm:menuBar"/>
 
 		<f:facet name="header" >
-                    #{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.concurso']} 
-                	
-                    <br/>
-                    <br/>
-                    <p:spacer/>
-                    <p:commandButton id="toggler" type="button" value="Columnas" style="float:right" icon="ui-icon-calculator"/>
-                    <p:columnToggler datasource="datalist" trigger="toggler"/>
-                    
                     <p:outputPanel style="float:left">
                     	<p:focus for="globalFilter"/>
                     	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()" style="width:250px;" placeholder="Buscar" />
@@ -62,18 +54,16 @@
                 </f:facet>
 
 
-                <p:column sortBy="#{item.id}" filterBy="#{item.id}" footerText=" " filterMatchMode="contains" headerText="#{bundle['label.id']}" width="110">
+                <p:column sortBy="#{item.id}" footerText=" " filterMatchMode="contains" headerText="#{bundle['label.id']}" width="110">
                     <h:outputText value="#{item.id}"/>
                 </p:column>
-                <p:column sortBy="#{item.nombre}" filterBy="#{item.nombre}" footerText=" " 
+                <p:column sortBy="#{item.nombre}" footerText=" " 
                 			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.nombre']}">
                     <h:outputText value="#{item.nombre}"/>
                 </p:column>
-                <p:column filterBy="#{item.estado}" footerText=" " filterMatchMode="contains" headerText="Estado" width="240">
-                    <f:facet name="filter">
+                <p:column footerText=" " filterMatchMode="contains" headerText="Estado" width="240">
                         <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
                         <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
-                    </f:facet>
                 </p:column>
 
                 <f:facet name="footer">

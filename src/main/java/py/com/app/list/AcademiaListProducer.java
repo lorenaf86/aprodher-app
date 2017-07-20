@@ -35,14 +35,14 @@ public class AcademiaListProducer {
     @Inject
     private AcademiaFacade academiaService;
 
-    private List<Academia> list;
+    private List<Academia> academiaList;
 
     // @Named provides access the return value via the EL variable name "members" in the UI (e.g.
     // Facelets or JSP view)
     @Produces
     @Named
-    public List<Academia> getList() {
-        return list;
+    public List<Academia> getAcademiaList() {
+        return academiaList;
     }
 
     public void oAcademiaListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Academia academia) {
@@ -51,6 +51,6 @@ public class AcademiaListProducer {
 
     @PostConstruct
     public void retrieveAllsOrderedByName() {
-        list = academiaService.findAll();
+    	academiaList = academiaService.findAll();
     }
 }

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,37 +40,44 @@ import javax.xml.bind.annotation.XmlTransient;
 public class ConcursoAcademia implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 2147483647)
+
     @Column(name = "usu_mod")
     private String usuMod;
-    @Size(max = 2147483647)
+
     @Column(name = "usu_alta")
     private String usuAlta;
+    
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.DATE)
     private Date fechaAlta;
+    
     @Column(name = "fecha_mod")
     @Temporal(TemporalType.DATE)
     private Date fechaMod;
+    
     @Size(max = 2)
     @Column(name = "estado")
     private String estado;
+   
     @OneToMany(mappedBy = "concursoAcademia", fetch = FetchType.LAZY)
     private List<ConcursoAcademiaCoreo> concursoAcademiaCoreoList;
+    
     @JoinColumn(name = "id_academia", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Academia idAcademia;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    private Academia academia;
+    
     @JoinColumn(name = "id_concurso", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private Concurso concurso;
 
     @JoinColumn(name = "id_persona", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
     private Persona persona;
 
     public ConcursoAcademia() {
@@ -136,12 +144,12 @@ public class ConcursoAcademia implements Serializable {
         this.concursoAcademiaCoreoList = concursoAcademiaCoreoList;
     }
 
-    public Academia getIdAcademia() {
-        return idAcademia;
+    public Academia getAcademia() {
+        return academia;
     }
 
-    public void setIdAcademia(Academia idAcademia) {
-        this.idAcademia = idAcademia;
+    public void setAcademia(Academia academia) {
+        this.academia = academia;
     }
 
     public Concurso getConcurso() {

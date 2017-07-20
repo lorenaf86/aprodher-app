@@ -5,11 +5,21 @@
  */
 package py.com.app.util;
 
-import java.util.ResourceBundle;
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.Email;
+import java.util.Properties;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
 
 /**
  *
@@ -25,25 +35,43 @@ public class EmailUtils {
      private static final String USERNAME = "AprodHer";
      private static final String PASSWORD = "aproasoher8";
      private static final String EMAILORIGEM = "aprod_her@hotmail.com";*/
-
-     public static Email conectaEmail() throws EmailException {
-        Email email = new SimpleEmail();
-        email.setHostName(HOSTNAME);
-        email.setSmtpPort(465);
-        email.setAuthenticator(new DefaultAuthenticator(USERNAME, PASSWORD));
-        email.setSSL(true);
-	email.setTLS(true);
-        email.setFrom(EMAILORIGEM);
-        return email;
-     }
+	 
 
      public static void enviaEmail(Mensaje mensagem) throws EmailException {
-        Email email = new SimpleEmail();
-        email = conectaEmail();
-        email.setSubject(mensagem.getTitulo());
-        email.setMsg(mensagem.getMensagem());
-        email.addTo(mensagem.getDestino());
-        String resposta = email.send();
-        JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("emailenviado") + resposta);
+    	 
+    	Properties props = new Properties();
+ 		props.put("mail.smtp.auth", "true");
+ 		props.put("mail.smtp.starttls.enable", "true");
+ 		props.put("mail.smtp.host", HOSTNAME);
+ 		props.put("mail.smtp.port", "587");
+
+ 		Session session = Session.getInstance(props,
+    			  new javax.mail.Authenticator() {
+    				protected PasswordAuthentication getPasswordAuthentication() {
+    					return new PasswordAuthentication(EMAILORIGEM, PASSWORD);
+    				}
+    			  });
+    	 
+		try {
+        Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("from-"+EMAILORIGEM));
+		message.setRecipients(Message.RecipientType.TO,
+			InternetAddress.parse("to-"+mensagem.getDestino()));
+		message.setSubject(mensagem.getTitulo());
+		message.setText(mensagem.getMensagem());
+		
+		Transport transport = session.getTransport("smtp");
+        transport.connect(HOSTNAME, USERNAME, PASSWORD);
+        transport.sendMessage(message, message.getAllRecipients());
+        transport.close();
+        
+
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
      }    
 }

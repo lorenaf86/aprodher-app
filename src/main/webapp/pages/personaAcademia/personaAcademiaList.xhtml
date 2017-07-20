@@ -1,0 +1,104 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="head-end">
+        <style type="text/css">
+            .ui-grid-row .ui-grid-col-2,
+            .ui-grid-row .ui-grid-col-10 {
+                padding: 0.5em 0;
+                margin-left: 10px;
+            }
+
+            .ui-orderlist .ui-orderlist-list {
+                height: auto;
+            }
+
+            .ui-orderlist .ui-grid-row .ui-grid-col-2,
+            .ui-orderlist .ui-grid-row .ui-grid-col-10 {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="title">
+        #{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.participante']}
+    </ui:define>
+
+    <ui:define name="description">
+         #{bundle['report.lista']}
+    </ui:define>
+
+    <ui:define name="body">
+        <adm:breadcrumb link="/pages/academia/personaAcademiaList" title="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.participante']}"/>
+
+			<h:form>
+            	<div class="box box-primary">
+                	<div class="box-header with-border">
+                    	<p:commandButton action="personaAcademiaAdd?faces-redirect=true" ajax="false" icon="fa fa-plus"
+                         	            value="#{bundle['btn.add']}" styleClass="btn-primary"/>
+                    	<p:spacer width="5"/>
+	                    <p:commandButton value="#{bundle['btn.delete']} Selecionado(s)" icon="fa fa-trash" styleClass="btn-danger"
+	                                     process="@form" update="@form"/>
+	                    <p:spacer width="5"/>
+	                    <p:commandButton value="#{bundle['btn.view']} Selecionado(s)" 
+	                    				 oncomplete="PF('defaultSelecionadas').show()"
+	                    				 update="@(.ui-dialog)" 
+	                    				 styleClass="btn-info"
+	                                     icon="fa fa-search"/>
+	                    <p:separator/>
+	                    
+	                    
+	                    <p:dataTable id="datalist" widgetVar="datalist" rows="10"	  
+	                    			value="#{personaAcademiaController.personaAcademiaList}"  var="item" filteredValue="#{personaAcademiaController.personaAcademiaList}"                			 
+	                                 paginator="true" 	                                 
+	                                 paginatorPosition="bottom"	                                 
+	                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
+	                                 currentPageReportTemplate="" 
+	                                 rowsPerPageTemplate="5,10,15,20,30">
+	
+				<f:facet name="header" >
+                    <p:outputPanel style="float:left">
+                    	<p:focus for="globalFilter"/>
+                    	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()" style="width:250px;" placeholder="Buscar" />
+                    </p:outputPanel>
+                    <br/><br/>                    
+                </f:facet>
+	                        <p:ajax event="rowSelectCheckbox" update="@(.ui-button)"/>
+	                        <p:ajax event="rowUnselectCheckbox" update="@(.ui-button)"/>
+	                        <p:ajax event="rowSelect" update="@(.ui-button)"/>
+	                        <p:ajax event="rowUnselect" update="@(.ui-button)"/>
+	                        
+			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110" >
+			                    <h:outputText value="#{item.id}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.persona.cedula}" headerText="#{bundle['label.cedula']}"  > 
+			                    <h:outputText value="#{item.persona.cedula}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.persona.nombre}" headerText="#{bundle['label.nombre']}"  >
+			                    <h:outputText value="#{item.persona.nombre}"/>
+			                </p:column>
+			                <p:column headerText="Estado" width="240">
+			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
+			                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
+			                </p:column>
+	                        	
+	                    </p:dataTable>
+					</div>
+	            </div>
+        	</h:form>
+        	<p:dialog header="Default Selecionadas" widgetVar="defaultSelecionadas" height="250"
+                  	  width="400" responsive="true" styleClass="box-success">
+	            <p:dataList id="listaDefaultSelecionadas" value="#{personaAcademiaController.personaAcademiaList}" var="default"
+	                        type="definition">
+
+	            </p:dataList>
+			</p:dialog>
+        	
+    </ui:define>
+
+</ui:composition>

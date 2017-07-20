@@ -14,10 +14,15 @@
                 <h:panelGroup id="display">
                     <p:panelGrid columns="2" rendered="#{personaController.selected != null}">
                        
+                        <h:outputLabel value="#{bundle['label.cedula']}" for="cedula" />
+                        <p:inputText id="cedula" value="#{personaController.selected.cedula}" 
+                        title="#{bundle['label.cedula']}" required="true" 
+                        requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.cedula']}"/>
+
                         <h:outputLabel value="#{bundle['label.nombre']}" for="nombre" />
                         <p:inputText id="nombre" value="#{personaController.selected.nombre}" title="#{bundle['label.nombre']}" required="true" requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
                     	
-                        <h:outputLabel value="#{bundle['label.apellido']}" for="nombre" />
+                        <h:outputLabel value="#{bundle['label.apellido']}" for="apellido" />
                         <p:inputText id="apellido" value="#{personaController.selected.apellido}" title="#{bundle['label.apellido']}" required="true" requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.apellido']}"/>
 
                         <h:outputLabel value="#{bundle['label.fechaNacimiento']}" for="fecNacimiento" />
