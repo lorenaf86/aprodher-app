@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -77,10 +79,10 @@ public class PersonaAcademia implements Serializable {
     @Column(name = "estado")
     private String estado;
     
-    @JoinColumn(name = "id_persona", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Persona idPersona;
-
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "id_persona")    
+    private Persona persona;
+    
     public PersonaAcademia() {
     }
 
@@ -160,12 +162,12 @@ public class PersonaAcademia implements Serializable {
         this.estado = estado;
     }
 
-    public Persona getIdPersona() {
-        return idPersona;
+    public Persona getPersona() {
+        return persona;
     }
 
-    public void setIdPersona(Persona idPersona) {
-        this.idPersona = idPersona;
+    public void setPersona(Persona idPersona) {
+        this.persona = idPersona;
     }
 
     @Override

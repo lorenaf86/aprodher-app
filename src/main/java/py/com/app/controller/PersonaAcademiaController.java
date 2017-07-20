@@ -23,18 +23,17 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import py.com.app.data.UsuarioFacade;
+import py.com.app.data.ConcursoAcademiaCoreoFacade;
+import py.com.app.data.PersonaAcademiaFacade;
 import py.com.app.model.Academia;
-import py.com.app.model.Usuario;
+import py.com.app.model.Persona;
+import py.com.app.model.PersonaAcademia;
 import py.com.app.util.CalendarHelper;
-import py.com.app.util.EmailUtils;
-import py.com.app.util.Mensaje;
+import py.com.app.util.Credentials;
 
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name
@@ -42,72 +41,58 @@ import py.com.app.util.Mensaje;
 // http://www.cdi-spec.org/faq/#accordion6
 
 @Model
-public class RegistrarController implements Serializable {
-
+public class PersonaAcademiaController implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5281220660955050842L;
+	private static final long serialVersionUID = 2135255041232804226L;
 
 	@Inject
     private FacesContext facesContext;
 
     @Inject
-    private UsuarioFacade usuarioService;
+    private PersonaAcademiaFacade service;
 
     @Produces
     @Named
-    private Usuario usuario;
+    private PersonaAcademia personaAcademia;
 
-    private ArrayList<Academia> academiaList;
+    @Inject
+    Credentials credentials;
+
+    @Inject
+    private ConcursoAcademiaCoreoFacade serviceAcademiaCoreoFacade;
+
+    private ArrayList<PersonaAcademia> personaAcademiaList;
     
 	@PostConstruct
     public void init() {
-		usuario = new Usuario();
-    }
-
-    public void validate(FacesContext context, UIComponent component,
-			Object value) throws ValidatorException {
-		String email = (String) value;
-		if(usuarioService.verificaEmail(email)){
-			FacesContext.getCurrentInstance().addMessage("validaEmail", new FacesMessage("Este email ya fue registrado"));
-			throw new ValidatorException(new FacesMessage("Este email ya fue registrado"));
-		}
+        personaAcademia = new PersonaAcademia();
+        personaAcademia.setPersona(new Persona());
+        personaAcademiaList = (ArrayList<PersonaAcademia>) service.findAll();
     }
 
     public void register() throws Exception {
-    	
-		if(usuarioService.verificaEmail(usuario.getMail())){
-            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "validaEmail!", "Este email ya fue registrado");
-            facesContext.addMessage(null, m);
-            return;
-		}
-
-		if(usuarioService.verificaUsername(usuario.getUsername())){
-            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "validaEmail!", "Este usuario ya fue registrado");
-            facesContext.addMessage(null, m);
-            return;
-		}
-    	
         try {
-        	usuario.setEstado("AC");
-            usuario.setUsuAlta(usuario.getUsername());
-            usuario.setFechaAlta(CalendarHelper.getCurrentTimestamp());
-            usuario.setUsuMod(usuario.getUsername());
-            usuario.setFechaMod(CalendarHelper.getCurrentTimestamp());
-            usuario.setActivo(Boolean.FALSE);
-            usuario.setBloqueado(Boolean.FALSE);
+        	
+            Academia academia = serviceAcademiaCoreoFacade.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
 
-    		usuarioService.create(usuario);
-    		
-    		try {
-    			EmailUtils.enviaEmail(new Mensaje("Nuevo Usuario Registrado " + usuario.getUsername()));
-    		}catch (Exception e) {
-    			e.printStackTrace();
-			}
-    		
-            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful, Revisa tu email!");
+   			personaAcademia.getPersona().setEstado("AC");
+            personaAcademia.getPersona().setUsuAlta(credentials.getUsername());
+            personaAcademia.getPersona().setFechaAlta(CalendarHelper.getCurrentTimestamp());
+            personaAcademia.getPersona().setUsuMod(credentials.getUsername());
+            personaAcademia.getPersona().setFechaMod(CalendarHelper.getCurrentTimestamp());
+
+            personaAcademia.setEstado("AC");
+            personaAcademia.setUsuAlta(credentials.getUsername());
+            personaAcademia.setFechaAlta(CalendarHelper.getCurrentTimestamp());
+            personaAcademia.setUsuMod(credentials.getUsername());
+            personaAcademia.setFechaMod(CalendarHelper.getCurrentTimestamp());
+            
+            personaAcademia.setAcademia(academia);
+            service.create(personaAcademia);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
             facesContext.addMessage(null, m);
             init();
         } catch (Exception e) {
@@ -136,20 +121,20 @@ public class RegistrarController implements Serializable {
         return errorMessage;
     }
 
-	public ArrayList<Academia> getAcademiaList() {
-		return academiaList;
+	public PersonaAcademia getPersonaAcademia() {
+		return personaAcademia;
 	}
 
-	public void setAcademiaList(ArrayList<Academia> academiaList) {
-		this.academiaList = academiaList;
+	public void setPersonaAcademia(PersonaAcademia academia) {
+		this.personaAcademia = academia;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public ArrayList<PersonaAcademia> getPersonaAcademiaList() {
+		return personaAcademiaList;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setPersonaAcademiaList(ArrayList<PersonaAcademia> academiaList) {
+		this.personaAcademiaList = academiaList;
 	}
 
 }

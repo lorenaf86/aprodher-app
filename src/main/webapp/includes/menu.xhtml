@@ -16,6 +16,11 @@
 				<span>#{bundle['label.inscripcion']}</span>
 			</p:link></li>
 
+		<li><p:link href="/pages/personaAcademia/personaAcademiaList.xhtml"  rendered="#{credentials.idUsuario != 0}">
+				<i class="fa fa-edit"></i>
+				<span>#{bundle['label.participante']}</span>
+			</p:link></li>
+
 		<li><p:link href="/pages/academia/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.academia']}</span>

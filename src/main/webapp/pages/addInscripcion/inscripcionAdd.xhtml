@@ -21,9 +21,9 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton value="#{bundle['btn.save']}" immediate="true"
+                        <p:commandButton value="#{bundle['btn.save']}" update="@form"
                                          icon="fa fa-check" styleClass="btn-primary"
-                                         action="#{inscripcionControler.confirm('new')}"/>
+                                         actionListener="#{inscripcionControler.confirm('new')}"/>
                         <p:spacer width="5"/>
 
                         <p:commandButton value="#{bundle['btn.cancel']}" immediate="true"
@@ -100,12 +100,12 @@
 		                </p:selectOneMenu>
 		
 		                <h:outputLabel value="#{bundle['label.cantidadParticipantes']}" for="cantidadField" />
-		                <p:inputText id="cantidadField" size="10"  styleClass="form-control"
+		                <p:inputText id="cantidadField" size="10"  styleClass="form-control" style="width:50px"
 		                             value="#{inscripcionControler.selected.cantidad}" 
 		                requiredMessage="#{bundle['search.label.fieldRequired']} - #{bundle['label.cantidadParticipantes']}" />
 		
-		                <h:outputLabel value="#{bundle['label.duracionMusical']}" for="duracionField" />
-		                <p:inputText id="duracionField" size="10"  styleClass="form-control"
+		                <h:outputLabel value="#{bundle['label.duracionMusical']} (minutos)" for="duracionField" />
+		                <p:inputText id="duracionField" size="10"  styleClass="form-control" style="width:50px"
 		                             value="#{inscripcionControler.selected.tiempo}" 
 		                requiredMessage="#{bundle['search.label.fieldRequired']} - #{bundle['label.duracionMusical']}" />
                             
@@ -128,7 +128,7 @@
                               value="#{inscripcionControler.participante}"
                       effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
              <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
-             <f:selectItems var="persona1" value="#{personaList}"
+             <f:selectItems var="persona1" value="#{inscripcionControler.listParticipatesAcademia}"
                       itemLabel= "#{persona1.nombre}"
                       itemValue="#{persona1}" />                 
                      <p:column><h:outputText value="#{m.nombre}" /></p:column>  

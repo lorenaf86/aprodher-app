@@ -26,37 +26,35 @@
     </ui:define>
 
     <ui:define name="title">
-        #{inscripcionControler.concurso.nombre} - #{inscripcionControler.academia.nombre}
+        #{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.participante']}
     </ui:define>
 
     <ui:define name="description">
-         #{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.coreografia']}s
+         #{bundle['report.lista']}
     </ui:define>
 
     <ui:define name="body">
-        <adm:breadcrumb link="/pages/addInscripcion/inscripcionList" title="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.inscripcion']}"/>
+        <adm:breadcrumb link="/pages/academia/personaAcademiaList" title="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.participante']}"/>
 
 			<h:form>
             	<div class="box box-primary">
                 	<div class="box-header with-border">
-                    	<p:commandButton actionListener="#{inscripcionControler.nuevaInscripcion}" 
-                    					oncomplete="inscripcionAdd?faces-redirect=true" icon="fa fa-plus"
-                    					update="@form"
+                    	<p:commandButton action="personaAcademiaAdd?faces-redirect=true" ajax="false" icon="fa fa-plus"
                          	            value="#{bundle['btn.add']}" styleClass="btn-primary"/>
                     	<p:spacer width="5"/>
-	                    <p:commandButton value="#{bundle['btn.delete']} Selecionado" icon="fa fa-trash" styleClass="btn-danger"
+	                    <p:commandButton value="#{bundle['btn.delete']} Selecionado(s)" icon="fa fa-trash" styleClass="btn-danger"
 	                                     process="@form" update="@form"/>
 	                    <p:spacer width="5"/>
-	                    <p:commandButton value="#{bundle['btn.view']} Selecionado" 
+	                    <p:commandButton value="#{bundle['btn.view']} Selecionado(s)" 
 	                    				 oncomplete="PF('datalist').show()"
 	                    				 update="@(.ui-dialog)" 
 	                    				 styleClass="btn-info"
 	                                     icon="fa fa-search"/>
 	                    <p:separator/>
 	                    
-	                   	
+	                    
 	                    <p:dataTable id="datalist" widgetVar="datalist" rows="10"	  
-	                    			value="#{inscripcionControler.listCoreo}"  var="item" filteredValue="#{inscripcionControler.listCoreo}"                			 
+	                    			value="#{personaAcademiaController.personaAcademiaList}"  var="item" filteredValue="#{personaAcademiaController.personaAcademiaList}"                			 
 	                                 paginator="true" 	                                 
 	                                 paginatorPosition="bottom"	                                 
 	                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
@@ -66,7 +64,7 @@
 				<f:facet name="header" >
                     <p:outputPanel style="float:left">
                     	<p:focus for="globalFilter"/>
-                    	<p:inputText id="globalFilter" onkeyup="PF('datalist').filter()" style="width:250px;" placeholder="Buscar" />
+                    	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()" style="width:250px;" placeholder="Buscar" />
                     </p:outputPanel>
                     <br/><br/>                    
                 </f:facet>
@@ -75,22 +73,21 @@
 	                        <p:ajax event="rowSelect" update="@(.ui-button)"/>
 	                        <p:ajax event="rowUnselect" update="@(.ui-button)"/>
 	                        
-			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110">
+			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110" >
 			                    <h:outputText value="#{item.id}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.nombre}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.nombre']}">
-			                    <h:outputText value="#{item.nombre}"/>
+			                <p:column sortBy="#{item.persona.cedula}" headerText="#{bundle['label.cedula']}"  > 
+			                    <h:outputText value="#{item.persona.cedula}"/>
 			                </p:column>
-
-			                <p:column  headerText="Estado" width="240">
+			                <p:column sortBy="#{item.persona.nombre}" headerText="#{bundle['label.nombre']}"  >
+			                    <h:outputText value="#{item.persona.nombre}"/>
+			                </p:column>
+			                <p:column headerText="Estado" width="240">
 			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
 			                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
 			                </p:column>
 	                        	
 	                    </p:dataTable>
-
-    
 					</div>
 	            </div>
         	</h:form>

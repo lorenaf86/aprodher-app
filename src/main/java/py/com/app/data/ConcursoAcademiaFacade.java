@@ -44,46 +44,5 @@ public class ConcursoAcademiaFacade extends AbstractFacade<ConcursoAcademia> {
        return em.find(Academia.class, id);
     }
     
-    public List<ConcursoAcademiaCoreo> findAllInscripciones(Integer idAcademia) {
-        return getEntityManager().createQuery("Select c from ConcursoAcademiaCoreo c "
-                + " Where c.concursoAcademia.id = " + idAcademia).getResultList();
-    }
-    
-    public Concurso findConcursoVigente(){
-        List list = getEntityManager().createQuery("Select c from Concurso c "
-                + " Where c.vigente = true Order by c.fecha desc ").getResultList();
-        
-        if (list.size() > 0){
-                return (Concurso) list.get(0);
-        }else
-            return null;
-        
-    }
 
-	public ConcursoAcademia getConcursoAcademia(Integer idAcademia, Integer idConcurso) {
-        List list = getEntityManager().createQuery("Select c from ConcursoAcademia c "
-                + " Where c.idAcademia.id = " + idAcademia
-                + " and c.concurso.id = " + idConcurso).getResultList();
-        
-        if (list.isEmpty()) return null;
-        else return (ConcursoAcademia) list.get(0);
-	}
-
-	public ConcursoAcademiaCoreoParticipantes findParticipante(Integer id) {
-		List list = getEntityManager().createQuery("Select c from ConcursoAcademiaCoreoParticipantes c "
-                + " Where c.idPersona.id = " + id).getResultList();
-        if (list.isEmpty()) return null;
-        else return (ConcursoAcademiaCoreoParticipantes) list.get(0);
-	}
-
-	public void removeParticipante(ConcursoAcademiaCoreoParticipantes part) {
-		em.remove(part);
-	}
-
-	public void updateCoreografia(ConcursoAcademiaCoreo selected) {
-		if (selected.getId() == null)
-			em.persist(selected);
-		else
-			em.merge(selected);
-	}
 }
