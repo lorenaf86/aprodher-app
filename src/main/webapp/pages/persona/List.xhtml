@@ -8,7 +8,7 @@
 
    <h:form id="personaListForm">
 
-        <p:panel header="#{bundle['label.persona']}">
+        <p:panel >
 		<p:menubar id="menuBar">
         		<p:menuitem id="createButton" icon="ui-icon-plus"  value="#{bundle['btn.add']}"  
                                     actionListener="#{personaController.prepareCreate}" 
@@ -72,14 +72,14 @@
                 </p:column>
 
                 <f:facet name="footer">
-                    <h:commandLink actionListener="#{exporterHelper.updateTitle('reportname.listaDeProfesor')}">
+                    <h:commandLink actionListener="#{exporterHelper.updateTitle('label.persona')}">
                         <h:graphicImage width="24" name="/img/excel.png.xhtml.png" />
                         <p:dataExporter type="xls" target="datalist" encoding="ISO-8859-2"
                                     fileName="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.persona']}" 
                                postProcessor="#{exporterHelper.postProcessXLS}"/>
                     </h:commandLink>
                     
-                    <h:commandLink actionListener="#{exporterHelper.updateTitle('reportname.listaDeProfesor')}">
+                    <h:commandLink actionListener="#{exporterHelper.updateTitle('label.persona')}">
                         <p:graphicImage name="/img/pdf.png.xhtml.png" width="24"/>
                         <p:dataExporter type="pdf" target="datalist" encoding="ISO-8859-2"
                                     fileName="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.persona']}"

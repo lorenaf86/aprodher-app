@@ -24,7 +24,12 @@ import py.com.app.util.NavigationRulezHelper;
 @ManagedBean
 public class UsuarioController extends AbstractController<Usuario> implements Serializable {
 
-    @EJB
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -6905500494476175004L;
+
+	@EJB
     private UsuarioFacade service;
 	    
     private List<Usuario>  list;
@@ -55,8 +60,8 @@ public class UsuarioController extends AbstractController<Usuario> implements Se
                 this.getSelected().setFechaAlta(CalendarHelper.getCurrentTimestamp());
                 this.getSelected().setUsuMod(this.getCredentials().getUsername());
                 this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
-        	this.getSelected().setActivo(Boolean.FALSE);
-        	this.getSelected().setBloqueado(Boolean.FALSE);
+                this.getSelected().setActivo(Boolean.FALSE);
+                this.getSelected().setBloqueado(Boolean.FALSE);
                 this.saveNew(null);
         }else{
                 if(accion.equals("edit")){

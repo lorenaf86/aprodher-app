@@ -41,29 +41,36 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class TipoParticipacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Size(max = 2147483647)
+
     @Column(name = "usu_mod")
     private String usuMod;
-    @Size(max = 2147483647)
+
     @Column(name = "usu_alta")
     private String usuAlta;
+
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.DATE)
     private Date fechaAlta;
+
     @Column(name = "fecha_mod")
     @Temporal(TemporalType.DATE)
     private Date fechaMod;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 2147483647)
+
     @Column(name = "descripcion")
     private String descripcion;
+
     @Size(max = 2)
     @Column(name = "estado")
     private String estado;
+
+    @Column(name = "valor")
+    private Double valor;
 
     public TipoParticipacion() {
     }
@@ -152,6 +159,14 @@ public class TipoParticipacion implements Serializable {
     public String toString() {
         return "com.aprodher.aprodherweb.TipoParticipacion[ id=" + id + " ]";
     }
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
 
     
 }

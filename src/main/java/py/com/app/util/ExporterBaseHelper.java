@@ -17,7 +17,7 @@ import com.lowagie.text.Rectangle;
 
 /**
  * 
- * @author RSGPTIv2
+ * @author Aprodherv2
  * 
  */
 public abstract class ExporterBaseHelper
@@ -67,8 +67,8 @@ public abstract class ExporterBaseHelper
 
     protected void addMetaData(Document document)
     {
-        document.addAuthor("RSGPTI Team");
-        document.addCreator("RSGPTI Team");
+        document.addAuthor("Aprodher Team");
+        document.addCreator("Aprodher Team");
         document.addSubject("Auto Generated Basic Report");
         document.addTitle(title);
         document.addKeywords("Java, PDF, iText, Auto Generated Report, SGPTI");

@@ -8,7 +8,7 @@
 
    <h:form id="tipoParticipacionListForm">
 
-        <p:panel header="#{bundle['label.tipoParticipacion']}">
+        <p:panel >
 		<p:menubar id="menuBar">
         		<p:menuitem id="createButton" icon="ui-icon-plus"  value="#{bundle['btn.add']}"  
                                     actionListener="#{tipoParticipacionController.prepareCreate}" 
@@ -61,20 +61,26 @@
                 			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.descripcion']}">
                     <h:outputText value="#{item.descripcion}"/>
                 </p:column>
+                <p:column sortBy="#{item.valor}" footerText=" " 
+                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.valor']}">
+                    <h:outputText value="#{item.valor}">
+						<f:convertNumber integerOnly="true"/>
+                    </h:outputText>
+                </p:column>
                 <p:column footerText=" " filterMatchMode="contains" headerText="Estado" width="240">
                         <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
                         <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
                 </p:column>
 
                 <f:facet name="footer">
-                    <h:commandLink actionListener="#{exporterHelper.updateTitle('reportname.listaDeTipoParticipacion')}">
+                    <h:commandLink actionListener="#{exporterHelper.updateTitle('label.tipoParticipacion')}">
                         <h:graphicImage width="24" name="/img/excel.png.xhtml.png" />
                         <p:dataExporter type="xls" target="datalist" encoding="ISO-8859-2"
                                     fileName="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.tipoParticipacion']}" 
                                postProcessor="#{exporterHelper.postProcessXLS}"/>
                     </h:commandLink>
                     
-                    <h:commandLink actionListener="#{exporterHelper.updateTitle('reportname.listaDeTipoParticipacion')}">
+                    <h:commandLink actionListener="#{exporterHelper.updateTitle('label.tipoParticipacion')}">
                         <p:graphicImage name="/img/pdf.png.xhtml.png" width="24"/>
                         <p:dataExporter type="pdf" target="datalist" encoding="ISO-8859-2"
                                     fileName="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.tipoParticipacion']}"

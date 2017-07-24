@@ -21,6 +21,16 @@
 				<span>#{bundle['label.participante']}</span>
 			</p:link></li>
 
+		<li><p:link href="/pages/reglamento/reglamentoList.xhtml"  rendered="#{credentials.idUsuario != 0}">
+				<i class="fa fa-edit"></i>
+				<span>#{bundle['label.reglamento']}</span>
+			</p:link></li>
+
+		<li><p:link href="/pages/orden/ordenLista.xhtml"  rendered="#{credentials.idUsuario != 0}">
+				<i class="fa fa-edit"></i>
+				<span>#{bundle['label.orden']}</span>
+			</p:link></li>
+
 		<li><p:link href="/pages/academia/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.academia']}</span>

@@ -154,18 +154,11 @@ public class AppHelper
                 return bundle.getString(key);
                 
             }
-            /* 
-             * may be is a "common" pre-defined property bundle 
-             * look up for it in base common messages
-             */
-            if(!bundleName.contains("CommonMessages")) {
-                return getBundleMessage(key, locale);
-            }
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            return "Resource Messages NOT found, call admin";
+            return "Resource Messages NOT found, call admin " + key;
         }
         return null;
     }

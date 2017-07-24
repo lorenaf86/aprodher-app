@@ -17,6 +17,11 @@
                         <h:outputLabel value="#{bundle['label.nombre']}" for="nombre" />
                         <p:inputText id="nombre" value="#{tipoParticipacionController.selected.descripcion}" title="#{bundle['label.descripcion']}" required="true" requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.descripcion']}"/>
                     	
+                        <h:outputLabel value="#{bundle['label.valor']}" for="valor" />
+                        <p:inputText id="valor" value="#{tipoParticipacionController.selected.valor}" title="#{bundle['label.valor']}" required="true" requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.valor']}">
+                        	<f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+
                     	<f:facet name="footer">
                     		<p:commandButton actionListener="#{tipoParticipacionController.confirm('new')}" value="#{bundle['btn.save']}" update="display,:tipoParticipacionListForm:datalist" 
                                                  oncomplete="handleSubmit(args,'tipoParticipacionCreateDlg', 'tipoParticipacionCreateDialog')"/>
