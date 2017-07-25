@@ -85,7 +85,7 @@ public class RegistrarController implements Serializable {
 		}
 
 		if(usuarioService.verificaUsername(usuario.getUsername())){
-            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "validaEmail!", "Este usuario ya fue registrado");
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "validaUsuario!", "Este usuario ya fue registrado");
             facesContext.addMessage(null, m);
             return;
 		}
@@ -106,6 +106,55 @@ public class RegistrarController implements Serializable {
     		
     		try {
     			Mensaje mensaje = new Mensaje("Nuevo Usuario Registrado " + usuario.getUsername());
+    			mensaje.setDestino(usuario.getMail());
+    			EmailUtils.enviaEmail(mensaje);
+    		}catch (Exception e) {
+    			e.printStackTrace();
+			}
+    		
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful, Revisa tu email!");
+            facesContext.addMessage(null, m);
+            init();
+        } catch (Exception e) {
+            String errorMessage = getRootErrorMessage(e);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Registration unsuccessful");
+            facesContext.addMessage(null, m);
+        }
+    }
+
+    public void cambiarPassword() throws Exception {
+    	
+		if(!usuarioService.verificaEmail(usuario.getMail())){
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "validaEmail!", "Este email no fue registrado");
+            facesContext.addMessage(null, m);
+            return;
+		}
+
+		if(!usuarioService.verificaUsername(usuario.getUsername())){
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "validaUsuario!", "Este usuario no fue registrado");
+            facesContext.addMessage(null, m);
+            return;
+		}
+    	
+        try {
+        	
+        	Usuario user = usuarioService.findUserName(usuario.getMail(),usuario.getUsername());
+        	
+        	if (user==null){
+                FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "validación!", "No fue encontrado ningun usuario asociado a ese email");
+                facesContext.addMessage(null, m);
+                return;
+        	}
+        	
+        	user.setContrasena(usuario.getContrasena());
+        	
+        	user.setUsuMod(usuario.getUsername());
+        	user.setFechaMod(CalendarHelper.getCurrentTimestamp());
+
+    		usuarioService.edit(user);
+    		
+    		try {
+    			Mensaje mensaje = new Mensaje("Contraseña modificada para el usuario : " + usuario.getUsername());
     			mensaje.setDestino(usuario.getMail());
     			EmailUtils.enviaEmail(mensaje);
     		}catch (Exception e) {

@@ -55,7 +55,23 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             return true;
     }
 
-    public Usuario login(String user, String pass){
+    public Usuario findUserName(String mail, String userName){
+        
+        try{
+        	
+	        String sql = "Select u from Usuario u where trim(u.username) = trim('" + userName + "')"
+	        		+ " and trim(u.mail) = trim('" + mail + "')";
+	        
+	        return (Usuario) em.createQuery(sql).getSingleResult();
+        
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        
+    }
+
+	public Usuario login(String user, String pass){
         try{
             String sql = " Select u from Usuario u"
             		+ " where trim(u.username) = trim('" + user + "')"

@@ -82,6 +82,8 @@ public class ConcursoAcademiaCoreoFacade extends AbstractFacade<ConcursoAcademia
 	}
 
 	public void guardarConcursoAcademia(ConcursoAcademia concursoAcademia) {
+		concursoAcademia.setAcademia(em.find(Academia.class, concursoAcademia.getAcademia().getId()));
+		concursoAcademia.setConcurso(em.find(Concurso.class, concursoAcademia.getConcurso().getId()));
 		if (concursoAcademia.getId() == null){
 			em.persist(concursoAcademia);
 		}else{

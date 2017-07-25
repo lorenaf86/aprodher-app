@@ -55,14 +55,18 @@
 	                    <p:separator/>
 	                    
 	                   	
-	                    <p:dataTable id="datalist" widgetVar="datalist" rows="10"	  
-	                    			value="#{inscripcionControler.listCoreo}"  var="item" filteredValue="#{inscripcionControler.listCoreo}"                			 
-	                                 paginator="true" 	                                 
-	                                 paginatorPosition="bottom"	                                 
-	                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-	                                 currentPageReportTemplate="" 
-	                                 rowsPerPageTemplate="5,10,15,20,30">
-	
+            <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionControler.listCoreo}" var="item" filteredValue="#{inscripcionControler.listCoreo}"
+            			 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
+            			 currentPageReportTemplate="{currentPage} #{bundle['label.of']} {totalPages}"
+            			 emptyMessage="#{bundle['msg.noRecordsFound']}"
+                         selectionMode="single" selection="#{inscripcionControler.selected}" style="margin-botton:20px"
+                         rowKey="#{item.id}" paginatorPosition="top"
+                         paginator="true"
+                         rows="10"
+                         >
+                <p:ajax event="rowSelect" update="@(.ui-button)"/>
+                <p:ajax event="rowUnselect" update="@(.ui-button)"/>
+
 				<f:facet name="header" >
                     <p:outputPanel style="float:left">
                     	<p:focus for="globalFilter"/>
@@ -70,17 +74,28 @@
                     </p:outputPanel>
                     <br/><br/>                    
                 </f:facet>
-	                        <p:ajax event="rowSelectCheckbox" update="@(.ui-button)"/>
-	                        <p:ajax event="rowUnselectCheckbox" update="@(.ui-button)"/>
-	                        <p:ajax event="rowSelect" update="@(.ui-button)"/>
-	                        <p:ajax event="rowUnselect" update="@(.ui-button)"/>
-	                        
 			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110">
 			                    <h:outputText value="#{item.id}"/>
 			                </p:column>
 			                <p:column sortBy="#{item.nombre}"  footerText=" " 
 			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.nombre']}">
 			                    <h:outputText value="#{item.nombre}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.categoria.descripcion}"  footerText=" " 
+			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.categoria']}">
+			                    <h:outputText value="#{item.categoria.descripcion}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.modalidad.descripcion}"  footerText=" " 
+			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.modalidad']}">
+			                    <h:outputText value="#{item.modalidad.descripcion}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.tipoParticipacion.descripcion}"  footerText=" " 
+			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.tipoParticipacion']}">
+			                    <h:outputText value="#{item.tipoParticipacion.descripcion}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.persona.nombre}"  footerText=" " 
+			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.profesor']}">
+			                    <h:outputText value="#{item.persona.nombre}"/>
 			                </p:column>
 
 			                <p:column  headerText="Estado" width="240">
@@ -97,7 +112,7 @@
         	<p:dialog header="Default Selecionadas" widgetVar="defaultSelecionadas" height="250"
                   	  width="400" responsive="true" styleClass="box-success">
 	            <p:dataList id="listaDefaultSelecionadas" value="#{inscripcionControler.listCoreo}" var="default"
-	                        type="definition">
+	                        type="definition" >
 
 	            </p:dataList>
 			</p:dialog>

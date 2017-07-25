@@ -7,9 +7,6 @@ package py.com.app.util;
 
 import java.util.Properties;
 
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -54,9 +51,9 @@ public class EmailUtils {
     	 
 		try {
         Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("from-"+EMAILORIGEM));
+			message.setFrom(new InternetAddress(EMAILORIGEM));
 		message.setRecipients(Message.RecipientType.TO,
-			InternetAddress.parse("to-"+mensagem.getDestino()));
+			InternetAddress.parse(mensagem.getDestino()));
 		message.setSubject(mensagem.getTitulo());
 		message.setText(mensagem.getMensagem());
 		

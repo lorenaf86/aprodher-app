@@ -21,14 +21,11 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
-import javax.enterprise.inject.Produces;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import py.com.app.data.OrdenFacade;
 import py.com.app.model.ConcursoAcademiaCoreo;
-import py.com.app.model.Usuario;
 
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name

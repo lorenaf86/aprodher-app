@@ -75,27 +75,27 @@ public class ConcursoAcademiaCoreo implements Serializable {
     @Column(name = "estado")
     private String estado;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAcademiaConcursoCoreo", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idAcademiaConcursoCoreo", fetch = FetchType.LAZY)
     private List<ConcursoAcademiaCoreoParticipantes> concursoAcademiaCoreoParticipantesList;
     
     @JoinColumn(name = "id_categoria", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER )
     private Categoria categoria;
     
     @JoinColumn(name = "id_concurso_academia", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER )
     private ConcursoAcademia concursoAcademia;
    
     @JoinColumn(name = "id_modalidad", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER )
     private Modalidad modalidad;
    
     @JoinColumn(name = "id_persona", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER )
     private Persona persona;
     
     @JoinColumn(name = "id_tipo_participacion", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER )
     private TipoParticipacion tipoParticipacion;
 
     public ConcursoAcademiaCoreo() {

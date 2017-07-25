@@ -69,15 +69,15 @@ public class ConcursoAcademia implements Serializable {
     private List<ConcursoAcademiaCoreo> concursoAcademiaCoreoList;
     
     @JoinColumn(name = "id_academia", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Academia academia;
     
     @JoinColumn(name = "id_concurso", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Concurso concurso;
 
     @JoinColumn(name = "id_persona", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Persona persona;
 
     public ConcursoAcademia() {

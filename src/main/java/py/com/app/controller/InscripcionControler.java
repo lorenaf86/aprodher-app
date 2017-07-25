@@ -193,9 +193,10 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
                     }
             }
 
+            this.listCoreo = service.findAllInscripciones(concursoAcademia.getId());
+
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
             facesContext.addMessage(null, m);
-            init();
             
             NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/addInscripcion/inscripcionList.xhtml");
 
