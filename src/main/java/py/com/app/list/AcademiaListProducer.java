@@ -33,24 +33,22 @@ import py.com.app.model.Academia;
 public class AcademiaListProducer {
 
     @Inject
-    private AcademiaFacade academiaService;
+    private AcademiaFacade service;
 
     private List<Academia> academiaList;
 
-    // @Named provides access the return value via the EL variable name "members" in the UI (e.g.
-    // Facelets or JSP view)
     @Produces
     @Named
     public List<Academia> getAcademiaList() {
         return academiaList;
     }
 
-    public void oAcademiaListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Academia academia) {
-        retrieveAllsOrderedByName();
+    public void onListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Academia academia) {
+        retrieveAllOrderedByName();
     }
 
     @PostConstruct
-    public void retrieveAllsOrderedByName() {
-    	academiaList = academiaService.findAll();
+    public void retrieveAllOrderedByName() {
+    	academiaList = service.findAll();
     }
 }

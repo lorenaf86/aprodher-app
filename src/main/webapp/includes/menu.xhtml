@@ -31,6 +31,16 @@
 				<span>#{bundle['label.orden']}</span>
 			</p:link></li>
 
+		<li><p:link href="/pages/personaAcademiaGral/personaAcademiaList.xhtml" rendered="#{credentials.idUsuario == 1}">
+				<i class="fa fa-edit"></i>
+				<span>#{bundle['label.participante']} Gral</span>
+			</p:link></li>
+
+		<li><p:link href="/pages/inscripcion/inscripcionList.xhtml" rendered="#{credentials.idUsuario == 1}">
+				<i class="fa fa-edit"></i>
+				<span>#{bundle['label.inscripcion']} Gral</span>
+			</p:link></li>
+
 		<li><p:link href="/pages/academia/index.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.academia']}</span>

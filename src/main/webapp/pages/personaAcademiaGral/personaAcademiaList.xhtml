@@ -34,24 +34,24 @@
     </ui:define>
 
     <ui:define name="body">
-        <adm:breadcrumb link="/pages/personaAcademia/personaAcademiaList" title="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.participante']}"/>
+        <adm:breadcrumb link="/pages/personaAcademiaGral/personaAcademiaList" title="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.participante']}"/>
 
 			<h:form>
             	<div class="box box-primary">
                 	<div class="box-header with-border">
-                    	<p:commandButton actionListener="#{personaAcademiaController.nuevo}" 
+                    	<p:commandButton actionListener="#{personaAcademiaControler.nuevo}" 
                     					oncomplete="personaAcademiaAdd?faces-redirect=true" icon="fa fa-plus"
                     					update="@form"
                          	            value="#{bundle['btn.add']}" styleClass="btn-primary"/>
                     	<p:spacer width="5"/>
-                    	<p:commandButton actionListener="#{personaAcademiaController.edit}" 
+                    	<p:commandButton actionListener="#{personaAcademiaControler.edit}" 
                     					oncomplete="personaAcademiaAdd?faces-redirect=true" icon="fa fa-plus"
                     					update="@form"
                          	            value="#{bundle['btn.edit']}" styleClass="btn-warning"/>
 
                     	<p:spacer width="5"/>
-                    	<p:commandButton actionListener="#{personaAcademiaController.confirm('delete')}" 
-                    					icon="fa fa-plus" update="@form"  disabled="#{empty personaAcademiaController.selected}"
+                    	<p:commandButton actionListener="#{personaAcademiaControler.confirm('delete')}" 
+                    					icon="fa fa-plus" update="@form"  disabled="#{empty personaAcademiaControler.selected}"
                          	            value="#{bundle['btn.delete']}" styleClass="btn-danger"/>
                          	            
 	                    <p:spacer width="5"/>
@@ -64,11 +64,11 @@
                 	
                 	
 	                    
-            <p:dataTable id="datalist" widgetVar="datalists" value="#{personaAcademiaController.personaAcademiaList}" var="item" filteredValue="#{personaAcademiaController.personaAcademiaList}"
+            <p:dataTable id="datalist" widgetVar="datalists" value="#{personaAcademiaControler.items}" var="item" filteredValue="#{personaAcademiaControler.items}"
             			 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
             			 currentPageReportTemplate="{currentPage} #{bundle['label.of']} {totalPages}"
             			 emptyMessage="#{bundle['msg.noRecordsFound']}"
-                         selectionMode="single" selection="#{personaAcademiaController.selected}" style="margin-botton:20px"
+                         selectionMode="single" selection="#{personaAcademiaControler.selected}" style="margin-botton:20px"
                          rowKey="#{item.id}" paginatorPosition="top"
                          paginator="true"
                          rows="10"
@@ -99,6 +99,9 @@
 			                <p:column sortBy="#{item.persona.apellido}" headerText="#{bundle['label.apellido']}"  >
 			                    <h:outputText value="#{item.persona.apellido}"/>
 			                </p:column>
+			                <p:column sortBy="#{item.academia.nombre}" headerText="#{bundle['label.academia']}"  >
+			                    <h:outputText value="#{item.academia.nombre}"/>
+			                </p:column>
 			                <p:column sortBy="#{item.persona.fechaNacimiento}" headerText="#{bundle['label.fechaNacimiento']}"  >
 			                    <h:outputText value="#{item.persona.fechaNacimiento}"/>
 			                </p:column>
@@ -113,7 +116,7 @@
         	</h:form>
         	<p:dialog header="Default Selecionadas" widgetVar="defaultSelecionadas" height="250"
                   	  width="400" responsive="true" styleClass="box-success">
-	            <p:dataList id="listaDefaultSelecionadas" value="#{personaAcademiaController.personaAcademiaList}" var="default"
+	            <p:dataList id="listaDefaultSelecionadas" value="#{personaAcademiaControler.items}" var="default"
 	                        type="definition">
 
 	            </p:dataList>

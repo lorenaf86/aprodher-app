@@ -48,7 +48,7 @@ public class PersonaAcademia implements Serializable {
     private Integer id;
     
     @JoinColumn(name = "id_academia", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Academia academia;
     
     @Column(name = "fecha_inicio")
@@ -79,7 +79,7 @@ public class PersonaAcademia implements Serializable {
     @Column(name = "estado")
     private String estado;
     
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
     @JoinColumn(name = "id_persona")    
     private Persona persona;
     

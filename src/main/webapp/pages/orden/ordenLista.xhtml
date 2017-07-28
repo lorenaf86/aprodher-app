@@ -47,20 +47,22 @@
 	                    <p:separator/>
 	                    
 	                    
-	                    <p:dataTable id="datalist" widgetVar="datalist" rows="10"	  
+	                    <p:dataTable id="datalist" widgetVar="datalist"   
 	                    			value="#{ordenController.ordenList}"  var="item" filteredValue="#{ordenController.ordenList}"                			 
-	                                 paginator="true" 	                                 
-	                                 paginatorPosition="bottom"	                                 
-	                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} "
-	                                 currentPageReportTemplate="" 
+	                                 paginator="true" draggableRows="true"	rowIndexVar="keyVar"                                
 	                                 rowsPerPageTemplate="5,10,15,20,30">
 	
+					        <p:ajax event="rowReorder" update="@form" />
+
 	                        <p:ajax event="rowSelectCheckbox" update="@(.ui-button)"/>
 	                        <p:ajax event="rowUnselectCheckbox" update="@(.ui-button)"/>
 	                        <p:ajax event="rowSelect" update="@(.ui-button)"/>
 	                        <p:ajax event="rowUnselect" update="@(.ui-button)"/>
 	
 	
+			                <p:column headerText="Nro Orden" >
+			                    <h:outputText value="#{keyVar+1}"/>
+			                </p:column>
 			                <p:column sortBy="#{item.nombre}"  footerText=" " 
 			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.nombre']}">
 			                    <h:outputText value="#{item.nombre}"/>

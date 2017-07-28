@@ -6,8 +6,8 @@
 package py.com.app.model;
 
 import java.io.Serializable;
+
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,11 +41,11 @@ public class ConcursoAcademiaCoreoParticipantes implements Serializable {
     private Integer id;
     
     @JoinColumn(name = "id_academia_concurso_coreo", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.EAGER)
     private ConcursoAcademiaCoreo idAcademiaConcursoCoreo;
     
     @JoinColumn(name = "id_persona", referencedColumnName = "id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Persona idPersona;
 
     public ConcursoAcademiaCoreoParticipantes() {

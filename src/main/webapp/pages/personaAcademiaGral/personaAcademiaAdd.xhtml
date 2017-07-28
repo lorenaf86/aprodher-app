@@ -12,7 +12,7 @@
         <f:metadata>
         </f:metadata>
 
-        <adm:breadcrumb title="#{bundle['btn.create']} #{bundle['label.participante']}" link="/pages/personaAcademia/personaAcademiaList"/>
+        <adm:breadcrumb title="#{bundle['btn.create']} #{bundle['label.participante']}" link="/pages/personaAcademiaGral/personaAcademiaList"/>
         <h:form id="form" prependId="false">
             <p:focus/>
 
@@ -20,12 +20,12 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton value="#{bundle['btn.save']}" update="@form" rendered="#{personaAcademiaController.selected.persona.id==null}"
+                        <p:commandButton value="#{bundle['btn.save']}" update="@form" rendered="#{personaAcademiaControler.selected.persona.id==null}"
                                          icon="fa fa-check" styleClass="btn-primary"
-                                         actionListener="#{personaAcademiaController.confirm('new')}"/>
-                        <p:commandButton value="#{bundle['btn.save']}" update="@form" rendered="#{personaAcademiaController.selected.persona.id!=null}"
+                                         actionListener="#{personaAcademiaControler.confirm('new')}"/>
+                        <p:commandButton value="#{bundle['btn.save']}" update="@form" rendered="#{personaAcademiaControler.selected.persona.id!=null}"
                                          icon="fa fa-check" styleClass="btn-primary"
-                                         actionListener="#{personaAcademiaController.confirm('edit')}"/>
+                                         actionListener="#{personaAcademiaControler.confirm('edit')}"/>
                         <p:spacer width="5"/>
 
                         <p:commandButton value="#{bundle['btn.cancel']}" immediate="true"
@@ -38,7 +38,7 @@
                     <p:splitButton value="#{bundle['btn.save']}" update="@form"
                                    icon="fa fa-check"
                                    styleClass="hidden-md hidden-lg btn-primary"
-                                   actionListener="#{personaAcademiaController.confirm('new')}">
+                                   actionListener="#{personaAcademiaControler.confirm('new')}">
                         <p:separator/>
                         <p:menuitem value="#{bundle['btn.cancel']}" action="personaAcademiaList?faces-redirect=true" process="@this"
                                     icon="fa fa-close"/>
@@ -53,36 +53,47 @@
                             
                         <h:panelGrid columns="3" cellpadding="10">    
                         
-                        <p:spacer width="5" rendered="#{personaAcademiaController.selected.persona.id!=null}"/>
-                        <h:outputLabel value="#{bundle['label.id']}" rendered="#{personaAcademiaController.selected.persona.id!=null}"/>
-                        <h:outputLabel value="#{personaAcademiaController.selected.persona.id}" rendered="#{personaAcademiaController.selected.persona.id!=null}"/>
+                        <p:spacer width="5" rendered="#{personaAcademiaControler.selected.persona.id!=null}"/>
+                        <h:outputLabel value="#{bundle['label.id']}" rendered="#{personaAcademiaControler.selected.persona.id!=null}"/>
+                        <h:outputLabel value="#{personaAcademiaControler.selected.persona.id}" rendered="#{personaAcademiaControler.selected.persona.id!=null}"/>
 
                         <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.cedula']}" for="cedula" />
-                        <p:inputText id="cedula" value="#{personaAcademiaController.selected.persona.cedula}" 
+                        <p:inputText id="cedula" value="#{personaAcademiaControler.selected.persona.cedula}" 
                         title="#{bundle['label.cedula']}" required="true" style="width:100px" 
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.cedula']}"/>
                         
                         <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.nombre']}" for="nombre" />
-                        <p:inputText id="nombre" value="#{personaAcademiaController.selected.persona.nombre}" 
+                        <p:inputText id="nombre" value="#{personaAcademiaControler.selected.persona.nombre}" 
                         title="#{bundle['label.nombre']}" required="true" styleClass="form-control" style="width:260px"
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
                         
                         <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.apellido']}" for="apellido" />
-                        <p:inputText id="apellido" value="#{personaAcademiaController.selected.persona.apellido}" 
+                        <p:inputText id="apellido" value="#{personaAcademiaControler.selected.persona.apellido}" 
                         title="#{bundle['label.apellido']}" required="true" style="width:260px"
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.apellido']}"/>
                         
                         <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.fechaNacimiento']}" for="fecNacimiento" />
                         <p:calendar id="fecNacimiento" style="width:100px" 
-                        value="#{personaAcademiaController.selected.persona.fechaNacimiento}" 
+                        value="#{personaAcademiaControler.selected.persona.fechaNacimiento}" 
                         title="#{bundle['label.fechaNacimiento']}"  
                         showOn="button" navigator="true" pattern="dd/MM/yyyy"/>
                         </h:panelGrid>
                         
+                        <h:outputLabel value="#{bundle['label.academia']}" for="academiaField" />
+		                <p:selectOneMenu id="academiaField"  style="width:260px" required="true"
+		                                 value="#{personaAcademiaControler.selected.academia}"
+		                         effect="fade" var="m" filter="true" filterMatchMode="contains"> 
+		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+		                <f:selectItems var="a" value="#{academiaList}"
+		                         itemLabel= "#{a.nombre}"
+		                         itemValue="#{a}" />                 
+		                        <p:column><h:outputText value="#{m.nombre}" /></p:column>  
+		                </p:selectOneMenu>
+
                         </div>
                     </div>
                 </div>

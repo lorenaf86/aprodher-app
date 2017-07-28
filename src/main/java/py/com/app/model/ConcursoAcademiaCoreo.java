@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -75,7 +76,7 @@ public class ConcursoAcademiaCoreo implements Serializable {
     @Column(name = "estado")
     private String estado;
     
-    @OneToMany(mappedBy = "idAcademiaConcursoCoreo", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idAcademiaConcursoCoreo", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<ConcursoAcademiaCoreoParticipantes> concursoAcademiaCoreoParticipantesList;
     
     @JoinColumn(name = "id_categoria", referencedColumnName = "id")
@@ -97,6 +98,9 @@ public class ConcursoAcademiaCoreo implements Serializable {
     @JoinColumn(name = "id_tipo_participacion", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER )
     private TipoParticipacion tipoParticipacion;
+    
+    @Transient
+    private Integer total;
 
     public ConcursoAcademiaCoreo() {
     }
@@ -250,5 +254,13 @@ public class ConcursoAcademiaCoreo implements Serializable {
     public String toString() {
         return "com.aprodher.entity.ConcursoAcademiaCoreo[ id=" + id + " ]";
     }
+
+	public Integer getTotal() {
+		return (int) ((this.tipoParticipacion.getValor()==null?0:this.tipoParticipacion.getValor())*(this.cantidad==null?0:this.cantidad));
+	}
+
+	public void setTotal(Integer total) {
+		this.total = total;
+	}
     
 }

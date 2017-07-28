@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:adm="http://github.com/adminfaces"
+                template="/WEB-INF/templates/template.xhtml">
+
+    <ui:define name="title">
+        #{bundle['btn.edit']} #{bundle['label.inscripcion']}
+    </ui:define>
+
+    <ui:define name="body">
+
+        <adm:breadcrumb title="#{bundle['label.inscripcion']}" link="/pages/addInscripcion/inscripcionList"/>
+        <h:form id="form" prependId="false">
+            <p:focus/>
+
+			
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="#{bundle['btn.save']}" update="@form"
+                                         icon="fa fa-check" styleClass="btn-primary"
+                                         actionListener="#{inscripcionControler.confirm('edit')}"/>
+                        <p:spacer width="5"/>
+
+                        <p:commandButton value="#{bundle['btn.cancel']}" immediate="true"
+                                         action="inscripcionList?faces-redirect=true"
+                                         process="@this"
+                                         icon="fa fa-close"/>
+                                         
+                    </div>
+                    
+                    <p:splitButton value="#{bundle['btn.save']}" update="@form"
+                                   icon="fa fa-check"
+                                   styleClass="hidden-md hidden-lg btn-primary"
+                                   actionListener="#{inscripcionControler.confirm('new')}">
+                        <p:separator/>
+                        <p:menuitem value="#{bundle['btn.cancel']}" action="inscripcionList?faces-redirect=true" process="@this"
+                                    icon="fa fa-close"/>
+                    </p:splitButton>
+
+                    
+
+                    <p:separator />
+
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12">
+                            
+                            
+                        <h:outputLabel value="#{bundle['label.nombre']} #{bundle['label.of']} #{bundle['label.coreografia']}" for="nombre" />
+                        <p:inputText id="nombre" value="#{inscripcionControler.selected.nombre}"  
+                        title="#{bundle['label.nombre']}" required="true" styleClass="form-control"
+                        requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
+                            
+                        <h:outputLabel value="#{bundle['label.categoria']}" for="categoriaField" />
+		                <p:selectOneMenu id="categoriaField"  style="width:260px" 
+		                                 value="#{inscripcionControler.selected.categoria}"
+		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+		                <f:selectItems var="categoria" value="#{categoriaList}"
+		                         itemLabel= "#{categoria.descripcion}"
+		                         itemValue="#{categoria}" />                 
+		                        <p:column><h:outputText value="#{m.descripcion}" /></p:column>  
+		                </p:selectOneMenu>
+                        
+		                <h:outputLabel value="#{bundle['label.modalidad']}"   for="modalidadField"/>
+		                <p:selectOneMenu id="modalidadField"  style="width:260px" 
+		                                 value="#{inscripcionControler.selected.modalidad}"
+		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+		                <f:selectItems var="modalidad" value="#{modalidadList}"
+		                         itemLabel= "#{modalidad.descripcion}"
+		                         itemValue="#{modalidad}" />                 
+		                        <p:column><h:outputText value="#{m.descripcion}" /></p:column>  
+		                </p:selectOneMenu>
+		
+		                <h:outputLabel value="#{bundle['label.profesor']}"   for="profesorField"/>
+		                <p:selectOneMenu id="profesorField"  style="width:260px" 
+		                                 value="#{inscripcionControler.selected.persona}"
+		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+		                <f:selectItems var="persona" value="#{inscripcionControler.listParticipatesAcademia}"
+		                         itemLabel= "#{persona.nombre}"
+		                         itemValue="#{persona}" />                 
+		                        <p:column><h:outputText value="#{m.nombre}" /></p:column>  
+		                </p:selectOneMenu>
+		
+		                <h:outputLabel value="#{bundle['label.tipoParticipacion']}"  for="tipoParticipacionField"  />
+		                <p:selectOneMenu id="tipoParticipacionField"  style="width:260px" 
+		                                 value="#{inscripcionControler.selected.tipoParticipacion}"
+		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+		                <f:selectItems var="tipoParticipacion" value="#{tipoParticipacionList}"
+		                         itemLabel= "#{tipoParticipacion.descripcion}"
+		                         itemValue="#{tipoParticipacion}" />                 
+		                        <p:column><h:outputText value="#{m.descripcion}" /></p:column>  
+		                </p:selectOneMenu>
+		
+		                <h:outputLabel value="#{bundle['label.cantidadParticipantes']}" for="cantidadField" />
+		                <p:inputText id="cantidadField" size="10"  styleClass="form-control" style="width:50px"
+		                             value="#{inscripcionControler.selected.cantidad}" 
+		                requiredMessage="#{bundle['search.label.fieldRequired']} - #{bundle['label.cantidadParticipantes']}" />
+		
+		                <h:outputLabel value="#{bundle['label.duracionMusical']} (minutos)" for="duracionField" />
+		                <p:inputText id="duracionField" size="10"  styleClass="form-control" style="width:50px"
+		                             value="#{inscripcionControler.selected.tiempo}" 
+		                requiredMessage="#{bundle['search.label.fieldRequired']} - #{bundle['label.duracionMusical']}" />
+                            
+                        </div>
+                    </div>
+                     </div>
+                </div>
+                        
+        </h:form>
+        
+    <h:form id="formDetalle">
+    <p:growl id="msgs" />
+ 
+    <p:panel header="#{bundle['btn.agregar']} #{bundle['label.participante']}" style="margin-bottom:20px">
+        <h:panelGrid columns="5" cellpadding="5">
+
+             <h:outputLabel value="#{bundle['label.participante']} "   for="bailarinField"/>
+             <p:spacer width="15"/>
+             <p:selectOneMenu id="bailarinField"  style="width:260px" 
+                              value="#{inscripcionControler.participanteEdit.idPersona}"
+                      effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
+             <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
+             <f:selectItems var="persona1" value="#{inscripcionControler.listParticipatesAcademia}"
+                      itemLabel= "#{persona1.nombre}"
+                      itemValue="#{persona1}" />                 
+                     <p:column><h:outputText value="#{m.nombre}" /></p:column>  
+             </p:selectOneMenu>
+
+            <p:spacer width="5"/>
+            
+            <p:commandButton id="btn_add" value="#{bundle['btn.agregar']}" 
+            	update="participantePanel msgs @parent" 
+            	action="#{inscripcionControler.createNewEdit}" >
+            </p:commandButton>
+        </h:panelGrid>
+    </p:panel>
+ 
+    <p:outputPanel id="participantePanel">
+        <p:dataTable value="#{inscripcionControler.listCoreoParticipante}" var="participante" id="participanteTable">
+ 
+            <p:column headerText="#{bundle['label.id']}">
+                <h:outputText value="#{participante.idPersona.id}" />
+            </p:column>
+ 
+            <p:column headerText="#{bundle['label.nombre']}" width="80px">
+                <f:facet name="header">
+                    <h:outputText value="#{bundle['label.nombre']}" />
+                </f:facet>
+                <h:outputText value="#{participante.idPersona.nombre}" />
+            </p:column>
+ 
+            <p:column headerText="Action">
+                <p:commandLink value="#{bundle['btn.delete']}" 
+                update=":formDetalle:participantePanel" 
+                process=":formDetalle:participantePanel"
+                action="#{inscripcionControler.eliminarParticipanteEdit(participante)}">
+                </p:commandLink>
+            </p:column>
+ 
+        </p:dataTable>
+    </p:outputPanel>
+	</h:form>
+    
+    </ui:define>
+
+</ui:composition>

@@ -52,12 +52,12 @@ import py.com.app.util.NavigationRulezHelper;
 
 @SessionScoped
 @ManagedBean
-public class InscripcionControler extends AbstractController<ConcursoAcademiaCoreo> implements Serializable {
+public class InscripcionController extends AbstractController<ConcursoAcademiaCoreo> implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3460780110361394289L;
+	private static final long serialVersionUID = -7861772678272078184L;
 
 	@Inject
     private FacesContext facesContext;
@@ -69,22 +69,14 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
     Credentials credentials;
 
     private Concurso concurso;
-    private Academia academia;
-    private ConcursoAcademia concursoAcademia;
-    private Persona participante;
-    
-    private List<ConcursoAcademiaCoreo>  listCoreo;
     private List<Persona>  listParticipatesAcademia;
-
-    private ArrayList<Persona> participantesList;
-    private ArrayList<Persona> removeParticipanteList;
 
     private List<ConcursoAcademiaCoreoParticipantes>  listCoreoParticipante;
     private List<ConcursoAcademiaCoreoParticipantes>  listCoreoParticipanteRemove;
     
-    private ConcursoAcademiaCoreoParticipantes participanteEdit;
+    private ConcursoAcademiaCoreoParticipantes participante;
 
-    public InscripcionControler() {
+    public InscripcionController() {
         super(ConcursoAcademiaCoreo.class);
     }
 
@@ -99,54 +91,44 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 	        return;
         }
 
-        
-        academia = service.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
         concurso = service.findConcursoVigente();
         
-    	concursoAcademia = service.getConcursoAcademia(academia.getId(),concurso.getId());
-    	
-        if (concursoAcademia == null) {
-    		concursoAcademia = new ConcursoAcademia();
-    		concursoAcademia.setConcurso(concurso);
-    		concursoAcademia.setAcademia(academia);
-    	}
-    	
-    	
-        this.listCoreo = service.findAllInscripciones(concursoAcademia.getId());
-        
-        this.listParticipatesAcademia = service.findParticipantesAcademia(academia.getId());
-
 	}
 
 	public void nuevaInscripcion(ActionEvent event) {
 		
     	this.prepareCreate(event);
 		
-        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/addInscripcion/inscripcionAdd.xhtml");
+        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/inscripcion/inscripcionAdd.xhtml");
 	}
 	
 	public void editInscripcion() {
+        participante = new ConcursoAcademiaCoreoParticipantes();
+        participante.setIdPersona(new Persona());
+
         this.listCoreoParticipante = (List<ConcursoAcademiaCoreoParticipantes>) service.findAllParticipante(this.getSelected().getId());
         this.listCoreoParticipanteRemove = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
-        this.participanteEdit = new ConcursoAcademiaCoreoParticipantes();
-        this.participanteEdit.setIdPersona(new Persona());
+
         if (listCoreoParticipante == null) listCoreoParticipante = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
-        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/addInscripcion/inscripcionEdit.xhtml");
+        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/inscripcion/inscripcionAdd.xhtml");
 	}
 	
     @Override
     public ConcursoAcademiaCoreo prepareCreate(ActionEvent event) {
     	super.prepareCreate(event);
     	
-    	this.getSelected().setConcursoAcademia(concursoAcademia);
+    	this.getSelected().setConcursoAcademia(new ConcursoAcademia());
+    	this.getSelected().getConcursoAcademia().setAcademia(new Academia());
         this.getSelected().setCategoria(new Categoria());
         this.getSelected().setModalidad(new Modalidad());
         this.getSelected().setPersona(new Persona());
         this.getSelected().setTipoParticipacion(new TipoParticipacion());
+
+        participante = new ConcursoAcademiaCoreoParticipantes();
+        participante.setIdPersona(new Persona());
         
-        this.participantesList = new ArrayList<Persona>();
-        this.removeParticipanteList = new ArrayList<Persona>();
-        this.participante = new Persona();
+        listCoreoParticipante = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
+        listCoreoParticipanteRemove = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
         
         return this.getSelected();
         
@@ -158,34 +140,30 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 
             if(accion.equals("new")){
             	
-            	if (participantesList.size() < 1) {
-                    FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Información!", "No se ha registrado ningun participante");
-                    facesContext.addMessage(null, m);
-                    return;
-            	}
-            	
-            	if (concursoAcademia.getId() == null) { 
-            		service.guardarConcursoAcademia(concursoAcademia);     
-                	concursoAcademia = service.getConcursoAcademia(academia.getId(),concurso.getId());
-            	} 
-
-            	this.getSelected().setConcursoAcademia(concursoAcademia);
-            	
-            	ArrayList<ConcursoAcademiaCoreoParticipantes> listParticipantes = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
-            	
-            	for (Persona p : removeParticipanteList) {
-            		ConcursoAcademiaCoreoParticipantes part = service.findParticipante(p.getId());
-            		if (part!=null) service.removeParticipante(part);
-    			}
-            	
-            	for (Persona p : participantesList) {
-            		ConcursoAcademiaCoreoParticipantes newP = new ConcursoAcademiaCoreoParticipantes();
-            		newP.setIdPersona(p);
-            		newP.setIdAcademiaConcursoCoreo(this.getSelected());
-            		listParticipantes.add(newP);
-    			}
-
-            		//this.getSelected().setConcursoAcademiaCoreoParticipantesList(listParticipantes);
+	            	if (listCoreoParticipante.size() < 1) {
+	                    FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Información!", "No se ha registrado ningun participante");
+	                    facesContext.addMessage(null, m);
+	                    return;
+	            	}
+	            	
+	            	ConcursoAcademia concursoAcademia = service.getConcursoAcademia(this.getSelected().getConcursoAcademia().getAcademia().getId(),concurso.getId());
+	            	
+	                if (concursoAcademia == null) {
+	            		concursoAcademia = new ConcursoAcademia();
+	            		concursoAcademia.setConcurso(concurso);
+	            		concursoAcademia.setAcademia(this.getSelected().getConcursoAcademia().getAcademia());
+	            		service.guardarConcursoAcademia(concursoAcademia);     
+		            	concursoAcademia = service.getConcursoAcademia(this.getSelected().getConcursoAcademia().getAcademia().getId(),concurso.getId());
+	            	}
+	                
+	            	this.getSelected().setConcursoAcademia(concursoAcademia);
+	            	
+	            	ArrayList<ConcursoAcademiaCoreoParticipantes> listParticipantes = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
+	            	
+	            	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipanteRemove) {
+	            		if (p.getId() != null)
+	            			service.removeParticipante(p);
+	    			}
             	
            			this.getSelected().setEstado("AC");
                     this.getSelected().setUsuAlta(credentials.getUsername());
@@ -194,11 +172,9 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
                     this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
                     this.saveNew(null);
                     
-                	for (Persona p : participantesList) {
-                		ConcursoAcademiaCoreoParticipantes newP = new ConcursoAcademiaCoreoParticipantes();
-                		newP.setIdPersona(p);
-                		newP.setIdAcademiaConcursoCoreo(this.getSelected());
-               			service.updateParticipante(newP);
+                	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipante) {
+                		p.setIdAcademiaConcursoCoreo(this.getSelected());
+               			service.updateParticipante(p);
         			}
 
             }else{
@@ -232,12 +208,10 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
                     }
             }
 
-            this.listCoreo = service.findAllInscripciones(concursoAcademia.getId());
-
             FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
             facesContext.addMessage(null, m);
             
-            NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/addInscripcion/inscripcionList.xhtml");
+            NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/inscripcion/inscripcionList.xhtml");
 
         } catch (Exception e) {
         	e.printStackTrace();
@@ -246,49 +220,40 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
             facesContext.addMessage(null, m);
         }
     }
+    
+    public void returnListParticipantesAcademia() { 
+    	try {
+    		
+    		this.listParticipatesAcademia = service.findParticipantesAcademia(this.getSelected().getConcursoAcademia().getAcademia().getId());
+    	}catch (Exception e) {
+			// TODO: handle exception
+    		e.printStackTrace();
+		}
+    }
 
-    public void eliminarParticipanteEdit(ConcursoAcademiaCoreoParticipantes detalle) throws Exception
+    public void eliminarParticipante(ConcursoAcademiaCoreoParticipantes detalle) throws Exception
     {    	
         if(detalle.getId() != null)
         {
         	listCoreoParticipanteRemove.add(detalle);
         }
         listCoreoParticipante.remove(detalle);
-        participanteEdit = null;
-    }
-
-    public void createNew() {
-        if(participantesList.contains(participante)) {
-            FacesMessage msg = new FacesMessage("Dublicado", "Este participante ya fue incluido");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        } 
-        else {
-        	participantesList.add(participante);
-            participante = new Persona();
-        }
-    }
-     
-
-    public void eliminarParticipante(Persona detalle) throws Exception
-    {    	
-        if(detalle.getId() != null)
-        {
-        	removeParticipanteList.add(detalle);
-        }
-        participantesList.remove(detalle);
         participante = null;
     }
 
-    public void createNewEdit() {
-        if(listCoreoParticipante.contains(participanteEdit)) {
-            FacesMessage msg = new FacesMessage("Dublicado", "Este participante ya fue incluido");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-        } 
-        else {
-        	participanteEdit.setIdAcademiaConcursoCoreo(this.getSelected());
-        	listCoreoParticipante.add(participanteEdit);
-        	participanteEdit = new ConcursoAcademiaCoreoParticipantes();
-        }
+    public void createNew() {
+    	
+    	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipante) {
+			if (p.getIdPersona().getId() == participante.getIdPersona().getId()) {
+	            FacesMessage msg = new FacesMessage("Dublicado", "Este participante ya fue incluido");
+	            FacesContext.getCurrentInstance().addMessage(null, msg);
+				return;
+			}
+		}
+
+       	participante.setIdAcademiaConcursoCoreo(this.getSelected());
+       	listCoreoParticipante.add(participante);
+       	participante = new ConcursoAcademiaCoreoParticipantes();
     }
 
     private String getRootErrorMessage(Exception e) {
@@ -318,52 +283,20 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 		this.concurso = concurso;
 	}
 
-	public Academia getAcademia() {
-		return academia;
+	public List<ConcursoAcademiaCoreoParticipantes> getListCoreoParticipante() {
+		return listCoreoParticipante;
 	}
 
-	public void setAcademia(Academia academia) {
-		this.academia = academia;
+	public void setListCoreoParticipante(List<ConcursoAcademiaCoreoParticipantes> listCoreoParticipante) {
+		this.listCoreoParticipante = listCoreoParticipante;
 	}
 
-	public Persona getParticipante() {
+	public ConcursoAcademiaCoreoParticipantes getParticipante() {
 		return participante;
 	}
 
-	public void setParticipante(Persona participante) {
+	public void setParticipante(ConcursoAcademiaCoreoParticipantes participante) {
 		this.participante = participante;
-	}
-
-	public List<ConcursoAcademiaCoreo> getListCoreo() {
-		return listCoreo;
-	}
-
-	public void setListCoreo(List<ConcursoAcademiaCoreo> listCoreo) {
-		this.listCoreo = listCoreo;
-	}
-
-	public ConcursoAcademia getConcursoAcademia() {
-		return concursoAcademia;
-	}
-
-	public void setConcursoAcademia(ConcursoAcademia concursoAcademia) {
-		this.concursoAcademia = concursoAcademia;
-	}
-
-	public ArrayList<Persona> getParticipantesList() {
-		return participantesList;
-	}
-
-	public void setParticipantesList(ArrayList<Persona> participantesList) {
-		this.participantesList = participantesList;
-	}
-
-	public ArrayList<Persona> getRemoveParticipanteList() {
-		return removeParticipanteList;
-	}
-
-	public void setRemoveParticipanteList(ArrayList<Persona> removeParticipanteList) {
-		this.removeParticipanteList = removeParticipanteList;
 	}
 
 	public List<Persona> getListParticipatesAcademia() {
@@ -373,22 +306,5 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 	public void setListParticipatesAcademia(List<Persona> listParticipatesAcademia) {
 		this.listParticipatesAcademia = listParticipatesAcademia;
 	}
-
-	public List<ConcursoAcademiaCoreoParticipantes> getListCoreoParticipante() {
-		return listCoreoParticipante;
-	}
-
-	public void setListCoreoParticipante(List<ConcursoAcademiaCoreoParticipantes> listCoreoParticipante) {
-		this.listCoreoParticipante = listCoreoParticipante;
-	}
-
-	public ConcursoAcademiaCoreoParticipantes getParticipanteEdit() {
-		return participanteEdit;
-	}
-
-	public void setParticipanteEdit(ConcursoAcademiaCoreoParticipantes participanteEdit) {
-		this.participanteEdit = participanteEdit;
-	}
-
 
 }

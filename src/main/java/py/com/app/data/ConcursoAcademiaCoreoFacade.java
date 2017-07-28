@@ -77,8 +77,17 @@ public class ConcursoAcademiaCoreoFacade extends AbstractFacade<ConcursoAcademia
         else return (ConcursoAcademiaCoreoParticipantes) list.get(0);
 	}
 
+	public List<ConcursoAcademiaCoreoParticipantes> findAllParticipante(Integer id) {
+		List list = getEntityManager().createQuery("Select c from ConcursoAcademiaCoreoParticipantes c "
+                + " Where c.idAcademiaConcursoCoreo.id = " + id).getResultList();
+        if (list.isEmpty()) return null;
+        else return list;
+	}
+
 	public void removeParticipante(ConcursoAcademiaCoreoParticipantes part) {
-		em.remove(part);
+		if (part.getId() != null){
+			em.remove(em.find(ConcursoAcademiaCoreoParticipantes.class, part.getId()));
+		}
 	}
 
 	public void guardarConcursoAcademia(ConcursoAcademia concursoAcademia) {
@@ -96,6 +105,14 @@ public class ConcursoAcademiaCoreoFacade extends AbstractFacade<ConcursoAcademia
                 + " Where c.academia.id = " + id).getResultList();
         if (list.isEmpty()) return null;
         else return list;
+	}
+
+	public void updateParticipante(ConcursoAcademiaCoreoParticipantes p) {
+		if (p.getId() == null){
+			em.persist(p);
+		}else{
+			em.merge(p);
+		}
 	}
 
 }

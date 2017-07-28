@@ -26,7 +26,7 @@
     </ui:define>
 
     <ui:define name="title">
-        #{inscripcionControler.concurso.nombre} - #{inscripcionControler.academia.nombre}
+        #{inscripcionController.concurso.nombre} 
     </ui:define>
 
     <ui:define name="description">
@@ -34,24 +34,24 @@
     </ui:define>
 
     <ui:define name="body">
-        <adm:breadcrumb link="/pages/addInscripcion/inscripcionList" title="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.inscripcion']}"/>
+        <adm:breadcrumb link="/pages/inscripcion/inscripcionList" title="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.inscripcion']}"/>
 
 			<h:form>
             	<div class="box box-primary">
                 	<div class="box-header with-border">
-                    	<p:commandButton actionListener="#{inscripcionControler.nuevaInscripcion}" 
+                    	<p:commandButton actionListener="#{inscripcionController.nuevaInscripcion}" 
                     					oncomplete="inscripcionAdd?faces-redirect=true" icon="fa fa-plus"
                     					update="@form"
                          	            value="#{bundle['btn.add']}" styleClass="btn-primary"/>
                     	<p:spacer width="5"/>
-                    	<p:commandButton actionListener="#{inscripcionControler.editInscripcion}" 
-                    					oncomplete="inscripcionEdit?faces-redirect=true" icon="fa fa-plus"
+                    	<p:commandButton actionListener="#{inscripcionController.editInscripcion}" 
+                    					oncomplete="inscripcionAdd?faces-redirect=true" icon="fa fa-plus"
                     					update="@form"
                          	            value="#{bundle['btn.edit']}" styleClass="btn-warning" 
-                         	            disabled="#{empty inscripcionControler.selected}"/>
+                         	            disabled="#{empty inscripcionController.selected}"/>
                     	<p:spacer width="5"/>
-                    	<p:commandButton actionListener="#{inscripcionControler.confirm('delete')}" 
-                    					icon="fa fa-plus" update="@form"  disabled="#{empty inscripcionControler.selected}"
+                    	<p:commandButton actionListener="#{inscripcionController.confirm('delete')}" 
+                    					icon="fa fa-plus" update="@form"  disabled="#{empty inscripcionController.selected}"
                          	            value="#{bundle['btn.delete']}" styleClass="btn-danger"/>
                          	            
 	                    <p:spacer width="5"/>
@@ -63,11 +63,11 @@
 	                    <p:separator/>
 	                    
 	                   	
-            <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionControler.listCoreo}" var="item" filteredValue="#{inscripcionControler.listCoreo}"
+            <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionController.items}" var="item" filteredValue="#{inscripcionController.items}"
             			 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
             			 currentPageReportTemplate="{currentPage} #{bundle['label.of']} {totalPages}"
             			 emptyMessage="#{bundle['msg.noRecordsFound']}"
-                         selectionMode="single" selection="#{inscripcionControler.selected}" style="margin-botton:20px"
+                         selectionMode="single" selection="#{inscripcionController.selected}" style="margin-botton:20px"
                          rowKey="#{item.id}" paginatorPosition="top"
                          paginator="true"
                          rows="10"
@@ -93,6 +93,10 @@
 			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.categoria']}">
 			                    <h:outputText value="#{item.categoria.descripcion}"/>
 			                </p:column>
+			                <p:column sortBy="#{item.concursoAcademia.academia.nombre}"  footerText=" " 
+			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.academia']}">
+			                    <h:outputText value="#{item.concursoAcademia.academia.nombre}"/>
+			                </p:column>
 			                <p:column sortBy="#{item.modalidad.descripcion}"  footerText=" " 
 			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.modalidad']}">
 			                    <h:outputText value="#{item.modalidad.descripcion}"/>
@@ -105,6 +109,7 @@
 			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.profesor']}">
 			                    <h:outputText value="#{item.persona.nombre}"/>
 			                </p:column>
+
 			                <p:column headerText="#{bundle['label.total']}">
 			                    <h:outputText value="#{item.total}"/>
 			                </p:column>
@@ -122,7 +127,7 @@
         	</h:form>
         	<p:dialog header="Selecionado" widgetVar="defaultSelecionadas" height="250"
                   	  width="400" responsive="true" styleClass="box-success">
-	            <p:dataList id="listaDefaultSelecionadas" value="#{inscripcionControler.selected}" var="default"
+	            <p:dataList id="listaDefaultSelecionadas" value="#{inscripcionController.selected}" var="default"
 	                        type="definition" >
 
 			                <h:outputText value="#{bundle['label.id']}"/>

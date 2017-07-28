@@ -11,7 +11,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import py.com.app.model.Persona;
 import py.com.app.model.PersonaAcademia;
 
 /**
@@ -33,7 +32,12 @@ public class PersonaAcademiaFacade extends AbstractFacade<PersonaAcademia> {
         super(PersonaAcademia.class);
     }
     
-    public List<Persona> findAllActives() {
-        return em.createQuery("Select c from  PersonaAcademia c Where c.estado = 'AC'").getResultList();
-    }
+	public List<PersonaAcademia> findParticipantesAcademia(Integer id) {
+		List list = getEntityManager().createQuery("Select c from PersonaAcademia c "
+                + " Where c.academia.id = " + id).getResultList();
+        if (list.isEmpty()) return null;
+        else return list;
+	}
+
+
 }

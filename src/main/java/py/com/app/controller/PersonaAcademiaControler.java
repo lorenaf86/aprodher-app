@@ -17,7 +17,6 @@
 package py.com.app.controller;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -30,14 +29,12 @@ import javax.inject.Inject;
 
 import py.com.app.data.ConcursoAcademiaCoreoFacade;
 import py.com.app.data.PersonaAcademiaFacade;
-import py.com.app.model.Academia;
 import py.com.app.model.Persona;
 import py.com.app.model.PersonaAcademia;
 import py.com.app.util.AbstractController;
 import py.com.app.util.AppHelper;
 import py.com.app.util.CalendarHelper;
 import py.com.app.util.Credentials;
-import py.com.app.util.JsfUtil;
 import py.com.app.util.MessageUtil;
 import py.com.app.util.NavigationRulezHelper;
 
@@ -48,7 +45,7 @@ import py.com.app.util.NavigationRulezHelper;
 
 @SessionScoped
 @ManagedBean
-public class PersonaAcademiaController extends AbstractController<PersonaAcademia> implements Serializable {
+public class PersonaAcademiaControler extends AbstractController<PersonaAcademia> implements Serializable {
 
 
 	/**
@@ -68,12 +65,7 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
     @EJB
     private ConcursoAcademiaCoreoFacade serviceAcademiaCoreoFacade;
 
-    @EJB
-    private ConcursoAcademiaCoreoFacade serviceConcurso;
-
-    private ArrayList<PersonaAcademia> personaAcademiaList;
-    
-    public PersonaAcademiaController() {
+    public PersonaAcademiaControler() {
         super(PersonaAcademia.class);
     }
 
@@ -87,8 +79,6 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
 	        return;
         }
 
-        Academia academia = serviceConcurso.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
-        personaAcademiaList = (ArrayList<PersonaAcademia>) service.findParticipantesAcademia(academia.getId());
     }
 
     @Override
@@ -100,11 +90,11 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
     	
 	public void nuevo(ActionEvent event) {
     	this.prepareCreate(event);
-        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademia/personaAcademiaAdd.xhtml");
+        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademiaGral/personaAcademiaAdd.xhtml");
 	}
 	
 	public void edit() {
-        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademia/personaAcademiaAdd.xhtml");
+        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademiaGral/personaAcademiaAdd.xhtml");
 	}
 
     public void confirm(String accion){
@@ -113,9 +103,6 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
         	
 	        if(accion.equals("new")){
 	        
-                Academia academia = serviceAcademiaCoreoFacade.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
-                this.getSelected().setAcademia(academia);
-
                 this.getSelected().setFechaInicio(CalendarHelper.getCurrentTimestamp());
                 this.getSelected().setEstado("AC");
                 this.getSelected().setUsuAlta(credentials.getUsername());
@@ -155,9 +142,7 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
 	        }
         
         
-       		Academia academia = serviceConcurso.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
-            personaAcademiaList = (ArrayList<PersonaAcademia>) service.findParticipantesAcademia(academia.getId());
-            NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademia/personaAcademiaList.xhtml");
+            NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademiaGral/personaAcademiaList.xhtml");
             
         }catch (Exception e) {
         	
@@ -166,13 +151,5 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
         
                 	
     }
-
-	public ArrayList<PersonaAcademia> getPersonaAcademiaList() {
-		return personaAcademiaList;
-	}
-
-	public void setPersonaAcademiaList(ArrayList<PersonaAcademia> academiaList) {
-		this.personaAcademiaList = academiaList;
-	}
 
 }
