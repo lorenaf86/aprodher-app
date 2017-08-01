@@ -21,9 +21,12 @@
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <div id="main-buttons" class="hidden-sm hidden-xs">
-                        <p:commandButton value="#{bundle['btn.save']}" update="@form"
+                        <p:commandButton value="#{bundle['btn.save']}" update="@form" rendered="#{inscripcionController.selected.id == null}"
                                          icon="fa fa-check" styleClass="btn-primary"
                                          actionListener="#{inscripcionController.confirm('new')}"/>
+                        <p:commandButton value="#{bundle['btn.save']}" update="@form"  rendered="#{inscripcionController.selected.id != null}"
+                                         icon="fa fa-check" styleClass="btn-primary"
+                                         actionListener="#{inscripcionController.confirm('edit')}"/>
                         <p:spacer width="5"/>
 
                         <p:commandButton value="#{bundle['btn.cancel']}" immediate="true"
@@ -49,6 +52,8 @@
                     <div class="ui-g ui-fluid">
                         <div class="ui-g-12">
                             
+                        <h:outputLabel value="#{bundle['label.id']}"  rendered="#{inscripcionController.selected.id != null}"/>
+                        <h:outputLabel value="#{inscripcionController.selected.id}"  rendered="#{inscripcionController.selected.id != null}"/>
                             
                         <h:outputLabel value="#{bundle['label.nombre']} #{bundle['label.of']} #{bundle['label.coreografia']}" for="nombre" />
                         <p:inputText id="nombre" value="#{inscripcionController.selected.nombre}"  
@@ -59,7 +64,8 @@
 		                <p:selectOneMenu id="academiaField"  style="width:260px" required="true"
 		                                 value="#{inscripcionController.selected.concursoAcademia.academia}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains"> 
-		                         <p:ajax event="change" update=":formDetalle :profesorField :academiaField" listener="#{inscripcionController.returnListParticipantesAcademia}"/>
+		                         <p:ajax event="change" update=":formDetalle :profesorField :academiaField" 
+		                         listener="#{inscripcionController.returnListParticipantesAcademia}"/>
 		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
 		                <f:selectItems var="a" value="#{academiaList}"
 		                         itemLabel= "#{a.nombre}"
@@ -129,6 +135,8 @@
         </h:form>
         
     <h:form id="formDetalle">
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-g-12">
     <p:growl id="msgs" />
  
     <p:panel header="#{bundle['btn.agregar']} #{bundle['label.participante']}" style="margin-bottom:20px">
@@ -141,7 +149,7 @@
                       effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
              <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
              <f:selectItems var="persona1" value="#{inscripcionController.listParticipatesAcademia}"
-                      itemLabel= "#{persona1.nombre}"
+                      itemLabel= "#{persona1.nombre} #{persona1.apellido}"
                       itemValue="#{persona1}" />                 
                      <p:column><h:outputText value="#{m.nombre}" /></p:column>  
              </p:selectOneMenu>
@@ -179,6 +187,8 @@
  
         </p:dataTable>
     </p:outputPanel>
+    </div>
+    </div>
 	</h:form>
     
     </ui:define>

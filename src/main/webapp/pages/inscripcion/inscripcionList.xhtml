@@ -63,7 +63,7 @@
 	                    <p:separator/>
 	                    
 	                   	
-            <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionController.items}" var="item" filteredValue="#{inscripcionController.items}"
+            <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionController.items}" var="item" filteredValue="#{inscripcionController.list}"
             			 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
             			 currentPageReportTemplate="{currentPage} #{bundle['label.of']} {totalPages}"
             			 emptyMessage="#{bundle['msg.noRecordsFound']}"
@@ -78,36 +78,36 @@
 				<f:facet name="header" >
                     <p:outputPanel style="float:left">
                     	<p:focus for="globalFilter"/>
-                    	<p:inputText id="globalFilter" onkeyup="PF('datalist').filter()" style="width:250px;" placeholder="Buscar" />
+                    	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()" style="width:250px;" placeholder="Buscar" />
                     </p:outputPanel>
                     <br/><br/>                    
                 </f:facet>
 			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110">
 			                    <h:outputText value="#{item.id}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.nombre}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.nombre']}">
+			                <p:column sortBy="#{item.nombre}" filterMatchMode="contains" filterable="true" filterMaxLength="3" 
+			                			headerText="#{bundle['label.nombre']}">
 			                    <h:outputText value="#{item.nombre}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.categoria.descripcion}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.categoria']}">
+			                <p:column sortBy="#{item.categoria.descripcion}"
+			                			headerText="#{bundle['label.categoria']}">
 			                    <h:outputText value="#{item.categoria.descripcion}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.concursoAcademia.academia.nombre}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.academia']}">
+			                <p:column sortBy="#{item.concursoAcademia.academia.nombre}"
+			                			headerText="#{bundle['label.academia']}">
 			                    <h:outputText value="#{item.concursoAcademia.academia.nombre}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.modalidad.descripcion}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.modalidad']}">
+			                <p:column sortBy="#{item.modalidad.descripcion}"
+			                			headerText="#{bundle['label.modalidad']}">
 			                    <h:outputText value="#{item.modalidad.descripcion}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.tipoParticipacion.descripcion}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.tipoParticipacion']}">
+			                <p:column sortBy="#{item.tipoParticipacion.descripcion}"
+			                			headerText="#{bundle['label.tipoParticipacion']}">
 			                    <h:outputText value="#{item.tipoParticipacion.descripcion}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.persona.nombre}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.profesor']}">
-			                    <h:outputText value="#{item.persona.nombre}"/>
+			                <p:column sortBy="#{item.persona.nombre}"  filterBy="#{item.persona.nombre} #{item.persona.apellido}" filterMatchMode="contains" filterable="true" filterMaxLength="3"
+			                			headerText="#{bundle['label.profesor']}">
+			                    <h:outputText value="#{item.persona.nombre} #{item.persona.apellido}"/>
 			                </p:column>
 
 			                <p:column headerText="#{bundle['label.total']}">

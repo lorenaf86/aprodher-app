@@ -84,6 +84,8 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
     
     private ConcursoAcademiaCoreoParticipantes participanteEdit;
 
+    private List<ConcursoAcademiaCoreo> list;
+
     public InscripcionControler() {
         super(ConcursoAcademiaCoreo.class);
     }
@@ -173,18 +175,6 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
             	
             	ArrayList<ConcursoAcademiaCoreoParticipantes> listParticipantes = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
             	
-            	for (Persona p : removeParticipanteList) {
-            		ConcursoAcademiaCoreoParticipantes part = service.findParticipante(p.getId());
-            		if (part!=null) service.removeParticipante(part);
-    			}
-            	
-            	for (Persona p : participantesList) {
-            		ConcursoAcademiaCoreoParticipantes newP = new ConcursoAcademiaCoreoParticipantes();
-            		newP.setIdPersona(p);
-            		newP.setIdAcademiaConcursoCoreo(this.getSelected());
-            		listParticipantes.add(newP);
-    			}
-
             		//this.getSelected().setConcursoAcademiaCoreoParticipantesList(listParticipantes);
             	
            			this.getSelected().setEstado("AC");
@@ -201,6 +191,11 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
                			service.updateParticipante(newP);
         			}
 
+                	for (Persona p : removeParticipanteList) {
+                		ConcursoAcademiaCoreoParticipantes part = service.findParticipante(p.getId());
+                		if (part!=null) service.removeParticipante(part);
+        			}
+
             }else{
                     if(accion.equals("edit")){
 
@@ -210,21 +205,22 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
                             return;
                     	}
                     	
-                    	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipanteRemove) {
-                    		if (p.getId() != null)
-                    			service.removeParticipante(p);
-            			}
-                    	
-                		this.getSelected().setConcursoAcademiaCoreoParticipantesList(listCoreoParticipante);
-                		
-                    	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipante) {
-                   			service.updateParticipante(p);
-            			}
+                	//this.getSelected().setConcursoAcademiaCoreoParticipantesList(listCoreoParticipante);
                 		
 
                 		this.getSelected().setUsuMod(credentials.getUsername());
                         this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
                         this.save(null);
+                        
+                    	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipanteRemove) {
+                    		if (p.getId() != null)
+                    			service.removeParticipante(p);
+            			}
+                    	
+                    	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipante) {
+                   			service.updateParticipante(p);
+            			}
+                		
                             
                     }else{
                             this.getSelected().setEstado("IN");
@@ -388,6 +384,15 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 
 	public void setParticipanteEdit(ConcursoAcademiaCoreoParticipantes participanteEdit) {
 		this.participanteEdit = participanteEdit;
+	}
+
+
+	public List<ConcursoAcademiaCoreo> getList() {
+		return list;
+	}
+
+	public void setList(List<ConcursoAcademiaCoreo> list) {
+		this.list = list;
 	}
 
 

@@ -86,7 +86,7 @@ public class ConcursoAcademiaCoreoFacade extends AbstractFacade<ConcursoAcademia
 
 	public void removeParticipante(ConcursoAcademiaCoreoParticipantes part) {
 		if (part.getId() != null){
-			em.remove(em.find(ConcursoAcademiaCoreoParticipantes.class, part.getId()));
+			em.remove(part);//em.find(ConcursoAcademiaCoreoParticipantes.class, part.getId())
 		}
 	}
 

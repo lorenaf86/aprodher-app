@@ -129,7 +129,7 @@
                       effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
              <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
              <f:selectItems var="persona1" value="#{inscripcionControler.listParticipatesAcademia}"
-                      itemLabel= "#{persona1.nombre}"
+                      itemLabel= "#{persona1.nombre} #{persona1.apellido}"
                       itemValue="#{persona1}" />                 
                      <p:column><h:outputText value="#{m.nombre}" /></p:column>  
              </p:selectOneMenu>

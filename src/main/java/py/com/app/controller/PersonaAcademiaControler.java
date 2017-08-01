@@ -17,6 +17,7 @@
 package py.com.app.controller;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -64,6 +65,8 @@ public class PersonaAcademiaControler extends AbstractController<PersonaAcademia
 
     @EJB
     private ConcursoAcademiaCoreoFacade serviceAcademiaCoreoFacade;
+
+    private List<PersonaAcademia> list;
 
     public PersonaAcademiaControler() {
         super(PersonaAcademia.class);
@@ -151,5 +154,14 @@ public class PersonaAcademiaControler extends AbstractController<PersonaAcademia
         
                 	
     }
+
+
+	public List<PersonaAcademia> getList() {
+		return list;
+	}
+
+	public void setList(List<PersonaAcademia> list) {
+		this.list = list;
+	}
 
 }

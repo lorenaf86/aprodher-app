@@ -18,6 +18,7 @@ package py.com.app.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -37,7 +38,6 @@ import py.com.app.util.AbstractController;
 import py.com.app.util.AppHelper;
 import py.com.app.util.CalendarHelper;
 import py.com.app.util.Credentials;
-import py.com.app.util.JsfUtil;
 import py.com.app.util.MessageUtil;
 import py.com.app.util.NavigationRulezHelper;
 
@@ -73,6 +73,8 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
 
     private ArrayList<PersonaAcademia> personaAcademiaList;
     
+    private List<PersonaAcademia> list;
+
     public PersonaAcademiaController() {
         super(PersonaAcademia.class);
     }
@@ -173,6 +175,15 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
 
 	public void setPersonaAcademiaList(ArrayList<PersonaAcademia> academiaList) {
 		this.personaAcademiaList = academiaList;
+	}
+
+
+	public List<PersonaAcademia> getList() {
+		return list;
+	}
+
+	public void setList(List<PersonaAcademia> list) {
+		this.list = list;
 	}
 
 }

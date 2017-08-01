@@ -64,7 +64,7 @@
                 	
                 	
 	                    
-            <p:dataTable id="datalist" widgetVar="datalists" value="#{personaAcademiaControler.items}" var="item" filteredValue="#{personaAcademiaControler.items}"
+            <p:dataTable id="datalist" widgetVar="datalists" value="#{personaAcademiaControler.items}" var="item" filteredValue="#{personaAcademiaControler.list}"
             			 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
             			 currentPageReportTemplate="{currentPage} #{bundle['label.of']} {totalPages}"
             			 emptyMessage="#{bundle['msg.noRecordsFound']}"
@@ -90,22 +90,22 @@
 			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110" >
 			                    <h:outputText value="#{item.persona.id}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.persona.cedula}" headerText="#{bundle['label.cedula']}"  > 
+			                <p:column sortBy="#{item.persona.cedula}" headerText="#{bundle['label.cedula']}"  filterBy="#{item.persona.cedula}" filterMatchMode="contains" filterMaxLength="3"> 
 			                    <h:outputText value="#{item.persona.cedula}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.persona.nombre}" headerText="#{bundle['label.nombre']}"  >
+			                <p:column sortBy="#{item.persona.nombre}" headerText="#{bundle['label.nombre']}" filterBy="#{item.persona.nombre}" filterMatchMode="contains" filterMaxLength="3">
 			                    <h:outputText value="#{item.persona.nombre}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.persona.apellido}" headerText="#{bundle['label.apellido']}"  >
+			                <p:column sortBy="#{item.persona.apellido}" headerText="#{bundle['label.apellido']}"  filterBy="#{item.persona.apellido}" filterMatchMode="contains" filterMaxLength="3">
 			                    <h:outputText value="#{item.persona.apellido}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.academia.nombre}" headerText="#{bundle['label.academia']}"  >
+			                <p:column sortBy="#{item.academia.nombre}" headerText="#{bundle['label.academia']}"   filterMaxLength="3">
 			                    <h:outputText value="#{item.academia.nombre}"/>
 			                </p:column>
 			                <p:column sortBy="#{item.persona.fechaNacimiento}" headerText="#{bundle['label.fechaNacimiento']}"  >
 			                    <h:outputText value="#{item.persona.fechaNacimiento}"/>
 			                </p:column>
-			                <p:column headerText="Estado" width="240">
+			                <p:column headerText="Estado" width="240" >
 			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
 			                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
 			                </p:column>
