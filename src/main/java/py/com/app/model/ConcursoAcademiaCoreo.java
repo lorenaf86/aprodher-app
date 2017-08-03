@@ -7,10 +7,8 @@ package py.com.app.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,14 +19,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -76,9 +72,6 @@ public class ConcursoAcademiaCoreo implements Serializable {
     @Column(name = "estado")
     private String estado;
     
-    @OneToMany(mappedBy = "idAcademiaConcursoCoreo", fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
-    private List<ConcursoAcademiaCoreoParticipantes> concursoAcademiaCoreoParticipantesList;
-    
     @JoinColumn(name = "id_categoria", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER )
     private Categoria categoria;
@@ -98,6 +91,9 @@ public class ConcursoAcademiaCoreo implements Serializable {
     @JoinColumn(name = "id_tipo_participacion", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER )
     private TipoParticipacion tipoParticipacion;
+    
+    @Column(name = "coreografia")
+    private Boolean coreografia;
     
     @Transient
     private Integer total;
@@ -181,15 +177,6 @@ public class ConcursoAcademiaCoreo implements Serializable {
         this.tiempo = tiempo;
     }
 
-    @XmlTransient
-    public List<ConcursoAcademiaCoreoParticipantes> getConcursoAcademiaCoreoParticipantesList() {
-        return concursoAcademiaCoreoParticipantesList;
-    }
-
-    public void setConcursoAcademiaCoreoParticipantesList(List<ConcursoAcademiaCoreoParticipantes> concursoAcademiaCoreoParticipantesList) {
-        this.concursoAcademiaCoreoParticipantesList = concursoAcademiaCoreoParticipantesList;
-    }
-
     public Categoria getCategoria() {
         return categoria;
     }
@@ -222,7 +209,15 @@ public class ConcursoAcademiaCoreo implements Serializable {
         this.persona = persona;
     }
 
-    public TipoParticipacion getTipoParticipacion() {
+    public Boolean getCoreografia() {
+		return coreografia;
+	}
+
+	public void setCoreografia(Boolean coreografia) {
+		this.coreografia = coreografia;
+	}
+
+	public TipoParticipacion getTipoParticipacion() {
         return tipoParticipacion;
     }
 
@@ -256,7 +251,10 @@ public class ConcursoAcademiaCoreo implements Serializable {
     }
 
 	public Integer getTotal() {
-		return (int) ((this.tipoParticipacion.getValor()==null?0:this.tipoParticipacion.getValor())*(this.cantidad==null?0:this.cantidad));
+		if (this.tipoParticipacion!=null) 
+			return (int) ((this.tipoParticipacion.getValor()==null?0:this.tipoParticipacion.getValor())*(this.cantidad==null?0:this.cantidad));
+		else
+			return 0;
 	}
 
 	public void setTotal(Integer total) {

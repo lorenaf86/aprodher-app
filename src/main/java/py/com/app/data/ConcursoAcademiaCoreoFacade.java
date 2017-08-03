@@ -70,12 +70,21 @@ public class ConcursoAcademiaCoreoFacade extends AbstractFacade<ConcursoAcademia
         else return (ConcursoAcademia) list.get(0);
 	}
 
-	public ConcursoAcademiaCoreoParticipantes findParticipante(Integer id) {
+	public ConcursoAcademiaCoreoParticipantes findParticipante(Integer idPersona, Integer idConcursoAcademiaCoreo) {
 		List list = getEntityManager().createQuery("Select c from ConcursoAcademiaCoreoParticipantes c "
-                + " Where c.idPersona.id = " + id).getResultList();
+                + " Where c.idPersona.id = " + idPersona 
+                + " and c.idConcursoAcademiaCoreo.id = " + idConcursoAcademiaCoreo).getResultList();
         if (list.isEmpty()) return null;
         else return (ConcursoAcademiaCoreoParticipantes) list.get(0);
 	}
+
+	public ConcursoAcademiaCoreoParticipantes findConcursoCoreoParticipante(Integer id) {
+		List list = getEntityManager().createQuery("Select c from ConcursoAcademiaCoreoParticipantes c "
+                + " Where c.id = " + id).getResultList();
+        if (list.isEmpty()) return null;
+        else return (ConcursoAcademiaCoreoParticipantes) list.get(0);
+	}
+
 
 	public List<ConcursoAcademiaCoreoParticipantes> findAllParticipante(Integer id) {
 		List list = getEntityManager().createQuery("Select c from ConcursoAcademiaCoreoParticipantes c "
@@ -85,9 +94,7 @@ public class ConcursoAcademiaCoreoFacade extends AbstractFacade<ConcursoAcademia
 	}
 
 	public void removeParticipante(ConcursoAcademiaCoreoParticipantes part) {
-		if (part.getId() != null){
-			em.remove(part);//em.find(ConcursoAcademiaCoreoParticipantes.class, part.getId())
-		}
+		em.remove(em.find(ConcursoAcademiaCoreoParticipantes.class, part.getId()));
 	}
 
 	public void guardarConcursoAcademia(ConcursoAcademia concursoAcademia) {

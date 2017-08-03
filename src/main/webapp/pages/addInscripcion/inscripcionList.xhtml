@@ -109,11 +109,26 @@
 			                    <h:outputText value="#{item.total}"/>
 			                </p:column>
 
+			                <p:column sortBy="#{item.coreografia}" 
+			                			headerText="#{bundle['label.coreografia']}">
+			                    <h:outputText value="#{item.coreografia}"/>
+			                </p:column>
+
 			                <p:column  headerText="Estado" width="240">
 			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
 			                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
 			                </p:column>
 	                        	
+		                    <br/><br/>                    
+		       				<f:facet name="footer" >
+		                    <p:outputPanel style="float:right">
+		                        <h:outputText value="#{bundle['label.total']}:"/>
+		                    	<p:spacer width="15"/>
+		                        <h:outputText value="#{inscripcionControler.total}" rendered="#{not empty inscripcionControler.listCoreo}">
+		                        	<f:convertNumber pattern="###,###,###,###,##0"  />
+		                        </h:outputText>
+		                    </p:outputPanel>
+		                    </f:facet>
 	                    </p:dataTable>
 
     

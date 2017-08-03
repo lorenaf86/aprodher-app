@@ -137,8 +137,15 @@ public class PersonaAcademiaControler extends AbstractController<PersonaAcademia
 
 		        }else {
 		        	
-		        	this.getSelected().setEstado("IN");
-		        	this.delete(null);
+		        	try {
+			        	this.getSelected().setEstado("IN");
+			        	this.delete(null);
+		        	}catch (Exception e) {
+		        		e.printStackTrace();
+		    	        FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Información!", AppHelper.getBundleMessage("msg.deletedfail"));
+		    	        facesContext.addMessage(null, m);
+		    	        return;
+					}
 		        	
 		        }
 	            
@@ -149,7 +156,7 @@ public class PersonaAcademiaControler extends AbstractController<PersonaAcademia
             
         }catch (Exception e) {
         	
-            MessageUtil.addFacesMessageInfo("msg.atencion", AppHelper.getBundleMessage("msg.deletedfail"));
+            MessageUtil.addFacesMessageInfo("msg.atencion", AppHelper.getBundleMessage("msg.persistencia"));
 		}
         
                 	

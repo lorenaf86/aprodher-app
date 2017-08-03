@@ -61,7 +61,7 @@
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
                             
                         <h:outputLabel value="#{bundle['label.academia']}" for="academiaField" />
-		                <p:selectOneMenu id="academiaField"  style="width:260px" required="true"
+		                <p:selectOneMenu id="academiaField" required="true"
 		                                 value="#{inscripcionController.selected.concursoAcademia.academia}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains"> 
 		                         <p:ajax event="change" update=":formDetalle :profesorField :academiaField" 
@@ -74,7 +74,7 @@
 		                </p:selectOneMenu>
 
                         <h:outputLabel value="#{bundle['label.categoria']}" for="categoriaField" />
-		                <p:selectOneMenu id="categoriaField"  style="width:260px" 
+		                <p:selectOneMenu id="categoriaField" 
 		                                 value="#{inscripcionController.selected.categoria}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
 		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
@@ -85,7 +85,7 @@
 		                </p:selectOneMenu>
                         
 		                <h:outputLabel value="#{bundle['label.modalidad']}"   for="modalidadField"/>
-		                <p:selectOneMenu id="modalidadField"  style="width:260px" 
+		                <p:selectOneMenu id="modalidadField" 
 		                                 value="#{inscripcionController.selected.modalidad}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
 		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
@@ -96,18 +96,18 @@
 		                </p:selectOneMenu>
 		
 		                <h:outputLabel value="#{bundle['label.profesor']}"   for="profesorField"/>
-		                <p:selectOneMenu id="profesorField"  style="width:260px" 
+		                <p:selectOneMenu id="profesorField" 
 		                                 value="#{inscripcionController.selected.persona}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
 		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
 		                <f:selectItems var="persona" value="#{inscripcionController.listParticipatesAcademia}"
-		                         itemLabel= "#{persona.nombre}"
+		                         itemLabel= "#{persona.nombre} #{persona.apellido}"
 		                         itemValue="#{persona}" />                 
-		                        <p:column><h:outputText value="#{m.nombre}" /></p:column>  
+		                        <p:column><h:outputText value="#{m.nombre} #{m.apellido}" /></p:column>  
 		                </p:selectOneMenu>
 		
 		                <h:outputLabel value="#{bundle['label.tipoParticipacion']}"  for="tipoParticipacionField"  />
-		                <p:selectOneMenu id="tipoParticipacionField"  style="width:260px" 
+		                <p:selectOneMenu id="tipoParticipacionField" 
 		                                 value="#{inscripcionController.selected.tipoParticipacion}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
 		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
@@ -118,15 +118,18 @@
 		                </p:selectOneMenu>
 		
 		                <h:outputLabel value="#{bundle['label.cantidadParticipantes']}" for="cantidadField" />
-		                <p:inputText id="cantidadField" size="10"  styleClass="form-control" style="width:50px"
+		                <p:inputText id="cantidadField" size="10"  styleClass="form-control" 
 		                             value="#{inscripcionController.selected.cantidad}" 
 		                requiredMessage="#{bundle['search.label.fieldRequired']} - #{bundle['label.cantidadParticipantes']}" />
 		
 		                <h:outputLabel value="#{bundle['label.duracionMusical']} (minutos)" for="duracionField" />
-		                <p:inputText id="duracionField" size="10"  styleClass="form-control" style="width:50px"
+		                <p:inputText id="duracionField" size="10"  styleClass="form-control"
 		                             value="#{inscripcionController.selected.tiempo}" 
 		                requiredMessage="#{bundle['search.label.fieldRequired']} - #{bundle['label.duracionMusical']}" />
                             
+		                <h:outputLabel value="#{bundle['label.compite']}" for="coreografiaField" />
+		                <p:selectBooleanCheckbox id="coreografiaField" value="#{inscripcionController.selected.coreografia}" />
+
                         </div>
                     </div>
                      </div>
@@ -144,14 +147,14 @@
 
              <h:outputLabel value="#{bundle['label.participante']} "   for="bailarinField"/>
              <p:spacer width="15"/>
-             <p:selectOneMenu id="bailarinField"  style="width:260px" 
+             <p:selectOneMenu id="bailarinField" 
                               value="#{inscripcionController.participante.idPersona}"
                       effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
              <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
              <f:selectItems var="persona1" value="#{inscripcionController.listParticipatesAcademia}"
                       itemLabel= "#{persona1.nombre} #{persona1.apellido}"
                       itemValue="#{persona1}" />                 
-                     <p:column><h:outputText value="#{m.nombre}" /></p:column>  
+                     <p:column><h:outputText value="#{m.nombre} #{m.apellido}" /></p:column>  
              </p:selectOneMenu>
 
             <p:spacer width="5"/>
@@ -174,7 +177,7 @@
                 <f:facet name="header">
                     <h:outputText value="#{bundle['label.nombre']}" />
                 </f:facet>
-                <h:outputText value="#{participante.idPersona.nombre}" />
+                <h:outputText value="#{participante.idPersona.nombre} #{participante.idPersona.apellido}" />
             </p:column>
  
             <p:column headerText="Action">

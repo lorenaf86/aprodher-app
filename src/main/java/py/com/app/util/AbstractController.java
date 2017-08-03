@@ -288,9 +288,9 @@ public abstract class AbstractController<T>
         catch (Exception ex)
         {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
-            JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("msg.error"));
+            JsfUtil.addErrorMessage(ex, MessageUtil.retrieveMessage("PersistenceErrorOccured"));
         }
-        
+       
     }
     
     private void persistReturnObject(PersistAction persistAction, String successMessage)
@@ -326,13 +326,10 @@ public abstract class AbstractController<T>
         catch (EJBException ex)
         {
             displayError(ex.getCause(), ex);
-        {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
             JsfUtil.addErrorMessage(ex, ResourceBundle.getBundle("/Bundle").getString("msg.persistencia"));
         }
         
-    }
-
     }
     /**
      * this method must be override it to get the needed information <br>

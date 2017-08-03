@@ -78,14 +78,16 @@
 				<f:facet name="header" >
                     <p:outputPanel style="float:left">
                     	<p:focus for="globalFilter"/>
-                    	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()" style="width:250px;" placeholder="Buscar" />
+                    	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()" style="width:250px;" placeholder="Buscar" 
+                    	/>
                     </p:outputPanel>
                     <br/><br/>                    
                 </f:facet>
 			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110">
 			                    <h:outputText value="#{item.id}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.nombre}" filterMatchMode="contains" filterable="true" filterMaxLength="3" 
+			                <p:column sortBy="#{item.nombre}" filterMatchMode="contains" filterable="true" 
+			                			filterMaxLength="3" filterBy="#{item.nombre}" 
 			                			headerText="#{bundle['label.nombre']}">
 			                    <h:outputText value="#{item.nombre}"/>
 			                </p:column>
@@ -93,8 +95,10 @@
 			                			headerText="#{bundle['label.categoria']}">
 			                    <h:outputText value="#{item.categoria.descripcion}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.concursoAcademia.academia.nombre}"
-			                			headerText="#{bundle['label.academia']}">
+			                <p:column sortBy="#{item.concursoAcademia.academia.nombre}"  filterable="true" 
+			                			filterMaxLength="3"  filterBy="#{item.concursoAcademia.academia.nombre}" 
+			                			headerText="#{bundle['label.academia']}"
+			                			>
 			                    <h:outputText value="#{item.concursoAcademia.academia.nombre}"/>
 			                </p:column>
 			                <p:column sortBy="#{item.modalidad.descripcion}"
@@ -105,9 +109,14 @@
 			                			headerText="#{bundle['label.tipoParticipacion']}">
 			                    <h:outputText value="#{item.tipoParticipacion.descripcion}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.persona.nombre}"  filterBy="#{item.persona.nombre} #{item.persona.apellido}" filterMatchMode="contains" filterable="true" filterMaxLength="3"
+			                <p:column sortBy="#{item.persona.nombre}" 
 			                			headerText="#{bundle['label.profesor']}">
 			                    <h:outputText value="#{item.persona.nombre} #{item.persona.apellido}"/>
+			                </p:column>
+
+			                <p:column sortBy="#{item.coreografia}" 
+			                			headerText="#{bundle['label.coreografia']}">
+			                    <h:outputText value="#{item.coreografia}"/>
 			                </p:column>
 
 			                <p:column headerText="#{bundle['label.total']}">
@@ -118,8 +127,20 @@
 			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
 			                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
 			                </p:column>
+	                       
+                    <br/><br/>                    
+       				<f:facet name="footer" >
+                    <p:outputPanel style="float:right">
+                        <h:outputText value="#{bundle['label.total']}:"/>
+                    	<p:spacer width="15"/>
+                        <h:outputText value="#{inscripcionController.total}">
+                        	<f:convertNumber pattern="###,###,###,###,##0"  />
+                        </h:outputText>
+                    </p:outputPanel>
+                	</f:facet>
+	                       
 	                        	
-	                    </p:dataTable>
+	              </p:dataTable>
 
     
 					</div>

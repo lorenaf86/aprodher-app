@@ -77,7 +77,6 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
     private List<Persona>  listParticipatesAcademia;
 
     private ArrayList<Persona> participantesList;
-    private ArrayList<Persona> removeParticipanteList;
 
     private List<ConcursoAcademiaCoreoParticipantes>  listCoreoParticipante;
     private List<ConcursoAcademiaCoreoParticipantes>  listCoreoParticipanteRemove;
@@ -85,6 +84,8 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
     private ConcursoAcademiaCoreoParticipantes participanteEdit;
 
     private List<ConcursoAcademiaCoreo> list;
+
+    private Double total=0.0;
 
     public InscripcionControler() {
         super(ConcursoAcademiaCoreo.class);
@@ -117,9 +118,17 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
         this.listCoreo = service.findAllInscripciones(concursoAcademia.getId());
         
         this.listParticipatesAcademia = service.findParticipantesAcademia(academia.getId());
+        getterTotal();
 
 	}
 
+    public void getterTotal(){
+    	total = 0.0;
+    	for (ConcursoAcademiaCoreo c : listCoreo) {
+        	total += c.getTotal();		
+		}
+    }
+    
 	public void nuevaInscripcion(ActionEvent event) {
 		
     	this.prepareCreate(event);
@@ -128,11 +137,11 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 	}
 	
 	public void editInscripcion() {
+        if (listCoreoParticipante == null) listCoreoParticipante = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
         this.listCoreoParticipante = (List<ConcursoAcademiaCoreoParticipantes>) service.findAllParticipante(this.getSelected().getId());
         this.listCoreoParticipanteRemove = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
         this.participanteEdit = new ConcursoAcademiaCoreoParticipantes();
         this.participanteEdit.setIdPersona(new Persona());
-        if (listCoreoParticipante == null) listCoreoParticipante = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
         NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/addInscripcion/inscripcionEdit.xhtml");
 	}
 	
@@ -147,7 +156,6 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
         this.getSelected().setTipoParticipacion(new TipoParticipacion());
         
         this.participantesList = new ArrayList<Persona>();
-        this.removeParticipanteList = new ArrayList<Persona>();
         this.participante = new Persona();
         
         return this.getSelected();
@@ -156,8 +164,6 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 
     public void confirm(String accion){
     	
-        try {
-
             if(accion.equals("new")){
             	
             	if (participantesList.size() < 1) {
@@ -173,54 +179,39 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 
             	this.getSelected().setConcursoAcademia(concursoAcademia);
             	
-            	ArrayList<ConcursoAcademiaCoreoParticipantes> listParticipantes = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
-            	
-            		//this.getSelected().setConcursoAcademiaCoreoParticipantesList(listParticipantes);
-            	
-           			this.getSelected().setEstado("AC");
-                    this.getSelected().setUsuAlta(credentials.getUsername());
-                    this.getSelected().setFechaAlta(CalendarHelper.getCurrentTimestamp());
-                    this.getSelected().setUsuMod(credentials.getUsername());
-                    this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
-                    this.saveNew(null);
-                    
-                	for (Persona p : participantesList) {
-                		ConcursoAcademiaCoreoParticipantes newP = new ConcursoAcademiaCoreoParticipantes();
-                		newP.setIdPersona(p);
-                		newP.setIdAcademiaConcursoCoreo(this.getSelected());
-               			service.updateParticipante(newP);
-        			}
-
-                	for (Persona p : removeParticipanteList) {
-                		ConcursoAcademiaCoreoParticipantes part = service.findParticipante(p.getId());
-                		if (part!=null) service.removeParticipante(part);
-        			}
+        		//this.getSelected().setConcursoAcademiaCoreoParticipantesList(listParticipantes);
+        	
+       			this.getSelected().setEstado("AC");
+                this.getSelected().setUsuAlta(credentials.getUsername());
+                this.getSelected().setFechaAlta(CalendarHelper.getCurrentTimestamp());
+                this.getSelected().setUsuMod(credentials.getUsername());
+                this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
+                
+                this.saveNew(null);
+                
+            	for (Persona p : participantesList) {
+            		ConcursoAcademiaCoreoParticipantes newP = new ConcursoAcademiaCoreoParticipantes();
+            		newP.setIdPersona(p);
+            		newP.setIdAcademiaConcursoCoreo(this.getSelected());
+           			service.updateParticipante(newP);
+    			}
 
             }else{
                     if(accion.equals("edit")){
 
-                    	if (listCoreoParticipante.size() < 1) {
-                            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Información!", "No se ha registrado ningun participante");
-                            facesContext.addMessage(null, m);
-                            return;
-                    	}
-                    	
-                	//this.getSelected().setConcursoAcademiaCoreoParticipantesList(listCoreoParticipante);
-                		
-
                 		this.getSelected().setUsuMod(credentials.getUsername());
                         this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
-                        this.save(null);
                         
-                    	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipanteRemove) {
-                    		if (p.getId() != null)
-                    			service.removeParticipante(p);
-            			}
-                    	
                     	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipante) {
                    			service.updateParticipante(p);
             			}
                 		
+                    	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipanteRemove) {
+                   			service.removeParticipante(p);
+            			}
+                    	
+                        this.save(null);
+                    	
                             
                     }else{
                             this.getSelected().setEstado("IN");
@@ -229,18 +220,7 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
             }
 
             this.listCoreo = service.findAllInscripciones(concursoAcademia.getId());
-
-            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
-            facesContext.addMessage(null, m);
-            
             NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/addInscripcion/inscripcionList.xhtml");
-
-        } catch (Exception e) {
-        	e.printStackTrace();
-            String errorMessage = getRootErrorMessage(e);
-            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Registration unsuccessful");
-            facesContext.addMessage(null, m);
-        }
     }
 
     public void eliminarParticipanteEdit(ConcursoAcademiaCoreoParticipantes detalle) throws Exception
@@ -267,10 +247,6 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 
     public void eliminarParticipante(Persona detalle) throws Exception
     {    	
-        if(detalle.getId() != null)
-        {
-        	removeParticipanteList.add(detalle);
-        }
         participantesList.remove(detalle);
         participante = null;
     }
@@ -354,14 +330,6 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 		this.participantesList = participantesList;
 	}
 
-	public ArrayList<Persona> getRemoveParticipanteList() {
-		return removeParticipanteList;
-	}
-
-	public void setRemoveParticipanteList(ArrayList<Persona> removeParticipanteList) {
-		this.removeParticipanteList = removeParticipanteList;
-	}
-
 	public List<Persona> getListParticipatesAcademia() {
 		return listParticipatesAcademia;
 	}
@@ -395,5 +363,13 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
 		this.list = list;
 	}
 
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
 
 }

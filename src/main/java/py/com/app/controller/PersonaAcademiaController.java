@@ -111,8 +111,6 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
 
     public void confirm(String accion){
     	
-        try {
-        	
 	        if(accion.equals("new")){
 	        
                 Academia academia = serviceAcademiaCoreoFacade.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
@@ -149,8 +147,8 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
 
 		        }else {
 		        	
-		        	this.getSelected().setEstado("IN");
-		        	this.delete(null);
+			        	this.getSelected().setEstado("IN");
+			        	this.delete(null);
 		        	
 		        }
 	            
@@ -161,12 +159,6 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
             personaAcademiaList = (ArrayList<PersonaAcademia>) service.findParticipantesAcademia(academia.getId());
             NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademia/personaAcademiaList.xhtml");
             
-        }catch (Exception e) {
-        	
-            MessageUtil.addFacesMessageInfo("msg.atencion", AppHelper.getBundleMessage("msg.deletedfail"));
-		}
-        
-                	
     }
 
 	public ArrayList<PersonaAcademia> getPersonaAcademiaList() {

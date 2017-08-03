@@ -39,53 +39,62 @@
 			<h:form>
             	<div class="box box-primary">
                 	<div class="box-header with-border">
-	                    <p:commandButton value="Ver Selecionado(s)" rendered="false"
-	                    				 oncomplete="PF('defaultSelecionadas').show()"
-	                    				 update="@(.ui-dialog)" 
+	                    <p:commandButton value="Generar Orden" rendered="#{credentials.idUsuario == 1}"
+	                    				 update="@form"  style="float: right"
 	                    				 styleClass="btn-info"
-	                                     icon="fa fa-search"/>
-	                    <p:separator/>
+	                                     icon="fa fa-search"
+                                         actionListener="#{ordenController.generarOrden}"/>	                                     	                    
 	                    
-	                    
-	                    <p:dataTable id="datalist" widgetVar="datalist"   
-	                    			value="#{ordenController.ordenList}"  var="item" filteredValue="#{ordenController.ordenList}"                			 
-	                                 paginator="true" draggableRows="true"	rowIndexVar="keyVar"                                
+	                    <p:dataTable id="datalist" widgetVar="datalists"   
+	                    			value="#{ordenController.ordenList}"  var="item" filteredValue="#{ordenController.list}"                			 
+	                                 rowIndexVar="keyVar"  draggableRows="true"                              
 	                                 rowsPerPageTemplate="5,10,15,20,30">
 	
-					        <p:ajax event="rowReorder" update="@form" />
+					        <p:ajax event="rowReorder" update="@form" listener="#{ordenController.onRowReorder}" />
 
 	                        <p:ajax event="rowSelectCheckbox" update="@(.ui-button)"/>
 	                        <p:ajax event="rowUnselectCheckbox" update="@(.ui-button)"/>
 	                        <p:ajax event="rowSelect" update="@(.ui-button)"/>
 	                        <p:ajax event="rowUnselect" update="@(.ui-button)"/>
 	
+						<f:facet name="header" >
+		                    <p:outputPanel style="float:left">
+		                    	<p:focus for="globalFilter"/>
+		                    	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()" style="width:250px;" placeholder="Buscar" />
+		                    </p:outputPanel>
+		                    <br/><br/>                    
+		                </f:facet>
 	
 			                <p:column headerText="Nro Orden" >
-			                    <h:outputText value="#{keyVar+1}"/>
+			                    <h:outputText value="#{item.id}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.nombre}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.nombre']}">
+			                <p:column sortBy="#{item.nombre}" filterMatchMode="contains" filterBy="#{item.nombre}" filterable="true"  filterMaxLength="3" 
+			                			headerText="#{bundle['label.nombre']}">
 			                    <h:outputText value="#{item.nombre}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.concursoAcademia.academia.nombre}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.academia']}">
-			                    <h:outputText value="#{item.concursoAcademia.academia.nombre}"/>
+			                <p:column sortBy="#{item.academia.nombre}" filterMatchMode="contains" filterBy="#{item.academia.nombre}" filterable="true"  filterMaxLength="3" 
+			                			headerText="#{bundle['label.academia']}">
+			                    <h:outputText value="#{item.academia.nombre}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.categoria.descripcion}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.categoria']}">
+			                <p:column sortBy="#{item.categoria.descripcion}" 
+			                			headerText="#{bundle['label.categoria']}">
 			                    <h:outputText value="#{item.categoria.descripcion}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.modalidad.descripcion}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.modalidad']}">
+			                <p:column sortBy="#{item.modalidad.descripcion}" 
+			                			headerText="#{bundle['label.modalidad']}">
 			                    <h:outputText value="#{item.modalidad.descripcion}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.tipoParticipacion.descripcion}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.tipoParticipacion']}">
+			                <p:column sortBy="#{item.tipoParticipacion.descripcion}" 
+			                			headerText="#{bundle['label.tipoParticipacion']}">
 			                    <h:outputText value="#{item.tipoParticipacion.descripcion}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.persona.nombre}"  footerText=" " 
-			                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.profesor']}">
-			                    <h:outputText value="#{item.persona.nombre}"/>
+			                <p:column sortBy="#{item.persona.nombre}"
+			                			headerText="#{bundle['label.profesor']}">
+			                    <h:outputText value="#{item.persona.nombre} #{item.persona.apellido}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.coreografia}" 
+			                			headerText="#{bundle['label.coreografia']}">
+			                    <h:outputText value="#{item.coreografia}"/>
 			                </p:column>
 
                 <f:facet name="footer">

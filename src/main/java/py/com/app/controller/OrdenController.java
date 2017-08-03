@@ -21,11 +21,15 @@ import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
+import org.primefaces.event.ReorderEvent;
+
 import py.com.app.data.OrdenFacade;
-import py.com.app.model.ConcursoAcademiaCoreo;
+import py.com.app.model.ConcursoOrden;
+import py.com.app.util.Credentials;
 
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name
@@ -47,13 +51,37 @@ public class OrdenController implements Serializable {
     @Inject
     private OrdenFacade ordenService;
 
-    private ArrayList<ConcursoAcademiaCoreo> ordenList;
+    @Inject
+    Credentials credentials;
+
+    private ArrayList<ConcursoOrden> ordenList;
     
-	@PostConstruct
+    private ArrayList<ConcursoOrden>list;
+
+    @PostConstruct
     public void init() {
-		ordenList = (ArrayList<ConcursoAcademiaCoreo>) ordenService.findAll();
+    	
+        if (this.credentials == null || this.credentials.getIdEmpleado() == null) {
+	        FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Información!", "Es necesario volver a Loguearse!");
+	        facesContext.addMessage(null, m);
+	        return;
+        }
+
+        if (Integer.parseInt(this.credentials.getIdEmpleado()+"") == 1)
+        	ordenList = (ArrayList<ConcursoOrden>) ordenService.findAll();
+        else
+        	ordenList = (ArrayList<ConcursoOrden>) ordenService.findAll(Integer.parseInt(this.credentials.getIdEmpleado()+""));
     }
 
+	public void generarOrden() {
+		ordenService.generarOrden();
+		ordenList = (ArrayList<ConcursoOrden>) ordenService.findAll();
+	}
+	
+    public void onRowReorder(ReorderEvent event) {
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
 
     private String getRootErrorMessage(Exception e) {
         // Default to general error message that registration failed.
@@ -75,13 +103,21 @@ public class OrdenController implements Serializable {
     }
 
 
-	public ArrayList<ConcursoAcademiaCoreo> getOrdenList() {
+	public ArrayList<ConcursoOrden> getOrdenList() {
 		return ordenList;
 	}
 
 
-	public void setOrdenList(ArrayList<ConcursoAcademiaCoreo> ordenList) {
+	public void setOrdenList(ArrayList<ConcursoOrden> ordenList) {
 		this.ordenList = ordenList;
+	}
+
+	public ArrayList<ConcursoOrden> getList() {
+		return list;
+	}
+
+	public void setList(ArrayList<ConcursoOrden> list) {
+		this.list = list;
 	}
 
 }

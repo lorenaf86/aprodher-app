@@ -77,14 +77,14 @@
                         
                         <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.fechaNacimiento']}" for="fecNacimiento" />
-                        <p:calendar id="fecNacimiento" style="width:100px" 
+                        <p:calendar id="fecNacimiento" 
                         value="#{personaAcademiaControler.selected.persona.fechaNacimiento}" 
                         title="#{bundle['label.fechaNacimiento']}"  
                         showOn="button" navigator="true" pattern="dd/MM/yyyy"/>
-                        </h:panelGrid>
                         
+                        <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.academia']}" for="academiaField" />
-		                <p:selectOneMenu id="academiaField"  style="width:260px" required="true"
+		                <p:selectOneMenu id="academiaField"  required="true"
 		                                 value="#{personaAcademiaControler.selected.academia}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains"> 
 		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
@@ -93,6 +93,7 @@
 		                         itemValue="#{a}" />                 
 		                        <p:column><h:outputText value="#{m.nombre}" /></p:column>  
 		                </p:selectOneMenu>
+                        </h:panelGrid>
 
                         </div>
                     </div>

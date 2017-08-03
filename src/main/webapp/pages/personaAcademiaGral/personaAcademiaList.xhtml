@@ -52,7 +52,8 @@
                     	<p:spacer width="5"/>
                     	<p:commandButton actionListener="#{personaAcademiaControler.confirm('delete')}" 
                     					icon="fa fa-plus" update="@form"  disabled="#{empty personaAcademiaControler.selected}"
-                         	            value="#{bundle['btn.delete']}" styleClass="btn-danger"/>
+                         	            value="#{bundle['btn.delete']}" styleClass="btn-danger"
+                         	            onclick="if (!confirm('#{bundle.DeleteConfirmMessage}','#{bundle.TitleWindowDeleteConfirmation}')) return false"/>
                          	            
 	                    <p:spacer width="5"/>
 	                    <p:commandButton value="#{bundle['btn.view']} Selecionado" 
@@ -103,7 +104,9 @@
 			                    <h:outputText value="#{item.academia.nombre}"/>
 			                </p:column>
 			                <p:column sortBy="#{item.persona.fechaNacimiento}" headerText="#{bundle['label.fechaNacimiento']}"  >
-			                    <h:outputText value="#{item.persona.fechaNacimiento}"/>
+			                    <h:outputText value="#{item.persona.fechaNacimiento}">
+			                    	<f:convertDateTime pattern="dd/MM/yyyy"/>
+			                    </h:outputText>
 			                </p:column>
 			                <p:column headerText="Estado" width="240" >
 			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>

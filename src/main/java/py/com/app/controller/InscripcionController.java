@@ -77,6 +77,8 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
     private ConcursoAcademiaCoreoParticipantes participante;
     
     private List<ConcursoAcademiaCoreo> list;
+    
+    private Double total;
 
     public InscripcionController() {
         super(ConcursoAcademiaCoreo.class);
@@ -94,7 +96,7 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
         }
 
         concurso = service.findConcursoVigente();
-        
+        getterTotal();
 	}
 
 	public void nuevaInscripcion(ActionEvent event) {
@@ -112,6 +114,7 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
         this.listCoreoParticipanteRemove = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
 
         if (listCoreoParticipante == null) listCoreoParticipante = new ArrayList<ConcursoAcademiaCoreoParticipantes>();
+        returnListParticipantesAcademia();
         NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/inscripcion/inscripcionAdd.xhtml");
 	}
 	
@@ -138,8 +141,6 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
 
     public void confirm(String accion){
     	
-        try {
-
             if(accion.equals("new")){
             	
 	            	if (listCoreoParticipante.size() < 1) {
@@ -180,15 +181,6 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
             }else{
                     if(accion.equals("edit")){
 
-                    	if (listCoreoParticipante.size() < 1) {
-                            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Información!", "No se ha registrado ningun participante");
-                            facesContext.addMessage(null, m);
-                            return;
-                    	}
-                    	
-                		//this.getSelected().setConcursoAcademiaCoreoParticipantesList(listCoreoParticipante);
-                		
-
                 		this.getSelected().setUsuMod(credentials.getUsername());
                         this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
                         this.save(null);
@@ -198,8 +190,7 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
             			}
                 		
                     	for (ConcursoAcademiaCoreoParticipantes p : listCoreoParticipanteRemove) {
-                    		if (p.getId() != null)
-                    			service.removeParticipante(p);
+                   			service.removeParticipante(p);
             			}
                     	
 
@@ -210,17 +201,16 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
                     }
             }
 
-            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
-            facesContext.addMessage(null, m);
-            
+            getterTotal();
             NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/inscripcion/inscripcionList.xhtml");
 
-        } catch (Exception e) {
-        	e.printStackTrace();
-            String errorMessage = getRootErrorMessage(e);
-            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Registration unsuccessful");
-            facesContext.addMessage(null, m);
-        }
+    }
+    
+    public void getterTotal(){
+    	total = 0.0;
+    	for (ConcursoAcademiaCoreo c : this.getItems()) {
+        	total += c.getTotal();		
+		}
     }
     
     public void returnListParticipantesAcademia() { 
@@ -315,6 +305,14 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
 
 	public void setList(List<ConcursoAcademiaCoreo> list) {
 		this.list = list;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
 	}
 
 }
