@@ -70,7 +70,18 @@ public class ConcursoOrden implements Serializable {
     @Column(name = "orden_tipo")
     private Integer ordenTipo;
 
-    public ConcursoOrden() {
+    @Column(name = "orden")
+    private Integer orden;
+
+    public Integer getOrden() {
+		return orden;
+	}
+
+	public void setOrden(Integer orden) {
+		this.orden = orden;
+	}
+
+	public ConcursoOrden() {
     }
 
     public ConcursoOrden(Integer id) {

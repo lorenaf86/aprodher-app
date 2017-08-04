@@ -29,7 +29,7 @@ public class OrdenFacade {
     public List<ConcursoOrden> findAll() {
     	
         return em.createNativeQuery("Select * from concurso_orden"
-				+ " order by id"
+				+ " order by orden"
         		+ "",ConcursoOrden.class).getResultList();
         
     }
@@ -40,7 +40,7 @@ public class OrdenFacade {
 	    
 	    return em.createNativeQuery("Select * from concurso_orden"
 	    		+ " where id_academia = " + academia.getId()
-				+ " order by id"
+				+ " order by orden"
 	    		+ "",ConcursoOrden.class).getResultList();
     }
     
@@ -63,7 +63,11 @@ public class OrdenFacade {
     	sql += " join tipo_participacion tp on tp.id = a.id_tipo_participacion";
     	sql += " order by cat.orden, mod.orden, tp.orden)";
     	
-    	em.createNativeQuery(sql).executeUpdate();		    	
+    	em.createNativeQuery(sql).executeUpdate();	
+    	em.flush();
+    	
+    	em.createNativeQuery("Update concurso_orden set orden = id ").executeUpdate();
+
     }
 
 	public ArrayList findAllTotal() {
@@ -91,6 +95,13 @@ public class OrdenFacade {
 		sql += " order by c.nombre";
 		
 	    return (ArrayList) em.createNativeQuery(sql).getResultList();
+	}
+
+	public void updateOrden(Integer id, int i) {
+
+    	em.createNativeQuery("Update concurso_orden set orden = " + i +
+    			" where id = " + id).executeUpdate();
+		
 	}
     
 }

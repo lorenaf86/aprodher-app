@@ -18,12 +18,16 @@ package py.com.app.controller;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.xml.crypto.Data;
 
 import org.primefaces.event.ReorderEvent;
 
@@ -56,7 +60,9 @@ public class OrdenController implements Serializable {
 
     private ArrayList<ConcursoOrden> ordenList;
     
-    private ArrayList<ConcursoOrden>list;
+    private ArrayList<ConcursoOrden> list;
+    
+    private ConcursoOrden selected;
 
     @PostConstruct
     public void init() {
@@ -78,9 +84,23 @@ public class OrdenController implements Serializable {
 		ordenList = (ArrayList<ConcursoOrden>) ordenService.findAll();
 	}
 	
+	public void updateOrden() {
+		int i=0;
+		for (ConcursoOrden co : ordenList) {
+			 i++;
+			 ordenService.updateOrden(co.getId(),i);
+		}
+		ordenList = (ArrayList<ConcursoOrden>) ordenService.findAll();
+	}
+	
     public void onRowReorder(ReorderEvent event) {
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Row Moved", "From: " + event.getFromIndex() + ", To:" + event.getToIndex());
+    	
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Orden cambiado ", "De: " + (event.getFromIndex()+1) + ", A:" + (event.getToIndex()+1));
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+		ordenService.updateOrden((event.getFromIndex()+1),(event.getToIndex()+1));
+ 		ordenList = (ArrayList<ConcursoOrden>) ordenService.findAll();
+
     }
 
     private String getRootErrorMessage(Exception e) {
@@ -118,6 +138,14 @@ public class OrdenController implements Serializable {
 
 	public void setList(ArrayList<ConcursoOrden> list) {
 		this.list = list;
+	}
+
+	public ConcursoOrden getSelected() {
+		return selected;
+	}
+
+	public void setSelected(ConcursoOrden selected) {
+		this.selected = selected;
 	}
 
 }

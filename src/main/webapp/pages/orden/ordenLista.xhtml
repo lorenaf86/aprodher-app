@@ -45,12 +45,19 @@
 	                                     icon="fa fa-search"
                                          actionListener="#{ordenController.generarOrden}"/>	                                     	                    
 	                    
+	                    <p:commandButton value="Actualizar Orden" rendered="#{credentials.idUsuario == 1}"
+	                    				 update="@form"  style="float: right"
+	                    				 styleClass="btn-danger"
+	                                     icon="fa fa-search"
+                                         actionListener="#{ordenController.updateOrden}"/>	                                     	                    
+
 	                    <p:dataTable id="datalist" widgetVar="datalists"   
 	                    			value="#{ordenController.ordenList}"  var="item" filteredValue="#{ordenController.list}"                			 
 	                                 rowIndexVar="keyVar"  draggableRows="true"                              
 	                                 rowsPerPageTemplate="5,10,15,20,30">
 	
-					        <p:ajax event="rowReorder" update="@form" listener="#{ordenController.onRowReorder}" />
+					        <p:ajax event="rowReorder" listener="#{ordenController.onRowReorder}" 
+					        update="@form" />
 
 	                        <p:ajax event="rowSelectCheckbox" update="@(.ui-button)"/>
 	                        <p:ajax event="rowUnselectCheckbox" update="@(.ui-button)"/>
@@ -66,7 +73,7 @@
 		                </f:facet>
 	
 			                <p:column headerText="Nro Orden" >
-			                    <h:outputText value="#{item.id}"/>
+			                    <h:outputText value="#{item.orden}"/>
 			                </p:column>
 			                <p:column sortBy="#{item.nombre}" filterMatchMode="contains" filterBy="#{item.nombre}" filterable="true"  filterMaxLength="3" 
 			                			headerText="#{bundle['label.nombre']}">

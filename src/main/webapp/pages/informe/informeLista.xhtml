@@ -46,6 +46,10 @@
 	                                 rowsPerPageTemplate="5,10,15,20,30">
 	
 
+                 <p:column headerText="#{bundle['label.numero']}" >
+                    <h:outputText value="#{keyVar+1}"/>
+                </p:column>
+
                  <p:column headerText="#{bundle['label.academia']}" >
                     <h:outputText value="#{item[0]}"/>
                 </p:column>
