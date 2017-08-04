@@ -31,6 +31,11 @@
 				<span>#{bundle['label.orden']}</span>
 			</p:link></li>
 
+		<li><p:link href="/pages/informe/informeLista.xhtml"  rendered="#{credentials.idUsuario != 0}">
+				<i class="fa fa-edit"></i>
+				<span>#{bundle['label.informe']}</span>
+			</p:link></li>
+
 		<li><p:link href="/pages/personaAcademiaGral/personaAcademiaList.xhtml" rendered="#{credentials.idUsuario == 1}">
 				<i class="fa fa-edit"></i>
 				<span>#{bundle['label.participante']} Gral</span>

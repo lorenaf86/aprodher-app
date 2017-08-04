@@ -5,6 +5,7 @@
  */
 package py.com.app.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -64,5 +65,32 @@ public class OrdenFacade {
     	
     	em.createNativeQuery(sql).executeUpdate();		    	
     }
+
+	public ArrayList findAllTotal() {
+
+		String sql = " select c.nombre as academia, sum(a.valor * b.cantidad)";
+		sql += " from tipo_participacion a, concurso_academia_coreo b, academia c, concurso_academia d";
+		sql += " where b.id_tipo_participacion = a.id and b.id_concurso_academia = d.id and d.id_academia = c.id";
+		sql += " group by c.nombre"; 
+		sql += " order by c.nombre";
+		
+	    return (ArrayList) em.createNativeQuery(sql).getResultList();
+	    
+	}
+
+	public ArrayList findAllTotal(int idUsuario) {
+
+	    Integer id = ((Usuario)em.find(Usuario.class, idUsuario)).getAcademia().getId();
+	    Academia academia = em.find(Academia.class, id);
+
+	    String sql = " select c.nombre as academia, sum(a.valor * b.cantidad)";
+		sql += " from tipo_participacion a, concurso_academia_coreo b, academia c, concurso_academia d";
+		sql += " where b.id_tipo_participacion = a.id and b.id_concurso_academia = d.id and d.id_academia = c.id";
+		sql += " and c.id = " + academia.getId();
+		sql += " group by c.nombre"; 
+		sql += " order by c.nombre";
+		
+	    return (ArrayList) em.createNativeQuery(sql).getResultList();
+	}
     
 }

@@ -229,7 +229,7 @@ public class Usuario implements Serializable {
         this.activo = activo;
     }
 
-    public Boolean isActivo() {
+    public Boolean getActivo() {
         return activo;
     }
 

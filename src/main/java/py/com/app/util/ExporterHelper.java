@@ -42,13 +42,13 @@ public class ExporterHelper extends ExporterBaseHelper
     @Override
     protected String getLogoImage()
     {
-        return AppHelper.getServletContext().getRealPath("/resources/images/img/logoAprodher3.jpg");
+        return AppHelper.getServletContext().getRealPath("/resources/img/logoAprodher3.jpg");
     }
 
     @Override
     protected String getWaterMarkImage()
     {
-        return AppHelper.getServletContext().getRealPath("/resources/images/img/logoAprodher3.jpg");
+        return AppHelper.getServletContext().getRealPath("/resources/img/logoAprodher3.jpg");
     }
     
     @Override
