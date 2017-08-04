@@ -54,6 +54,9 @@
 		                        <p:column><h:outputText value="#{m.nombre}" /></p:column>  
 		                </p:selectOneMenu>
 
+		                <h:outputLabel value="Activo" for="activoField" />
+		                <p:selectBooleanCheckbox id="activoField" value="#{usuarioController.selected.activo}" />
+
                         <h:outputLabel value="#{bundle['label.estado']}" for="activo" />
                         <h:outputText value="#{bundle['label.activo']}" rendered="#{usuarioController.selected.estado=='AC'}"/>
                         <h:outputText value="#{bundle['label.inactivo']}" rendered="#{usuarioController.selected.estado=='IN'}"/>
