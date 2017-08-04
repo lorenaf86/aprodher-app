@@ -79,6 +79,7 @@ public class PersonaAcademia implements Serializable {
     @Column(name = "estado")
     private String estado;
     
+
     @OneToOne(cascade = {CascadeType.ALL},fetch = FetchType.EAGER)
     @JoinColumn(name = "id_persona")    
     private Persona persona;

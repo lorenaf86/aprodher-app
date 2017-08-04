@@ -69,7 +69,7 @@ public class ConcursoAcademiaCoreoFacade extends AbstractFacade<ConcursoAcademia
         if (list.isEmpty()) return null;
         else return (ConcursoAcademia) list.get(0);
 	}
-
+	
 	public ConcursoAcademiaCoreoParticipantes findParticipante(Integer idPersona, Integer idConcursoAcademiaCoreo) {
 		List list = getEntityManager().createQuery("Select c from ConcursoAcademiaCoreoParticipantes c "
                 + " Where c.idPersona.id = " + idPersona 

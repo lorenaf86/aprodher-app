@@ -118,6 +118,7 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
         this.listCoreo = service.findAllInscripciones(concursoAcademia.getId());
         
         this.listParticipatesAcademia = service.findParticipantesAcademia(academia.getId());
+
         getterTotal();
 
 	}
@@ -172,6 +173,7 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
                     return;
             	}
             	
+
             	if (concursoAcademia.getId() == null) { 
             		service.guardarConcursoAcademia(concursoAcademia);     
                 	concursoAcademia = service.getConcursoAcademia(academia.getId(),concurso.getId());
@@ -195,6 +197,7 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
             		newP.setIdAcademiaConcursoCoreo(this.getSelected());
            			service.updateParticipante(newP);
     			}
+
 
             }else{
                     if(accion.equals("edit")){

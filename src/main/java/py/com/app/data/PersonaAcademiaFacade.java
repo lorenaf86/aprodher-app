@@ -39,5 +39,5 @@ public class PersonaAcademiaFacade extends AbstractFacade<PersonaAcademia> {
         else return list;
 	}
 
-
 }
+

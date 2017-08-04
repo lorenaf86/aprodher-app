@@ -54,6 +54,7 @@ public class EmailUtils {
 			message.setFrom(new InternetAddress(EMAILORIGEM));
 		message.setRecipients(Message.RecipientType.TO,
 			InternetAddress.parse(mensagem.getDestino()));
+
 		message.setSubject(mensagem.getTitulo());
 		message.setText(mensagem.getMensagem());
 		

@@ -63,6 +63,7 @@
 	                    <p:separator/>
 	                    
 	                   	
+
             <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionControler.listCoreo}" var="item" filteredValue="#{inscripcionControler.list}"
             			 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
             			 currentPageReportTemplate="{currentPage} #{bundle['label.of']} {totalPages}"
@@ -85,6 +86,7 @@
 			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110">
 			                    <h:outputText value="#{item.id}"/>
 			                </p:column>
+
 			                <p:column sortBy="#{item.nombre}"  filterBy="#{item.nombre}" filterMatchMode="contains" filterable="true" filterMaxLength="3" 
 			                			headerText="#{bundle['label.nombre']}">
 			                    <h:outputText value="#{item.nombre}"/>

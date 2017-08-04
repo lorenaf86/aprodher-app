@@ -33,9 +33,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 public class Academia implements Serializable {
 
-    @OneToMany(mappedBy = "academia", fetch = FetchType.LAZY)
-    private List<ConcursoAcademia> concursoAcademiaList;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -152,13 +149,4 @@ public class Academia implements Serializable {
         return "com.aprodher.aprodherweb.Academia[ id=" + id + " ]";
     }
 
-    @XmlTransient
-    public List<ConcursoAcademia> getConcursoAcademiaList() {
-        return concursoAcademiaList;
-    }
-
-    public void setConcursoAcademiaList(List<ConcursoAcademia> concursoAcademiaList) {
-        this.concursoAcademiaList = concursoAcademiaList;
-    }
-    
 }

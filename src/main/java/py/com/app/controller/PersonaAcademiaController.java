@@ -46,120 +46,115 @@ import py.com.app.util.NavigationRulezHelper;
 // Read more about the @Model stereotype in this FAQ:
 // http://www.cdi-spec.org/faq/#accordion6
 
-@SessionScoped
-@ManagedBean
-public class PersonaAcademiaController extends AbstractController<PersonaAcademia> implements Serializable {
+import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Model;
+import javax.enterprise.inject.Produces;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 
+import py.com.app.data.ConcursoAcademiaCoreoFacade;
+import py.com.app.data.PersonaAcademiaFacade;
+import py.com.app.model.Academia;
+import py.com.app.model.Persona;
+import py.com.app.model.PersonaAcademia;
+import py.com.app.util.CalendarHelper;
+import py.com.app.util.Credentials;
+
+// The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
+// EL name
+// Read more about the @Model stereotype in this FAQ:
+// http://www.cdi-spec.org/faq/#accordion6
+
+@Model
+public class PersonaAcademiaController implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2838146797217857346L;
+	private static final long serialVersionUID = 2135255041232804226L;
 
 	@Inject
     private FacesContext facesContext;
 
-    @EJB
+    @Inject
     private PersonaAcademiaFacade service;
+
+    @Produces
+    @Named
+    private PersonaAcademia personaAcademia;
 
     @Inject
     Credentials credentials;
 
-    @EJB
+    @Inject
     private ConcursoAcademiaCoreoFacade serviceAcademiaCoreoFacade;
-
-    @EJB
-    private ConcursoAcademiaCoreoFacade serviceConcurso;
 
     private ArrayList<PersonaAcademia> personaAcademiaList;
     
-    private List<PersonaAcademia> list;
-
-    public PersonaAcademiaController() {
-        super(PersonaAcademia.class);
+	@PostConstruct
+    public void init() {
+        personaAcademia = new PersonaAcademia();
+        personaAcademia.setPersona(new Persona());
+        personaAcademiaList = (ArrayList<PersonaAcademia>) service.findAll();
     }
 
-    @PostConstruct
-    public void init() {
-        super.setService(service);
-        
-        if (this.credentials == null || this.credentials.getIdEmpleado() == null) {
-	        FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Información!", "Es necesario volver a Loguearse!");
-	        facesContext.addMessage(null, m);
-	        return;
+    public void register() throws Exception {
+        try {
+        	
+            Academia academia = serviceAcademiaCoreoFacade.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
+
+   			personaAcademia.getPersona().setEstado("AC");
+            personaAcademia.getPersona().setUsuAlta(credentials.getUsername());
+            personaAcademia.getPersona().setFechaAlta(CalendarHelper.getCurrentTimestamp());
+            personaAcademia.getPersona().setUsuMod(credentials.getUsername());
+            personaAcademia.getPersona().setFechaMod(CalendarHelper.getCurrentTimestamp());
+
+            personaAcademia.setEstado("AC");
+            personaAcademia.setUsuAlta(credentials.getUsername());
+            personaAcademia.setFechaAlta(CalendarHelper.getCurrentTimestamp());
+            personaAcademia.setUsuMod(credentials.getUsername());
+            personaAcademia.setFechaMod(CalendarHelper.getCurrentTimestamp());
+            
+            personaAcademia.setAcademia(academia);
+            service.create(personaAcademia);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_INFO, "Registered!", "Registration successful");
+            facesContext.addMessage(null, m);
+            init();
+        } catch (Exception e) {
+            String errorMessage = getRootErrorMessage(e);
+            FacesMessage m = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, "Registration unsuccessful");
+            facesContext.addMessage(null, m);
+        }
+    }
+
+    private String getRootErrorMessage(Exception e) {
+        // Default to general error message that registration failed.
+        String errorMessage = "Registration failed. See server log for more information";
+        if (e == null) {
+            // This shouldn't happen, but return the default messages
+            return errorMessage;
         }
 
-        Academia academia = serviceConcurso.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
-        personaAcademiaList = (ArrayList<PersonaAcademia>) service.findParticipantesAcademia(academia.getId());
+        // Start with the exception and recurse to find the root cause
+        Throwable t = e;
+        while (t != null) {
+            // Get the message from the Throwable class instance
+            errorMessage = t.getLocalizedMessage();
+            t = t.getCause();
+        }
+        // This is the root cause message
+        return errorMessage;
     }
 
-    @Override
-    public PersonaAcademia prepareCreate(ActionEvent event) {
-    	super.prepareCreate(event);
-    	this.getSelected().setPersona(new Persona());
-        return this.getSelected();
-    }
-    	
-	public void nuevo(ActionEvent event) {
-    	this.prepareCreate(event);
-        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademia/personaAcademiaAdd.xhtml");
-	}
-	
-	public void edit() {
-        NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademia/personaAcademiaAdd.xhtml");
+	public PersonaAcademia getPersonaAcademia() {
+		return personaAcademia;
 	}
 
-    public void confirm(String accion){
-    	
-	        if(accion.equals("new")){
-	        
-                Academia academia = serviceAcademiaCoreoFacade.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
-                this.getSelected().setAcademia(academia);
-
-                this.getSelected().setFechaInicio(CalendarHelper.getCurrentTimestamp());
-                this.getSelected().setEstado("AC");
-                this.getSelected().setUsuAlta(credentials.getUsername());
-                this.getSelected().setFechaAlta(CalendarHelper.getCurrentTimestamp());
-                
-                this.getSelected().getPersona().setEstado("AC");
-                this.getSelected().getPersona().setUsuAlta(credentials.getUsername());
-                this.getSelected().getPersona().setFechaAlta(CalendarHelper.getCurrentTimestamp());
-	            
-	            this.getSelected().getPersona().setUsuMod(credentials.getUsername());
-	            this.getSelected().getPersona().setFechaMod(CalendarHelper.getCurrentTimestamp());
-	
-	            this.getSelected().setUsuMod(credentials.getUsername());
-	            this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
-	            
-	
-	            this.saveNew(null);
-	        }else {
-	        	
-		        if(accion.equals("edit")){
-
-		            this.getSelected().getPersona().setUsuMod(credentials.getUsername());
-		            this.getSelected().getPersona().setFechaMod(CalendarHelper.getCurrentTimestamp());
-		
-		            this.getSelected().setUsuMod(credentials.getUsername());
-		            this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
-		            
-		            this.update();
-
-		        }else {
-		        	
-			        	this.getSelected().setEstado("IN");
-			        	this.delete(null);
-		        	
-		        }
-	            
-	        }
-        
-        
-       		Academia academia = serviceConcurso.findAcademia(Integer.parseInt(this.credentials.getIdEmpleado()+""));
-            personaAcademiaList = (ArrayList<PersonaAcademia>) service.findParticipantesAcademia(academia.getId());
-            NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/personaAcademia/personaAcademiaList.xhtml");
-            
-    }
+	public void setPersonaAcademia(PersonaAcademia academia) {
+		this.personaAcademia = academia;
+	}
 
 	public ArrayList<PersonaAcademia> getPersonaAcademiaList() {
 		return personaAcademiaList;
@@ -167,15 +162,7 @@ public class PersonaAcademiaController extends AbstractController<PersonaAcademi
 
 	public void setPersonaAcademiaList(ArrayList<PersonaAcademia> academiaList) {
 		this.personaAcademiaList = academiaList;
-	}
 
-
-	public List<PersonaAcademia> getList() {
-		return list;
-	}
-
-	public void setList(List<PersonaAcademia> list) {
-		this.list = list;
 	}
 
 }
