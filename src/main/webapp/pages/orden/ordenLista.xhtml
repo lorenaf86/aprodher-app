@@ -79,14 +79,6 @@
 			                			headerText="#{bundle['label.nombre']}">
 			                    <h:outputText value="#{item.nombre}"/>
 			                </p:column>
-			                <p:column sortBy="#{item.academia.nombre}" filterMatchMode="contains" filterBy="#{item.academia.nombre}" filterable="true"  filterMaxLength="3" 
-			                			headerText="#{bundle['label.academia']}">
-			                    <h:outputText value="#{item.academia.nombre}"/>
-			                </p:column>
-			                <p:column sortBy="#{item.categoria.descripcion}" 
-			                			headerText="#{bundle['label.categoria']}">
-			                    <h:outputText value="#{item.categoria.descripcion}"/>
-			                </p:column>
 			                <p:column sortBy="#{item.modalidad.descripcion}" 
 			                			headerText="#{bundle['label.modalidad']}">
 			                    <h:outputText value="#{item.modalidad.descripcion}"/>
@@ -95,9 +87,17 @@
 			                			headerText="#{bundle['label.tipoParticipacion']}">
 			                    <h:outputText value="#{item.tipoParticipacion.descripcion}"/>
 			                </p:column>
+			                <p:column sortBy="#{item.categoria.descripcion}" 
+			                			headerText="#{bundle['label.categoria']}">
+			                    <h:outputText value="#{item.categoria.descripcion}"/>
+			                </p:column>
 			                <p:column sortBy="#{item.persona.nombre}"
 			                			headerText="#{bundle['label.profesor']}">
 			                    <h:outputText value="#{item.persona.nombre} #{item.persona.apellido}"/>
+			                </p:column>
+			                <p:column sortBy="#{item.academia.nombre}" filterMatchMode="contains" filterBy="#{item.academia.nombre}" filterable="true"  filterMaxLength="3" 
+			                			headerText="#{bundle['label.academia']}">
+			                    <h:outputText value="#{item.academia.nombre}"/>
 			                </p:column>
 			                <p:column sortBy="#{item.coreografia}" 
 			                			headerText="#{bundle['label.coreografia']}">

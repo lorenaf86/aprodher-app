@@ -61,7 +61,7 @@ public class OrdenFacade {
     	sql += " join categoria cat on cat.id = a.id_categoria";
     	sql += " join modalidad mod on mod.id = a.id_modalidad";
     	sql += " join tipo_participacion tp on tp.id = a.id_tipo_participacion";
-    	sql += " order by cat.orden, mod.orden, tp.orden)";
+    	sql += " order by mod.orden, cat.orden,  tp.orden)";
     	
     	em.createNativeQuery(sql).executeUpdate();	
     	em.flush();
