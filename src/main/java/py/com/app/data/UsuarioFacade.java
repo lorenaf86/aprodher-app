@@ -74,7 +74,8 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 	public Usuario login(String user, String pass){
         try{
             String sql = " Select u from Usuario u"
-            		+ " where trim(u.username) = trim('" + user + "')"
+            		+ " where (trim(u.username) = trim('" + user + "') "
+            		+ " or trim(u.mail) = trim('" + user + "'))" 
             		+ " and trim(u.contrasena) = trim('"+pass+"')"
             		+ " and (u.id = 1 or u.activo = true)";
         
