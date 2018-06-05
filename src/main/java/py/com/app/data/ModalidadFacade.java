@@ -33,7 +33,8 @@ public class ModalidadFacade extends AbstractFacade<Modalidad> {
     }
     
     public List<Modalidad> findAllActives() {
-        return em.createQuery("Select c from  Modalidad c Where c.estado = 'AC'").getResultList();
+        return em.createQuery("Select c from  Modalidad c "
+        		+ "Where c.estado = 'AC' and c.concurso.id in (select o.id from Concurso o where o.vigente is true)").getResultList();
     }
 
 }

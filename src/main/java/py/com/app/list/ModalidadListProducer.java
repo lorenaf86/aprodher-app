@@ -51,6 +51,6 @@ public class ModalidadListProducer {
 
     @PostConstruct
     public void retrieveAllOrderedByName() {
-        modalidadList = service.findAll();
+        modalidadList = service.findAllActives();
     }
 }

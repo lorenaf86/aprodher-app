@@ -10,9 +10,12 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -26,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Lorena Franco
  */
 @Entity
-@Table(name = "modalidad")
+@Table(name = "concurso_modalidad")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Modalidad.findAll", query = "SELECT m FROM Modalidad m")
@@ -45,7 +48,10 @@ public class Modalidad implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 2147483647)
+    @JoinColumn(name = "id_concurso", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Concurso concurso;
+	@Size(max = 2147483647)
     @Column(name = "descripcion")
     private String descripcion;
     @Size(max = 2147483647)
@@ -126,6 +132,14 @@ public class Modalidad implements Serializable {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public Concurso getConcurso() {
+		return concurso;
+	}
+
+	public void setConcurso(Concurso concurso) {
+		this.concurso = concurso;
+	}
 
     @Override
     public int hashCode() {

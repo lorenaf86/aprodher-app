@@ -28,7 +28,7 @@ public class OrdenFacade {
 
     public List<ConcursoOrden> findAll() {
     	
-        return em.createNativeQuery("Select * from concurso_orden"
+        return em.createNativeQuery("Select * from concurso_orden where id_concurso = 2"
 				+ " order by orden"
         		+ "",ConcursoOrden.class).getResultList();
         
@@ -40,6 +40,7 @@ public class OrdenFacade {
 	    
 	    return em.createNativeQuery("Select * from concurso_orden"
 	    		+ " where id_academia = " + academia.getId()
+	    		+ " and id_concurso = 2"
 				+ " order by orden"
 	    		+ "",ConcursoOrden.class).getResultList();
     }
@@ -52,15 +53,18 @@ public class OrdenFacade {
     	em.flush();
 
     	String sql = " Insert into concurso_orden (nombre, id_categoria, id_academia, id_modalidad, id_persona, id_tipo_participacion, coreografia,"
-    			+ " orden_categoria, orden_modalidad, orden_tipo)";
+    			+ " orden_categoria, orden_modalidad, orden_tipo, id_concurso)";
     	sql += " (Select a.nombre, a.id_categoria";
     	sql += " , b.id_academia, a.id_modalidad, a.id_persona, a.id_tipo_participacion, a.coreografia, cat.orden as orden_categoria";
-    	sql += " ,mod.orden as orden_modalidad, tp.orden as orden_tipo";
+    	sql += " ,mod.orden as orden_modalidad, tp.orden as orden_tipo, b.id_concurso";
     	sql += " from concurso_academia_coreo a";
     	sql += " join concurso_academia b on a.id_concurso_academia = b.id";
     	sql += " join categoria cat on cat.id = a.id_categoria";
-    	sql += " join modalidad mod on mod.id = a.id_modalidad";
+    	sql += " join concurso_modalidad mod on mod.id = a.id_modalidad";
     	sql += " join tipo_participacion tp on tp.id = a.id_tipo_participacion";
+    	sql += " where b.id_concurso in ";
+    	sql += " (Select id from concurso c ";
+    	sql += " Where c.vigente is true Order by c.fecha desc limit 1)";
     	sql += " order by mod.orden, cat.orden,  tp.orden)";
     	
     	em.createNativeQuery(sql).executeUpdate();	

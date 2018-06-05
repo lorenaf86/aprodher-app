@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 
+import py.com.app.data.ConcursoAcademiaCoreoFacade;
 import py.com.app.data.ModalidadFacade;
 import py.com.app.model.Modalidad;
 import py.com.app.util.AbstractController;
@@ -25,6 +26,9 @@ public class ModalidadController extends AbstractController<Modalidad> implement
     @EJB
     private ModalidadFacade service;
 	    
+    @EJB
+    private ConcursoAcademiaCoreoFacade serviceConcurso;
+
     private List<Modalidad>  list;
     
     @Inject
@@ -42,11 +46,12 @@ public class ModalidadController extends AbstractController<Modalidad> implement
     public void confirm(String accion){
         if(accion.equals("new")){
         	this.getSelected().setEstado("AC");
-                this.getSelected().setUsuAlta(this.getCredentials().getUsername());
-                this.getSelected().setFechaAlta(CalendarHelper.getCurrentTimestamp());
-                this.getSelected().setUsuMod(this.getCredentials().getUsername());
-                this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
-                this.saveNew(null);
+        	this.getSelected().setConcurso(serviceConcurso.findConcursoVigente());
+            this.getSelected().setUsuAlta(this.getCredentials().getUsername());
+            this.getSelected().setFechaAlta(CalendarHelper.getCurrentTimestamp());
+            this.getSelected().setUsuMod(this.getCredentials().getUsername());
+            this.getSelected().setFechaMod(CalendarHelper.getCurrentTimestamp());
+            this.saveNew(null);
         }else{
                 if(accion.equals("edit")){
 
