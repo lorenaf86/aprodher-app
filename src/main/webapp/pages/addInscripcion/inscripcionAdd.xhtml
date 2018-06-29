@@ -47,7 +47,7 @@
                     <p:separator />
 
                     <div class="ui-g ui-fluid">
-                        <div class="ui-g-12">
+                        <div class="ui-g-12 ui-md-4">
                             
                             
                         <h:outputLabel value="#{bundle['label.nombre']} #{bundle['label.of']} #{bundle['label.coreografia']}" for="nombre" />
@@ -71,10 +71,10 @@
 		                                 value="#{inscripcionControler.selected.modalidad}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
 		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
-		                <f:selectItems var="modalidad" value="#{modalidadList}"
-		                         itemLabel= "#{modalidad.descripcion}"
-		                         itemValue="#{modalidad}" />                 
-		                        <p:column><h:outputText value="#{m.descripcion}" /></p:column>  
+		                <f:selectItems var="c_modalidad" value="#{modalidadList}"
+		                         itemLabel= "#{c_modalidad.modalidad.descripcion}"
+		                         itemValue="#{c_modalidad}" />                 
+		                        <p:column><h:outputText value="#{m.modalidad.descripcion}" /></p:column>  
 		                </p:selectOneMenu>
 		
 		                <h:outputLabel value="#{bundle['label.profesor']}"   for="profesorField"/>
@@ -93,10 +93,10 @@
 		                                 value="#{inscripcionControler.selected.tipoParticipacion}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
 		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
-		                <f:selectItems var="tipoParticipacion" value="#{tipoParticipacionList}"
-		                         itemLabel= "#{tipoParticipacion.descripcion}"
-		                         itemValue="#{tipoParticipacion}" />                 
-		                        <p:column><h:outputText value="#{m.descripcion}" /></p:column>  
+		                <f:selectItems var="c_tipoParticipacion" value="#{tipoParticipacionList}"
+		                         itemLabel= "#{c_tipoParticipacion.tipoParticipacion.descripcion}"
+		                         itemValue="#{c_tipoParticipacion}" />                 
+		                        <p:column><h:outputText value="#{m.tipoParticipacion.descripcion}" /></p:column>  
 		                </p:selectOneMenu>
 		
 		                <h:outputLabel value="#{bundle['label.cantidadParticipantes']}" for="cantidadField" />
@@ -123,7 +123,7 @@
     <p:growl id="msgs" />
  
                     <div class="ui-g ui-fluid">
-                        <div class="ui-g-12">
+                        <div class="ui-g-12 ui-md-4">
                             
     <p:panel header="#{bundle['btn.agregar']} #{bundle['label.participante']}" style="margin-bottom:20px">
         <h:panelGrid columns="5" cellpadding="5">

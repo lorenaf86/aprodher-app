@@ -36,9 +36,9 @@ import py.com.app.model.Concurso;
 import py.com.app.model.ConcursoAcademia;
 import py.com.app.model.ConcursoAcademiaCoreo;
 import py.com.app.model.ConcursoAcademiaCoreoParticipantes;
-import py.com.app.model.Modalidad;
+import py.com.app.model.ConcursoModalidad;
+import py.com.app.model.ConcursoTipoParticipacion;
 import py.com.app.model.Persona;
-import py.com.app.model.TipoParticipacion;
 import py.com.app.util.AbstractController;
 import py.com.app.util.AppHelper;
 import py.com.app.util.CalendarHelper;
@@ -152,9 +152,9 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
     	
     	this.getSelected().setConcursoAcademia(concursoAcademia);
         this.getSelected().setCategoria(new Categoria());
-        this.getSelected().setModalidad(new Modalidad());
+        this.getSelected().setModalidad(new ConcursoModalidad());
         this.getSelected().setPersona(new Persona());
-        this.getSelected().setTipoParticipacion(new TipoParticipacion());
+        this.getSelected().setTipoParticipacion(new ConcursoTipoParticipacion());
         
         this.participantesList = new ArrayList<Persona>();
         this.participante = new Persona();

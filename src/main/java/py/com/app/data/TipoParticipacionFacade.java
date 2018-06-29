@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import py.com.app.model.ConcursoTipoParticipacion;
 import py.com.app.model.TipoParticipacion;
 
 /**
@@ -35,6 +36,12 @@ public class TipoParticipacionFacade extends AbstractFacade<TipoParticipacion> {
     public List<TipoParticipacion> findAllActives() {
         return em.createQuery("Select c from  TipoParticipacion c Where c.estado = 'AC'").getResultList();
     }
+
+    public List<ConcursoTipoParticipacion> findAllConcursoActives() {
+        return em.createQuery("Select c from  ConcursoTipoParticipacion c "
+        		+ "Where c.estado = 'AC' and c.concurso.id in (select o.id from Concurso o where o.vigente is true)").getResultList();
+    }
+
 
     
 }

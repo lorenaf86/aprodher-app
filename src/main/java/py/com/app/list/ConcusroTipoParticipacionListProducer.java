@@ -26,31 +26,31 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import py.com.app.data.ModalidadFacade;
-import py.com.app.model.Modalidad;
+import py.com.app.data.TipoParticipacionFacade;
+import py.com.app.model.ConcursoTipoParticipacion;
 
 @RequestScoped
-public class ModalidadListProducer {
+public class ConcusroTipoParticipacionListProducer {
 
     @Inject
-    private ModalidadFacade service;
+    private TipoParticipacionFacade service;
 
-    private List<Modalidad> modalidadList;
+    private List<ConcursoTipoParticipacion> tipoParticipacionList;
 
     // @Named provides access the return value via the EL variable name "members" in the UI (e.g.
     // Facelets or JSP view)
     @Produces
     @Named
-    public List<Modalidad> getModalidadList() {
-        return modalidadList;
+    public List<ConcursoTipoParticipacion> getTipoParticipacionList() {
+        return tipoParticipacionList;
     }
 
-    public void onListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final Modalidad modalidad) {
+    public void onListChanged(@Observes(notifyObserver = Reception.IF_EXISTS) final ConcursoTipoParticipacion modalidad) {
         retrieveAllOrderedByName();
     }
 
     @PostConstruct
     public void retrieveAllOrderedByName() {
-        modalidadList = service.findAllActives();
+        tipoParticipacionList = service.findAllConcursoActives();
     }
 }

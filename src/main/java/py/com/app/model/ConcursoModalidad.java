@@ -7,13 +7,15 @@ package py.com.app.model;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -27,18 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Lorena Franco
  */
 @Entity
-@Table(name = "modalidad")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Modalidad.findAll", query = "SELECT m FROM Modalidad m")
-    , @NamedQuery(name = "Modalidad.findById", query = "SELECT m FROM Modalidad m WHERE m.id = :id")
-    , @NamedQuery(name = "Modalidad.findByDescripcion", query = "SELECT m FROM Modalidad m WHERE m.descripcion = :descripcion")
-    , @NamedQuery(name = "Modalidad.findByUsuMod", query = "SELECT m FROM Modalidad m WHERE m.usuMod = :usuMod")
-    , @NamedQuery(name = "Modalidad.findByUsuAlta", query = "SELECT m FROM Modalidad m WHERE m.usuAlta = :usuAlta")
-    , @NamedQuery(name = "Modalidad.findByFechaAlta", query = "SELECT m FROM Modalidad m WHERE m.fechaAlta = :fechaAlta")
-    , @NamedQuery(name = "Modalidad.findByFechaMod", query = "SELECT m FROM Modalidad m WHERE m.fechaMod = :fechaMod")
-    , @NamedQuery(name = "Modalidad.findByEstado", query = "SELECT m FROM Modalidad m WHERE m.estado = :estado")})
-public class Modalidad implements Serializable {
+@Table(name = "concurso_modalidad")
+public class ConcursoModalidad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,9 +39,14 @@ public class Modalidad implements Serializable {
     @Column(name = "id")
     private Integer id;
 
-    @Size(max = 2147483647)
-    @Column(name = "descripcion")
-    private String descripcion;
+    @JoinColumn(name = "id_concurso", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Concurso concurso;
+    
+    @JoinColumn(name = "id_modalidad", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Modalidad modalidad;
+
     @Size(max = 2147483647)
     @Column(name = "usu_mod")
     private String usuMod;
@@ -66,10 +63,10 @@ public class Modalidad implements Serializable {
     @Column(name = "estado")
     private String estado;
 
-    public Modalidad() {
+    public ConcursoModalidad() {
     }
 
-    public Modalidad(Integer id) {
+    public ConcursoModalidad(Integer id) {
         this.id = id;
     }
 
@@ -79,14 +76,6 @@ public class Modalidad implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public String getUsuMod() {
@@ -129,7 +118,23 @@ public class Modalidad implements Serializable {
         this.estado = estado;
     }
 
-    @Override
+    public Concurso getConcurso() {
+		return concurso;
+	}
+
+	public void setConcurso(Concurso concurso) {
+		this.concurso = concurso;
+	}
+
+    public Modalidad getModalidad() {
+		return modalidad;
+	}
+
+	public void setModalidad(Modalidad modalidad) {
+		this.modalidad = modalidad;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
@@ -139,10 +144,10 @@ public class Modalidad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Modalidad)) {
+        if (!(object instanceof ConcursoModalidad)) {
             return false;
         }
-        Modalidad other = (Modalidad) object;
+        ConcursoModalidad other = (ConcursoModalidad) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

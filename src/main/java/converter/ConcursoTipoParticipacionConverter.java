@@ -29,12 +29,12 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
-import py.com.app.model.TipoParticipacion;
+import py.com.app.model.ConcursoTipoParticipacion;
 import py.com.app.util.EntityConverter;
 import py.com.app.util.GlobalParameters;
 
-@FacesConverter(forClass=TipoParticipacion.class)
-public class TipoParticipacionConverter extends EntityConverter implements Converter
+@FacesConverter(forClass=ConcursoTipoParticipacion.class)
+public class ConcursoTipoParticipacionConverter extends EntityConverter implements Converter
 {
     
     @Override
@@ -45,7 +45,7 @@ public class TipoParticipacionConverter extends EntityConverter implements Conve
             return null;
         }
         
-        return getViewMap(context).get(value+TipoParticipacion.class.getName());
+        return getViewMap(context).get(value+ConcursoTipoParticipacion.class.getName());
     }
 
     @Override
@@ -55,10 +55,10 @@ public class TipoParticipacionConverter extends EntityConverter implements Conve
         
         try
         {
-            Integer id = ((TipoParticipacion) object).getId();
+            Integer id = ((ConcursoTipoParticipacion) object).getId();
             if (id != null)
             {
-                getViewMap(context).put(id.toString()+TipoParticipacion.class.getName(), object);
+                getViewMap(context).put(id.toString()+ConcursoTipoParticipacion.class.getName(), object);
                 
                 return id.toString();
             }

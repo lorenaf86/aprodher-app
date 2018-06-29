@@ -11,82 +11,67 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author Lorena Franco
  */
 @Entity
-@Table(name = "modalidad")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Modalidad.findAll", query = "SELECT m FROM Modalidad m")
-    , @NamedQuery(name = "Modalidad.findById", query = "SELECT m FROM Modalidad m WHERE m.id = :id")
-    , @NamedQuery(name = "Modalidad.findByDescripcion", query = "SELECT m FROM Modalidad m WHERE m.descripcion = :descripcion")
-    , @NamedQuery(name = "Modalidad.findByUsuMod", query = "SELECT m FROM Modalidad m WHERE m.usuMod = :usuMod")
-    , @NamedQuery(name = "Modalidad.findByUsuAlta", query = "SELECT m FROM Modalidad m WHERE m.usuAlta = :usuAlta")
-    , @NamedQuery(name = "Modalidad.findByFechaAlta", query = "SELECT m FROM Modalidad m WHERE m.fechaAlta = :fechaAlta")
-    , @NamedQuery(name = "Modalidad.findByFechaMod", query = "SELECT m FROM Modalidad m WHERE m.fechaMod = :fechaMod")
-    , @NamedQuery(name = "Modalidad.findByEstado", query = "SELECT m FROM Modalidad m WHERE m.estado = :estado")})
-public class Modalidad implements Serializable {
+@Table(name = "concurso_tipo_participacion")
+public class ConcursoTipoParticipacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
 
-    @Size(max = 2147483647)
-    @Column(name = "descripcion")
-    private String descripcion;
-    @Size(max = 2147483647)
+    @JoinColumn(name = "id_concurso", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Concurso concurso;
+    
+    @JoinColumn(name = "id_tipo_participacion", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private TipoParticipacion tipoParticipacion;
+
+    @Column(name = "valor")
+    private Double valor;
+
     @Column(name = "usu_mod")
     private String usuMod;
-    @Size(max = 2147483647)
+
     @Column(name = "usu_alta")
     private String usuAlta;
+
     @Column(name = "fecha_alta")
     @Temporal(TemporalType.DATE)
     private Date fechaAlta;
+
     @Column(name = "fecha_mod")
     @Temporal(TemporalType.DATE)
     private Date fechaMod;
+
     @Size(max = 2)
     @Column(name = "estado")
     private String estado;
 
-    public Modalidad() {
+    public ConcursoTipoParticipacion() {
     }
 
-    public Modalidad(Integer id) {
+    public ConcursoTipoParticipacion(Integer id) {
         this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
     public String getUsuMod() {
@@ -121,6 +106,14 @@ public class Modalidad implements Serializable {
         this.fechaMod = fechaMod;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getEstado() {
         return estado;
     }
@@ -129,7 +122,23 @@ public class Modalidad implements Serializable {
         this.estado = estado;
     }
 
-    @Override
+    public Concurso getConcurso() {
+		return concurso;
+	}
+
+	public void setConcurso(Concurso concurso) {
+		this.concurso = concurso;
+	}
+
+	public TipoParticipacion getTipoParticipacion() {
+		return tipoParticipacion;
+	}
+
+	public void setTipoParticipacion(TipoParticipacion tipoParticipacion) {
+		this.tipoParticipacion = tipoParticipacion;
+	}
+
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
@@ -139,10 +148,10 @@ public class Modalidad implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Modalidad)) {
+        if (!(object instanceof ConcursoTipoParticipacion)) {
             return false;
         }
-        Modalidad other = (Modalidad) object;
+        ConcursoTipoParticipacion other = (ConcursoTipoParticipacion) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -151,8 +160,16 @@ public class Modalidad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.aprodher.aprodherweb.Modalidad[ id=" + id + " ]";
+        return "com.aprodher.aprodherweb.TipoParticipacion[ id=" + id + " ]";
     }
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
 
     
 }

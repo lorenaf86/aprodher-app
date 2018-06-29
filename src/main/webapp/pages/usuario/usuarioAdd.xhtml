@@ -38,38 +38,38 @@
                     <p:separator/>
 
                     <div class="ui-g ui-fluid">
-                        <div class="ui-g-12">
+                        <div class="ui-g-12 ui-md-4">
                             
                             
                         <h:outputLabel value="#{bundle['label.nombre']}" for="nombre" />
-                        <p:inputText id="nombre" value="#{registrarController.usuario.nombre}"  style="width:360px"
+                        <p:inputText id="nombre" value="#{registrarController.usuario.nombre}"
                         title="#{bundle['label.nombre']}" required="true" styleClass="form-control"
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
                             
                         <h:outputLabel value="#{bundle['label.apellido']}" for="apellido" />
-                        <p:inputText id="apellido" value="#{registrarController.usuario.apellido}" style="width:360px" 
+                        <p:inputText id="apellido" value="#{registrarController.usuario.apellido}" 
                         title="#{bundle['label.apellido']}" required="true" styleClass="form-control"
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.apellido']}"/>
 
                         <h:outputLabel value="#{bundle['label.mail']}" for="email" />
-                        <p:inputText id="email" value="#{registrarController.usuario.mail}" type="email"  style="width:260px"
+                        <p:inputText id="email" value="#{registrarController.usuario.mail}" type="email"
                         title="#{bundle['label.mail']}" required="true" styleClass="form-control"
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.email']}">
                         <f:validator validatorId="custom.emailValidator" />
                         </p:inputText>
 
                         <h:outputLabel value="#{bundle['label.usuario']}" for="username" />
-                        <p:inputText id="username" value="#{registrarController.usuario.username}" style="width:260px" 
+                        <p:inputText id="username" value="#{registrarController.usuario.username}" 
                         title="#{bundle['label.usuario']}" required="true" styleClass="form-control"
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.username']}"/>
 
                         <h:outputLabel value="#{bundle['login.password']}" for="contrasena" />
-                        <p:inputText id="contrasena" value="#{registrarController.usuario.contrasena}"  type="password" style="width:260px" 
+                        <p:inputText id="contrasena" value="#{registrarController.usuario.contrasena}"  type="password"
                         title="#{bundle['login.password']}" required="true" styleClass="form-control"
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.contrasena']}"/>
                             
                         <h:outputLabel value="#{bundle['label.academia']}" for="academiaField" />
-		                <p:selectOneMenu id="academiaField"  style="width:260px" 
+		                <p:selectOneMenu id="academiaField"   
 		                                 value="#{registrarController.usuario.academia}"
 		                         effect="fade" var="m" filter="true" filterMatchMode="contains" >                                     
 		                <f:selectItem itemLabel="#{bundle['SelectOneMessage']}"/>
@@ -80,7 +80,7 @@
 		                </p:selectOneMenu>
 
                         <h:outputLabel value="#{bundle['label.nombre']} de la #{bundle['label.academia']}" for="academiaName" />
-                        <p:inputText id="academiaName" value="#{registrarController.usuario.academiaNombre}"  style="width:360px"
+                        <p:inputText id="academiaName" value="#{registrarController.usuario.academiaNombre}"
                         title="#{bundle['label.nombre']} de la #{bundle['label.academia']}" required="true" styleClass="form-control"
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']} de la #{bundle['label.academia']}"/>
 

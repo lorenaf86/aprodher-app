@@ -39,29 +39,33 @@
 			<h:form>
             	<div class="box box-primary">
                 	<div class="box-header with-border">
+ 					<p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">                   	
                     	<p:commandButton actionListener="#{personaAcademiaController.nuevo}" 
                     					oncomplete="personaAcademiaAdd?faces-redirect=true" icon="fa fa-plus"
                     					update="@form"
                          	            value="#{bundle['btn.add']}" styleClass="btn-primary"/>
-                    	<p:spacer width="5"/>
                     	<p:commandButton actionListener="#{personaAcademiaController.edit}" 
                     					oncomplete="personaAcademiaAdd?faces-redirect=true" icon="fa fa-plus"
                     					update="@form"
                          	            value="#{bundle['btn.edit']}" styleClass="btn-warning"/>
 
-                    	<p:spacer width="5"/>
                     	<p:commandButton actionListener="#{personaAcademiaController.confirm('delete')}" 
                     					icon="fa fa-plus" update="@form"  disabled="#{empty personaAcademiaController.selected}"
                          	            value="#{bundle['btn.delete']}" styleClass="btn-danger"/>
                          	            
-	                    <p:spacer width="5"/>
 	                    <p:commandButton value="#{bundle['btn.view']} Selecionado" 
 	                    				 oncomplete="PF('defaultSelecionadas').show()"
 	                    				 update="@(.ui-dialog)" 
 	                    				 styleClass="btn-info"
 	                                     icon="fa fa-search"/>
-	                    <p:separator/>
                 	
+	                </p:panelGrid>
+					</div>
+         			</div>
+	                    
+	                   	
+       	 <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-12">
                 	
 	                    
             <p:dataTable id="datalist" widgetVar="datalists" value="#{personaAcademiaController.personaAcademiaList}" var="item" filteredValue="#{personaAcademiaController.list}"
@@ -87,7 +91,7 @@
 	                        <p:ajax event="rowSelect" update="@(.ui-button)"/>
 	                        <p:ajax event="rowUnselect" update="@(.ui-button)"/>
 	                        
-			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110" >
+			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}">
 			                    <h:outputText value="#{item.persona.id}"/>
 			                </p:column>
 			                <p:column sortBy="#{item.persona.cedula}" headerText="#{bundle['label.cedula']}"  filterBy="#{item.persona.cedula}" filterMatchMode="contains" filterable="true" filterMaxLength="3" > 
@@ -102,7 +106,7 @@
 			                <p:column sortBy="#{item.persona.fechaNacimiento}" headerText="#{bundle['label.fechaNacimiento']}"  >
 			                    <h:outputText value="#{item.persona.fechaNacimiento}"/>
 			                </p:column>
-			                <p:column headerText="Estado" width="240">
+			                <p:column headerText="Estado">
 			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
 			                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
 			                </p:column>

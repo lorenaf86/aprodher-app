@@ -22,7 +22,12 @@ import py.com.app.util.NavigationRulezHelper;
 @ManagedBean
 public class TipoParticipacionController extends AbstractController<TipoParticipacion> implements Serializable {
 
-    @EJB
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 776230617975651658L;
+
+	@EJB
     private TipoParticipacionFacade service;
 	    
     private List<TipoParticipacion>  list;

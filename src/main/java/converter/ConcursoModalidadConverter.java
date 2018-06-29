@@ -29,12 +29,12 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 
-import py.com.app.model.Modalidad;
+import py.com.app.model.ConcursoModalidad;
 import py.com.app.util.EntityConverter;
 import py.com.app.util.GlobalParameters;
 
-@FacesConverter(forClass=Modalidad.class)
-public class ModalidadConverter extends EntityConverter implements Converter
+@FacesConverter(forClass=ConcursoModalidad.class)
+public class ConcursoModalidadConverter extends EntityConverter implements Converter
 {
     
     @Override
@@ -45,7 +45,7 @@ public class ModalidadConverter extends EntityConverter implements Converter
             return null;
         }
         
-        return getViewMap(context).get(value+Modalidad.class.getName());
+        return getViewMap(context).get(value+ConcursoModalidad.class.getName());
     }
 
     @Override
@@ -55,10 +55,10 @@ public class ModalidadConverter extends EntityConverter implements Converter
         
         try
         {
-            Integer id = ((Modalidad) object).getId();
+            Integer id = ((ConcursoModalidad) object).getId();
             if (id != null)
             {
-                getViewMap(context).put(id.toString()+Modalidad.class.getName(), object);
+                getViewMap(context).put(id.toString()+ConcursoModalidad.class.getName(), object);
                 
                 return id.toString();
             }

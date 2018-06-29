@@ -8,9 +8,7 @@ package py.com.app.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -38,8 +36,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "ConcursoAcademiaCoreo.findAll", query = "SELECT c FROM ConcursoAcademiaCoreo c")})
 public class ConcursoAcademiaCoreo implements Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,7 +80,7 @@ public class ConcursoAcademiaCoreo implements Serializable {
    
     @JoinColumn(name = "id_modalidad", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER )
-    private Modalidad modalidad;
+    private ConcursoModalidad modalidad;
    
     @JoinColumn(name = "id_persona", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER )
@@ -92,7 +88,7 @@ public class ConcursoAcademiaCoreo implements Serializable {
     
     @JoinColumn(name = "id_tipo_participacion", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER )
-    private TipoParticipacion tipoParticipacion;
+    private ConcursoTipoParticipacion tipoParticipacion;
     
     @Column(name = "coreografia")
     private Boolean coreografia;
@@ -195,11 +191,11 @@ public class ConcursoAcademiaCoreo implements Serializable {
         this.concursoAcademia = concursoAcademia;
     }
 
-    public Modalidad getModalidad() {
+    public ConcursoModalidad getModalidad() {
         return modalidad;
     }
 
-    public void setModalidad(Modalidad idModalidad) {
+    public void setModalidad(ConcursoModalidad idModalidad) {
         this.modalidad = idModalidad;
     }
 
@@ -219,11 +215,11 @@ public class ConcursoAcademiaCoreo implements Serializable {
 		this.coreografia = coreografia;
 	}
 
-	public TipoParticipacion getTipoParticipacion() {
+	public ConcursoTipoParticipacion getTipoParticipacion() {
         return tipoParticipacion;
     }
 
-    public void setTipoParticipacion(TipoParticipacion tipoParticipacion) {
+    public void setTipoParticipacion(ConcursoTipoParticipacion tipoParticipacion) {
         this.tipoParticipacion = tipoParticipacion;
     }
 

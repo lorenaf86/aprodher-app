@@ -61,12 +61,6 @@
                 			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.descripcion']}">
                     <h:outputText value="#{item.descripcion}"/>
                 </p:column>
-                <p:column sortBy="#{item.valor}" footerText=" " 
-                			filterFunction="#{contextHelper.filterRow}" headerText="#{bundle['label.valor']}">
-                    <h:outputText value="#{item.valor}">
-						<f:convertNumber integerOnly="true"/>
-                    </h:outputText>
-                </p:column>
                 <p:column footerText=" " filterMatchMode="contains" headerText="Estado" width="240">
                         <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
                         <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>

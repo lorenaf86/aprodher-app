@@ -69,9 +69,6 @@ public class TipoParticipacion implements Serializable {
     @Column(name = "estado")
     private String estado;
 
-    @Column(name = "valor")
-    private Double valor;
-
     public TipoParticipacion() {
     }
 
@@ -159,14 +156,6 @@ public class TipoParticipacion implements Serializable {
     public String toString() {
         return "com.aprodher.aprodherweb.TipoParticipacion[ id=" + id + " ]";
     }
-
-	public Double getValor() {
-		return valor;
-	}
-
-	public void setValor(Double valor) {
-		this.valor = valor;
-	}
 
     
 }

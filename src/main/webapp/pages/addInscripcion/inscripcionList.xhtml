@@ -13,6 +13,10 @@
                 padding: 0.5em 0;
                 margin-left: 10px;
             }
+            
+            .ui-outputlabel {
+                font-weight: bold;
+            }
 
             .ui-orderlist .ui-orderlist-list {
                 height: auto;
@@ -39,36 +43,39 @@
 			<h:form>
             	<div class="box box-primary">
                 	<div class="box-header with-border">
+ 					<p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">                   	
+ 
                     	<p:commandButton actionListener="#{inscripcionControler.nuevaInscripcion}" 
                     					oncomplete="inscripcionAdd?faces-redirect=true" icon="fa fa-plus"
                     					update="@form"
                          	            value="#{bundle['btn.add']}" styleClass="btn-primary"/>
-                    	<p:spacer width="5"/>
                     	<p:commandButton actionListener="#{inscripcionControler.editInscripcion}" 
                     					oncomplete="inscripcionEdit?faces-redirect=true" icon="fa fa-plus"
                     					update="@form"
                          	            value="#{bundle['btn.edit']}" styleClass="btn-warning" 
                          	            disabled="#{empty inscripcionControler.selected}"/>
-                    	<p:spacer width="5"/>
                     	<p:commandButton actionListener="#{inscripcionControler.confirm('delete')}" 
                     					icon="fa fa-plus" update="@form"  disabled="#{empty inscripcionControler.selected}"
                          	            value="#{bundle['btn.delete']}" styleClass="btn-danger"/>
                          	            
-	                    <p:spacer width="5"/>
 	                    <p:commandButton value="#{bundle['btn.view']} Selecionado" 
 	                    				 oncomplete="PF('defaultSelecionadas').show()"
 	                    				 update="@(.ui-dialog)" 
 	                    				 styleClass="btn-info"
 	                                     icon="fa fa-search"/>
-	                    <p:separator/>
+	                </p:panelGrid>
+					</div>
+         			</div>
 	                    
 	                   	
+       	 <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-md-12">
 
             <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionControler.listCoreo}" var="item" filteredValue="#{inscripcionControler.list}"
             			 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
             			 currentPageReportTemplate="{currentPage} #{bundle['label.of']} {totalPages}"
             			 emptyMessage="#{bundle['msg.noRecordsFound']}"
-                         selectionMode="single" selection="#{inscripcionControler.selected}" style="margin-botton:20px"
+                         selectionMode="single" selection="#{inscripcionControler.selected}" style="margin-botton:10px"
                          rowKey="#{item.id}" paginatorPosition="top"
                          paginator="true"
                          rows="10"
@@ -79,11 +86,11 @@
 				<f:facet name="header" >
                     <p:outputPanel style="float:left">
                     	<p:focus for="globalFilter"/>
-                    	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()" style="width:250px;" placeholder="Buscar" />
+                    	<p:inputText id="globalFilter" onkeyup="PF('datalists').filter()"  placeholder="Buscar" />
                     </p:outputPanel>
                     <br/><br/>                    
                 </f:facet>
-			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}" width="110">
+			                <p:column sortBy="#{item.id}" headerText="#{bundle['label.id']}">
 			                    <h:outputText value="#{item.id}"/>
 			                </p:column>
 
@@ -97,11 +104,11 @@
 			                </p:column>
 			                <p:column sortBy="#{item.modalidad.descripcion}"  
 			                			headerText="#{bundle['label.modalidad']}">
-			                    <h:outputText value="#{item.modalidad.descripcion}"/>
+			                    <h:outputText value="#{item.modalidad.modalidad.descripcion}"/>
 			                </p:column>
 			                <p:column sortBy="#{item.tipoParticipacion.descripcion}"  
 			                			headerText="#{bundle['label.tipoParticipacion']}">
-			                    <h:outputText value="#{item.tipoParticipacion.descripcion}"/>
+			                    <h:outputText value="#{item.tipoParticipacion.tipoParticipacion.descripcion}"/>
 			                </p:column>
 			                <p:column sortBy="#{item.persona.nombre}"  filterBy="#{item.persona.nombre} #{item.persona.apellido}" filterMatchMode="contains" filterable="true" filterMaxLength="3" 
 			                			headerText="#{bundle['label.profesor']}">
@@ -116,7 +123,7 @@
 			                    <h:outputText value="#{item.coreografia}"/>
 			                </p:column>
 
-			                <p:column  headerText="Estado" width="240">
+			                <p:column  headerText="Estado">
 			                        <h:outputText value="#{bundle['label.activo']}" rendered="#{item.estado=='AC'}"/>
 			                        <h:outputText value="#{bundle['label.inactivo']}" rendered="#{item.estado=='IN'}"/>
 			                </p:column>
@@ -133,10 +140,10 @@
 		                    </f:facet>
 	                    </p:dataTable>
 
+			</div>
+			</div>
     
-					</div>
-	            </div>
-        	</h:form>
+       	</h:form>
         	<p:dialog header="Selecionado" widgetVar="defaultSelecionadas" height="250"
                   	  width="400" responsive="true" styleClass="box-success">
 	            <p:dataList id="listaDefaultSelecionadas" value="#{inscripcionControler.selected}" var="default"
@@ -159,12 +166,12 @@
                     	<p:spacer width="5"/>
 			                <h:outputText value="#{bundle['label.modalidad']}"/>
                     	<p:spacer width="5"/>
-			                    <h:outputText value="#{default.modalidad.descripcion}"/>
+			                    <h:outputText value="#{default.modalidad.modalidad.descripcion}"/>
 			                
                     	<p:spacer width="5"/>
 			                <h:outputText value="#{bundle['label.tipoParticipacion']}"/>
                     	<p:spacer width="5"/>
-			                    <h:outputText value="#{default.tipoParticipacion.descripcion}"/>
+			                    <h:outputText value="#{default.tipoParticipacion.tipoParticipacion.descripcion}"/>
 			                
                     	<p:spacer width="5"/>
 			                <h:outputText value="#{bundle['label.profesor']}"/>

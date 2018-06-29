@@ -11,14 +11,14 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import py.com.app.model.Modalidad;
+import py.com.app.model.ConcursoModalidad;
 
 /**
  *
  * @author Lorena Franco
  */
 @Stateless
-public class ModalidadFacade extends AbstractFacade<Modalidad> {
+public class ConcursoModalidadFacade extends AbstractFacade<ConcursoModalidad> {
 
     @Inject
     private EntityManager em;
@@ -28,13 +28,13 @@ public class ModalidadFacade extends AbstractFacade<Modalidad> {
         return em;
     }
 
-    public ModalidadFacade() {
-        super(Modalidad.class);
+    public ConcursoModalidadFacade() {
+        super(ConcursoModalidad.class);
     }
     
-    public List<Modalidad> findAllActives() {
-        return em.createQuery("Select c from  Modalidad c "
-        		+ "Where c.estado = 'AC'").getResultList();
+    public List<ConcursoModalidad> findAllActives() {
+        return em.createQuery("Select c from  ConcursoModalidad c "
+        		+ "Where c.estado = 'AC' and c.concurso.id in (select o.id from Concurso o where o.vigente is true)").getResultList();
     }
 
 }

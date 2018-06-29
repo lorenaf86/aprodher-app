@@ -23,7 +23,12 @@ import py.com.app.util.NavigationRulezHelper;
 @ManagedBean
 public class ModalidadController extends AbstractController<Modalidad> implements Serializable {
 
-    @EJB
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -514465404808455828L;
+
+	@EJB
     private ModalidadFacade service;
 	    
     @EJB
@@ -46,7 +51,6 @@ public class ModalidadController extends AbstractController<Modalidad> implement
     public void confirm(String accion){
         if(accion.equals("new")){
         	this.getSelected().setEstado("AC");
-        	this.getSelected().setConcurso(serviceConcurso.findConcursoVigente());
             this.getSelected().setUsuAlta(this.getCredentials().getUsername());
             this.getSelected().setFechaAlta(CalendarHelper.getCurrentTimestamp());
             this.getSelected().setUsuMod(this.getCredentials().getUsername());

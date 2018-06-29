@@ -19,11 +19,6 @@
                         <h:outputLabel value="#{bundle['label.descripcion']}" for="descripcion" />
                         <p:inputText id="nombre" value="#{tipoParticipacionController.selected.descripcion}" title="#{bundle['label.descripcion']}" required="true" requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.descripcion']}"/>
 
-                        <h:outputLabel value="#{bundle['label.valor']}" for="valor" />
-                        <p:inputText id="valor" value="#{tipoParticipacionController.selected.valor}" title="#{bundle['label.valor']}" required="true" requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.valor']}">
-                        	<f:convertNumber integerOnly="true"/>
-                        </p:inputText>
-
                         <h:outputLabel value="#{bundle['label.estado']}" for="activo" />
                         <h:outputText value="#{bundle['label.activo']}" rendered="#{tipoParticipacionController.selected.estado=='AC'}"/>
                         <h:outputText value="#{bundle['label.inactivo']}" rendered="#{tipoParticipacionController.selected.estado=='IN'}"/>

@@ -60,24 +60,24 @@
                         <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.cedula']}" for="cedula" />
                         <p:inputText id="cedula" value="#{personaAcademiaController.selected.persona.cedula}" 
-                        title="#{bundle['label.cedula']}" required="true" style="width:100px" 
+                        title="#{bundle['label.cedula']}" required="true"  
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.cedula']}"/>
                         
                         <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.nombre']}" for="nombre" />
                         <p:inputText id="nombre" value="#{personaAcademiaController.selected.persona.nombre}" 
-                        title="#{bundle['label.nombre']}" required="true" styleClass="form-control" style="width:260px"
+                        title="#{bundle['label.nombre']}" required="true" styleClass="form-control" 
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.nombre']}"/>
                         
                         <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.apellido']}" for="apellido" />
                         <p:inputText id="apellido" value="#{personaAcademiaController.selected.persona.apellido}" 
-                        title="#{bundle['label.apellido']}" required="true" style="width:260px"
+                        title="#{bundle['label.apellido']}" required="true" 
                         requiredMessage="#{bundle['msg.fieldRequired']} - #{bundle['label.apellido']}"/>
                         
                         <p:spacer width="5"/>
                         <h:outputLabel value="#{bundle['label.fechaNacimiento']}" for="fecNacimiento" />
-                        <p:calendar id="fecNacimiento" style="width:100px" 
+                        <p:calendar id="fecNacimiento"
                         value="#{personaAcademiaController.selected.persona.fechaNacimiento}" 
                         title="#{bundle['label.fechaNacimiento']}"  
                         showOn="button" navigator="true" pattern="dd/MM/yyyy"/>
