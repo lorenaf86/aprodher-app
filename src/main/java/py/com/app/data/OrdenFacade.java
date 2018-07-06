@@ -80,15 +80,9 @@ public class OrdenFacade {
 
 	public ArrayList findAllTotal() {
 
-		String sql = " select c.nombre as academia, count(b.id), sum(a.valor * b.cantidad)";
-		sql += " from concurso_tipo_participacion a, concurso_academia_coreo b, academia c, concurso_academia d";
-		sql += " where b.id_tipo_participacion = a.id and b.id_concurso_academia = d.id and d.id_academia = c.id";
-    	sql += " and d.id_concurso in ";
-    	sql += " (Select id from concurso c ";
-    	sql += " Where c.vigente is true Order by c.fecha desc limit 1)";
-		sql += " group by c.nombre"; 
-		sql += " order by c.nombre";
-		
+	    String sql = " select v.academia, sum(v.cantidad) as cantidad, sum(v.valor) as valor"; 
+	    sql += " from v_resumen v group by v.academia";
+
 	    return (ArrayList) em.createNativeQuery(sql).getResultList();
 	    
 	}
@@ -98,15 +92,9 @@ public class OrdenFacade {
 	    Integer id = ((Usuario)em.find(Usuario.class, idUsuario)).getAcademia().getId();
 	    Academia academia = em.find(Academia.class, id);
 
-	    String sql = " select c.nombre as academia, count(b.id), sum(a.valor * b.cantidad)";
-		sql += " from concurso_tipo_participacion a, concurso_academia_coreo b, academia c, concurso_academia d";
-		sql += " where b.id_tipo_participacion = a.id and b.id_concurso_academia = d.id and d.id_academia = c.id";
-		sql += " and c.id = " + academia.getId();
-    	sql += " and d.id_concurso in ";
-    	sql += " (Select id from concurso c ";
-    	sql += " Where c.vigente is true Order by c.fecha desc limit 1)";
-		sql += " group by c.nombre"; 
-		sql += " order by c.nombre";
+	    String sql = " select v.academia, sum(v.cantidad) as cantidad, sum(v.valor) as valor"; 
+	    sql += " where v.academia = '" + academia.getNombre() + "'";
+	    sql += " from v_resumen v group by v.academia";
 		
 	    return (ArrayList) em.createNativeQuery(sql).getResultList();
 	}
