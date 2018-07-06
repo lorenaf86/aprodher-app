@@ -48,7 +48,7 @@ public class ConcursoOrden implements Serializable {
    
     @JoinColumn(name = "id_modalidad", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER )
-    private Modalidad modalidad;
+    private ConcursoModalidad modalidad;
    
     @JoinColumn(name = "id_persona", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER )
@@ -56,7 +56,7 @@ public class ConcursoOrden implements Serializable {
     
     @JoinColumn(name = "id_tipo_participacion", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER )
-    private TipoParticipacion tipoParticipacion;
+    private ConcursoTipoParticipacion tipoParticipacion;
     
     @Column(name = "coreografia")
     private Boolean coreografia;
@@ -72,6 +72,13 @@ public class ConcursoOrden implements Serializable {
 
     @Column(name = "orden")
     private Integer orden;
+
+    @Column(name = "cantidad")
+    private Integer cantidad;
+    
+    @JoinColumn(name = "id_coreografia", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER )
+    private ConcursoAcademiaCoreo concursoCoreo;
 
     public Integer getOrden() {
 		return orden;
@@ -120,11 +127,11 @@ public class ConcursoOrden implements Serializable {
         this.academia = academia;
     }
 
-    public Modalidad getModalidad() {
+    public ConcursoModalidad getModalidad() {
         return modalidad;
     }
 
-    public void setModalidad(Modalidad idModalidad) {
+    public void setModalidad(ConcursoModalidad idModalidad) {
         this.modalidad = idModalidad;
     }
 
@@ -136,11 +143,11 @@ public class ConcursoOrden implements Serializable {
         this.persona = persona;
     }
 
-    public TipoParticipacion getTipoParticipacion() {
+    public ConcursoTipoParticipacion getTipoParticipacion() {
         return tipoParticipacion;
     }
 
-    public void setTipoParticipacion(TipoParticipacion tipoParticipacion) {
+    public void setTipoParticipacion(ConcursoTipoParticipacion tipoParticipacion) {
         this.tipoParticipacion = tipoParticipacion;
     }
 
@@ -199,6 +206,22 @@ public class ConcursoOrden implements Serializable {
 
 	public void setOrdenTipo(Integer ordenTipo) {
 		this.ordenTipo = ordenTipo;
+	}
+
+	public ConcursoAcademiaCoreo getConcursoCoreo() {
+		return concursoCoreo;
+	}
+
+	public void setConcursoCoreo(ConcursoAcademiaCoreo concursoCoreo) {
+		this.concursoCoreo = concursoCoreo;
+	}
+
+	public Integer getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(Integer cantidad) {
+		this.cantidad = cantidad;
 	}
 
     

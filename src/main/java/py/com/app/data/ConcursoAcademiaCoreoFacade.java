@@ -45,11 +45,17 @@ public class ConcursoAcademiaCoreoFacade extends AbstractFacade<ConcursoAcademia
        return em.find(Academia.class, id);
     }
     
-    public List<ConcursoAcademiaCoreo> findAllInscripciones(Integer idAcademia) {
+    public List<ConcursoAcademiaCoreo> findAllInscripciones(Integer idAcademia, Integer idConcurso) {
         return getEntityManager().createQuery("Select c from ConcursoAcademiaCoreo c "
-                + " Where c.concursoAcademia.id = " + idAcademia).getResultList();
+                + " Where c.concursoAcademia.id = " + idAcademia
+                + " and c.concursoAcademia.concurso.id = " + idConcurso).getResultList();
     }
     
+    public List<ConcursoAcademiaCoreo> findAllInscripciones(Integer idConcurso) {
+        return getEntityManager().createQuery("Select c from ConcursoAcademiaCoreo c "
+                + " Where c.concursoAcademia.concurso.id = " + idConcurso).getResultList();
+    }
+
     public Concurso findConcursoVigente(){
         List list = getEntityManager().createQuery("Select c from Concurso c "
                 + " Where c.vigente = true Order by c.fecha desc ").getResultList();

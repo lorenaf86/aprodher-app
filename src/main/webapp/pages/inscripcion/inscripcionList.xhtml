@@ -65,7 +65,7 @@
 	                   	
         	 <div class="ui-g ui-fluid">
             <div class="ui-g-12 ui-md-12">
-            <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionController.items}" var="item" filteredValue="#{inscripcionController.list}"
+            <p:dataTable id="datalist" widgetVar="datalists" value="#{inscripcionController.list}" var="item" filteredValue="#{inscripcionController.list}"
             			 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
             			 currentPageReportTemplate="{currentPage} #{bundle['label.of']} {totalPages}"
             			 emptyMessage="#{bundle['msg.noRecordsFound']}"
@@ -139,6 +139,19 @@
                         	<f:convertNumber pattern="###,###,###,###,##0"  />
                         </h:outputText>
                     </p:outputPanel>
+                            <h:commandLink actionListener="#{exporterHelper.updateTitle('label.informe')}">
+		                        <h:graphicImage width="24" name="/img/excel.png.xhtml.png" />
+		                        <p:dataExporter type="xls" target="datalists" encoding="ISO-8859-2"
+		                                    fileName="#{bundle['report.lista']} #{bundle['label.of']} #{bundle['label.informe']}" 
+		                               postProcessor="#{exporterHelper.postProcessXLS}"/>
+		                    </h:commandLink>
+		                    
+		                    <h:commandLink actionListener="#{exporterHelper.updateTitle('label.informe')}">
+		                        <p:graphicImage name="/img/pdf.png.xhtml.png" width="24"/>
+		                        <p:dataExporter type="pdf" target="datalist" encoding="ISO-8859-2"
+		                                    fileName="#{bundle['label.informe']}" 
+		                                preProcessor="#{exporterHelper.preProcessPDFRotate}" />
+		                    </h:commandLink>    
                 	</f:facet>
 	                       
 	                        	

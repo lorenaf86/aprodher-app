@@ -115,7 +115,7 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
     	}
     	
     	
-        this.listCoreo = service.findAllInscripciones(concursoAcademia.getId());
+        this.listCoreo = service.findAllInscripciones(concursoAcademia.getId(),concurso.getId());
         
         this.listParticipatesAcademia = service.findParticipantesAcademia(academia.getId());
 
@@ -222,7 +222,7 @@ public class InscripcionControler extends AbstractController<ConcursoAcademiaCor
                     }
             }
 
-            this.listCoreo = service.findAllInscripciones(concursoAcademia.getId());
+            this.listCoreo = service.findAllInscripciones(concursoAcademia.getId(), concurso.getId());
             NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/addInscripcion/inscripcionList.xhtml");
     }
 

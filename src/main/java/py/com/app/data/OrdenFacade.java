@@ -28,7 +28,9 @@ public class OrdenFacade {
 
     public List<ConcursoOrden> findAll() {
     	
-        return em.createNativeQuery("Select * from concurso_orden where id_concurso = 2"
+        return em.createNativeQuery("Select * from concurso_orden where id_concurso in "
+            	+ " (Select id from concurso c "
+            	+ " Where c.vigente is true Order by c.fecha desc limit 1)"
 				+ " order by orden"
         		+ "",ConcursoOrden.class).getResultList();
         
@@ -40,7 +42,9 @@ public class OrdenFacade {
 	    
 	    return em.createNativeQuery("Select * from concurso_orden"
 	    		+ " where id_academia = " + academia.getId()
-	    		+ " and id_concurso = 2"
+	    		+ " and id_concurso in "
+            	+ " (Select id from concurso c "
+            	+ " Where c.vigente is true Order by c.fecha desc limit 1)"
 				+ " order by orden"
 	    		+ "",ConcursoOrden.class).getResultList();
     }
@@ -53,15 +57,15 @@ public class OrdenFacade {
     	em.flush();
 
     	String sql = " Insert into concurso_orden (nombre, id_categoria, id_academia, id_modalidad, id_persona, id_tipo_participacion, coreografia,"
-    			+ " orden_categoria, orden_modalidad, orden_tipo, id_concurso)";
+    			+ " orden_categoria, orden_modalidad, orden_tipo, id_concurso, valor, cantidad, id_coreografia)";
     	sql += " (Select a.nombre, a.id_categoria";
     	sql += " , b.id_academia, a.id_modalidad, a.id_persona, a.id_tipo_participacion, a.coreografia, cat.orden as orden_categoria";
-    	sql += " ,mod.orden as orden_modalidad, tp.orden as orden_tipo, b.id_concurso";
+    	sql += " ,mod.orden as orden_modalidad, tp.orden as orden_tipo, b.id_concurso, tp.valor, a.cantidad, a.id";
     	sql += " from concurso_academia_coreo a";
     	sql += " join concurso_academia b on a.id_concurso_academia = b.id";
     	sql += " join categoria cat on cat.id = a.id_categoria";
     	sql += " join concurso_modalidad mod on mod.id = a.id_modalidad";
-    	sql += " join tipo_participacion tp on tp.id = a.id_tipo_participacion";
+    	sql += " join concurso_tipo_participacion tp on tp.id = a.id_tipo_participacion";
     	sql += " where b.id_concurso in ";
     	sql += " (Select id from concurso c ";
     	sql += " Where c.vigente is true Order by c.fecha desc limit 1)";
@@ -76,9 +80,12 @@ public class OrdenFacade {
 
 	public ArrayList findAllTotal() {
 
-		String sql = " select c.nombre as academia, sum(a.valor * b.cantidad)";
-		sql += " from tipo_participacion a, concurso_academia_coreo b, academia c, concurso_academia d";
+		String sql = " select c.nombre as academia, count(b.id), sum(a.valor * b.cantidad)";
+		sql += " from concurso_tipo_participacion a, concurso_academia_coreo b, academia c, concurso_academia d";
 		sql += " where b.id_tipo_participacion = a.id and b.id_concurso_academia = d.id and d.id_academia = c.id";
+    	sql += " and d.id_concurso in ";
+    	sql += " (Select id from concurso c ";
+    	sql += " Where c.vigente is true Order by c.fecha desc limit 1)";
 		sql += " group by c.nombre"; 
 		sql += " order by c.nombre";
 		
@@ -91,10 +98,13 @@ public class OrdenFacade {
 	    Integer id = ((Usuario)em.find(Usuario.class, idUsuario)).getAcademia().getId();
 	    Academia academia = em.find(Academia.class, id);
 
-	    String sql = " select c.nombre as academia, sum(a.valor * b.cantidad)";
-		sql += " from tipo_participacion a, concurso_academia_coreo b, academia c, concurso_academia d";
+	    String sql = " select c.nombre as academia, count(b.id), sum(a.valor * b.cantidad)";
+		sql += " from concurso_tipo_participacion a, concurso_academia_coreo b, academia c, concurso_academia d";
 		sql += " where b.id_tipo_participacion = a.id and b.id_concurso_academia = d.id and d.id_academia = c.id";
 		sql += " and c.id = " + academia.getId();
+    	sql += " and d.id_concurso in ";
+    	sql += " (Select id from concurso c ";
+    	sql += " Where c.vigente is true Order by c.fecha desc limit 1)";
 		sql += " group by c.nombre"; 
 		sql += " order by c.nombre";
 		

@@ -77,7 +77,7 @@ public class InformeController implements Serializable {
     	total = 0.0;
     	for (Object c : this.list) {
     		Object[] o = (Object[]) c;
-        	total += (Double) o[1];		
+        	total += (Double) o[2];		
 		}
     }
 

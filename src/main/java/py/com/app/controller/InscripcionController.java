@@ -96,6 +96,8 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
         }
 
         concurso = service.findConcursoVigente();
+        this.list = service.findAllInscripciones(concurso.getId());
+
         getterTotal();
 	}
 
@@ -201,6 +203,7 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
                     }
             }
 
+            this.list = service.findAllInscripciones(concurso.getId());
             getterTotal();
             NavigationRulezHelper.redirect(AppHelper.getDomainUrl() + "/pages/inscripcion/inscripcionList.xhtml");
 
@@ -208,7 +211,7 @@ public class InscripcionController extends AbstractController<ConcursoAcademiaCo
     
     public void getterTotal(){
     	total = 0.0;
-    	for (ConcursoAcademiaCoreo c : this.getItems()) {
+    	for (ConcursoAcademiaCoreo c : this.list) {
         	total += c.getTotal();		
 		}
     }

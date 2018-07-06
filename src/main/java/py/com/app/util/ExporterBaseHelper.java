@@ -131,16 +131,16 @@ public abstract class ExporterBaseHelper
     {
         // FIXME transparent values set not working
         
-        int[] trans01 = {32, 32};
+        int[] trans01 = {60, 60};
 //        int[] trans02 = new int[]{ 0x00, 0x10 };
 //        int[] trans03 = new int[]{ 0xF0, 0xFF }; 
         image.setTransparency(trans01);
         image.setAlt(alt);
-        image.setAbsolutePosition(40,801);
+        image.setAbsolutePosition((document.getPageSize().getWidth())/6,780);
              /*   (document.getPageSize().getWidth() - image.getScaledWidth()) / 2,
                 (document.getPageSize().getHeight() - image.getScaledHeight()) / 2
         );*/
-        image.scalePercent(31f);
+        image.scalePercent(40f);
         document.add(image);
     }
     

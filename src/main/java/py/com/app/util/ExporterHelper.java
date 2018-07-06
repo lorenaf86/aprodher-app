@@ -156,5 +156,62 @@ public class ExporterHelper extends ExporterBaseHelper
         
     }
 
+    public void preProcessPDFRotate(Object document)
+    {
+    	super.title = MessageUtil.retrieveMessage(title);
+        
+        Document pdf = (Document) document;
+        pdf.setPageSize(PageSize.A4.rotate());
+        
+        super.addBasicSetup(pdf);
+        super.addMetaData(pdf);
+
+        try
+        {
+            super.addHeader(pdf);
+            super.addFooterPage(pdf);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            MessageUtil.addFacesMessageError("error.report.generator.building");
+        }
+        
+        if (this.rotate != null && this.rotate)
+        	pdf.setPageSize(PageSize.A4.rotate());
+        else
+        	pdf.setPageSize(PageSize.A4);
+        
+        pdf.open();
+        
+        try
+        {
+            String alt = MessageUtil.retrieveMessage("report.watermark.confidential.spaced");
+            Image image = Image.getInstance(getWaterMarkImage());
+
+            super.addWaterMarkImage(pdf, image, alt);
+            super.addTitlePage(pdf);
+            
+        }
+        catch (DocumentException e)
+        {
+            e.printStackTrace();
+            logger.severe(e.getMessage());
+            MessageUtil.addFacesMessageError("error.report.generator.building");
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+            logger.severe(e.getMessage());
+            MessageUtil.addFacesMessageError("error.report.generator.building");
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            logger.severe(e.getMessage());
+            MessageUtil.addFacesMessageError("error.report.generator.building");
+        }
+        
+    }
     
 }
