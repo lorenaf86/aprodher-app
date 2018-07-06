@@ -69,7 +69,7 @@ public class OrdenFacade {
     	sql += " where b.id_concurso in ";
     	sql += " (Select id from concurso c ";
     	sql += " Where c.vigente is true Order by c.fecha desc limit 1)";
-    	sql += " order by mod.orden, cat.orden,  tp.orden)";
+    	sql += " order by cat.orden, mod.orden,  tp.orden)";
     	
     	em.createNativeQuery(sql).executeUpdate();	
     	em.flush();
