@@ -49,6 +49,29 @@ public class OrdenFacade {
 	    		+ "",ConcursoOrden.class).getResultList();
     }
     
+    public void agregarCoreoOrden() {
+    	String sql = " Insert into concurso_orden (nombre, id_categoria, id_academia, id_modalidad, id_persona, id_tipo_participacion, coreografia,";
+    	sql += " orden_categoria, orden_modalidad, orden_tipo, id_concurso, valor, cantidad, id_coreografia) "
+    			+ " (Select a.nombre, a.id_categoria";
+    	sql += " , b.id_academia, a.id_modalidad, a.id_persona, a.id_tipo_participacion, a.coreografia, cat.orden as orden_categoria";
+    	sql += " ,mod.orden as orden_modalidad, tp.orden as orden_tipo, b.id_concurso, tp.valor, a.cantidad, a.id";
+    	sql += " from concurso_academia_coreo a";
+    	sql += " join concurso_academia b on a.id_concurso_academia = b.id";
+    	sql += " join categoria cat on cat.id = a.id_categoria";
+    	sql += " left join concurso_modalidad mod on mod.id = a.id_modalidad";
+    	sql += " join concurso_tipo_participacion tp on tp.id = a.id_tipo_participacion";
+    	sql += " where b.id_concurso in ";
+    	sql += " (Select id from concurso c"; 
+    	sql += " Where c.vigente is true Order by c.fecha desc limit 1)";
+    	sql += " and a.id not in (select id_coreografia from concurso_orden)";
+    	sql += " order by cat.orden, mod.orden,  tp.orden)";
+
+    	em.createNativeQuery(sql).executeUpdate();	
+    	em.flush();
+    	
+    }
+
+    
     public void generarOrden() {
     	em.createNativeQuery("ALTER SEQUENCE concurso_orden_seq RESTART WITH 1").executeUpdate();
     	em.flush();

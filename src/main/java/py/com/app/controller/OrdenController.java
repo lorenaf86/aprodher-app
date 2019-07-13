@@ -84,6 +84,11 @@ public class OrdenController implements Serializable {
 		ordenList = (ArrayList<ConcursoOrden>) ordenService.findAll();
 	}
 	
+	public void agregarCoreo() {
+		ordenService.agregarCoreoOrden();
+		ordenList = (ArrayList<ConcursoOrden>) ordenService.findAll();
+	}
+
 	public void updateOrden() {
 		int i=0;
 		for (ConcursoOrden co : ordenList) {

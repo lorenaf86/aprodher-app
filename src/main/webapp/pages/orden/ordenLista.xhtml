@@ -51,6 +51,12 @@
 	                                     icon="fa fa-search"
                                          actionListener="#{ordenController.updateOrden}"/>	                                     	                    
 
+	                    <p:commandButton value="Agregar Coreo al Orden" rendered="#{credentials.idUsuario == 1}"
+	                    				 update="@form"  style="float: right"
+	                    				 styleClass="btn-danger"
+	                                     icon="fa fa-search"
+                                         actionListener="#{ordenController.agregarCoreo}"/>	                                     	                    
+
 	                    <p:dataTable id="datalist" widgetVar="datalists"   
 	                    			value="#{ordenController.ordenList}"  var="item" filteredValue="#{ordenController.list}"                			 
 	                                 rowIndexVar="keyVar"  draggableRows="true"                              
